@@ -4,6 +4,8 @@ import 'package:memos/pages/more_page.dart';
 import 'package:memos/pages/resource_page.dart';
 import 'package:memos/pages/tag_page.dart';
 
+import '../pages/add_page.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -13,27 +15,30 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentIndex = -1;
-  final List<BottomNavigationBarItem> bottomItems = const [
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.collections,
-        ),
-        label: ""),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.tag_rounded,
-        ),
-        label: ""),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.photo), label: ""),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.more_horiz),
-        label: ""),
-  ];
 
+  late AssetImage collectImg;
+  late AssetImage collectSelectedImg;
+  late AssetImage labelImg;
+  late AssetImage labelSelectedImg;
+  late AssetImage srcImg;
+  late AssetImage srcSelectedImg;
+  late AssetImage moreImg;
+  late AssetImage moreSelectedImg;
+  late AssetImage addImg;
+  late AssetImage addSelectedImg;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    imageCache.clear();
+  }
+
+  List<BottomNavigationBarItem> bottomItems = [];
   final pages = const [
     CollectPage(),
     TagPage(),
+    AddPage(),
     ResourcePage(),
     MorePage(),
   ];
@@ -41,17 +46,101 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    currentIndex = 0;
+    //默认初始化显示的页数
+    currentIndex = 2;
+    collectImg = const AssetImage('images/ic_collect.png');
+    collectSelectedImg = const AssetImage('images/ic_collect_selected.png');
+    labelImg = const AssetImage('images/ic_label.png');
+    labelSelectedImg = const AssetImage('images/ic_label_selected.png');
+    srcImg = const AssetImage('images/ic_src.png');
+    srcSelectedImg = const AssetImage('images/ic_src_selected.png');
+    moreImg = const AssetImage('images/ic_more.png');
+    moreSelectedImg = const AssetImage('images/ic_more_selected.png');
+    addImg = const AssetImage('images/ic_add.png');
+    addSelectedImg = const AssetImage('images/ic_add_selected.png');
+    bottomItems = [
+      BottomNavigationBarItem(
+          icon: Image(
+            width: 24,
+            height: 24,
+            image: collectImg,
+          ),
+          activeIcon: Image(
+            width: 24,
+            height: 24,
+            image: collectSelectedImg,
+          ),
+          label: ""),
+      BottomNavigationBarItem(
+          icon: Image(
+            width: 24,
+            height: 24,
+            image: labelImg,
+          ),
+          activeIcon: Image(
+            width: 24,
+            height: 24,
+            image: labelSelectedImg,
+          ),
+          label: ""),
+      BottomNavigationBarItem(
+          icon: Image(
+            width: 24,
+            height: 24,
+            image: addImg,
+          ),
+          activeIcon: Image(
+            width: 24,
+            height: 24,
+            image: addSelectedImg,
+          ),
+          label: ""),
+      BottomNavigationBarItem(
+          icon: Image(
+            width: 24,
+            height: 24,
+            image: srcImg,
+          ),
+          activeIcon: Image(
+            width: 24,
+            height: 24,
+            image: srcSelectedImg,
+          ),
+          label: ""),
+      BottomNavigationBarItem(
+          icon: Image(
+            width: 24,
+            height: 24,
+            image: moreImg,
+          ),
+          activeIcon: Image(
+            width: 24,
+            height: 24,
+            image: moreSelectedImg,
+          ),
+          label: ""),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(collectImg, context);
+    precacheImage(collectSelectedImg, context);
+    precacheImage(labelImg, context);
+    precacheImage(labelSelectedImg, context);
+    precacheImage(srcImg, context);
+    precacheImage(srcSelectedImg, context);
+    precacheImage(moreImg, context);
+    precacheImage(moreSelectedImg, context);
+    precacheImage(addImg, context);
+    precacheImage(addSelectedImg, context);
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: bottomItems,
         backgroundColor: Colors.white,
         elevation: 5.0,
-        iconSize: 30,
+        // iconSize: 30,
         currentIndex: currentIndex,
         fixedColor: Colors.pink,
         showSelectedLabels: false,

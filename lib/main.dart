@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memos/auth/login_page.dart';
+import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
 import 'package:memos/constants/constant.dart';
 import 'package:memos/router/routers.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           splashFactory: NoSplashFactory()),
-      home: const LeadPage(),
+      home: const MainPage(),
       initialRoute: "/",
       onGenerateRoute: onGenerateRoute,
     );

@@ -67,6 +67,16 @@ flutter:
     - images/img_start_create.png
     - images/ic_start_idea.png
     - images/ic_start_lead.png
+    - images/ic_src.png
+    - images/ic_src_selected.png
+    - images/ic_collect_selected.png
+    - images/ic_collect.png
+    - images/ic_label_selected.png
+    - images/ic_label.png
+    - images/ic_more_selected.png
+    - images/ic_more.png
+    - images/ic_add.png
+    - images/ic_add_selected.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
