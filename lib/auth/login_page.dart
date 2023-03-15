@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:memos/auth/main_page.dart';
 import '../view/logIntype_selected_button.dart';
 import '../view/button.dart';
 
@@ -182,6 +183,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                     margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                     child: Button(
                       onClickListener: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                              return const MainPage();
+                            }));
                       },
                       title: loginTypeTip,
                       icon: loginTypeIcon,

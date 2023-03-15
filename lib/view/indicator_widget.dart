@@ -18,7 +18,6 @@ class IndicatorWidget extends AnimatedWidget {
   static const double _IndicatorSpacing = 20.0;
 
   Widget _createIndicator(int index) {
-    print('mmmmmmmmmmmmmmmm');
     double selectedness = Curves.easeOut.transform(max(0.0,
         1.0 - ((controller.page ?? controller.initialPage) - index).abs()));
     double zoom = 1.0 + (_MaxZoom - 1.0) * selectedness;
