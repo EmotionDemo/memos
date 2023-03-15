@@ -15,21 +15,18 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = -1;
   final List<BottomNavigationBarItem> bottomItems = const [
     BottomNavigationBarItem(
-        backgroundColor: Colors.black54,
         icon: Icon(
           Icons.collections,
         ),
         label: ""),
     BottomNavigationBarItem(
-        backgroundColor: Colors.black54,
         icon: Icon(
           Icons.tag_rounded,
         ),
         label: ""),
     BottomNavigationBarItem(
-        backgroundColor: Colors.black54, icon: Icon(Icons.photo), label: ""),
+        icon: Icon(Icons.photo), label: ""),
     BottomNavigationBarItem(
-        backgroundColor: Colors.black54,
         icon: Icon(Icons.more_horiz),
         label: ""),
   ];
@@ -52,7 +49,13 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: bottomItems,
+        backgroundColor: Colors.white,
+        elevation: 5.0,
+        iconSize: 30,
         currentIndex: currentIndex,
+        fixedColor: Colors.pink,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           _changePage(index);
