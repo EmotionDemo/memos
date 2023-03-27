@@ -35,7 +35,7 @@ class SearchView extends StatelessWidget {
         ),
         suffixIcon: IconButton(
             icon: const Icon(Icons.arrow_forward_sharp, color: Colors.black87),
-            onPressed: () {}),
+            onPressed: onSearchInputComplete),
         border: customBorder,
         enabledBorder: customBorder,
         focusedBorder: customBorder,

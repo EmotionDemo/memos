@@ -2,6 +2,8 @@
 
 a flutter memos for client in mobile platform
 
+See https://github.com/usememos/memos official project home page
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
