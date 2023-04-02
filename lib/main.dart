@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memos/auth/login_page.dart';
 import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
-import 'package:memos/constants/constant.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:memos/router/routers.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -26,6 +26,8 @@ class MyApp extends StatelessWidget {
     /* final size = MediaQuery.of(context).size;
     Global.screenHeight = size.height;
     Global.screenWidth = size.width;*/
+    ScreenUtil.init(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'memos',

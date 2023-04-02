@@ -47,48 +47,14 @@ class _NoteCardState extends State<NoteCard> {
                   widget.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.black, fontSize: 22),
+                  style: const TextStyle(color: Colors.black, fontSize: 22),
                 ),
               ),
               Expanded(
-                child: Markdown(data: widget.data),
-              ),
-
-              // Container(
-              //   margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
-              //   child: Container(
-              //     alignment: Alignment.centerLeft,
-              //     child: Text.rich(
-              //       TextSpan(
-              //         children: [
-              //           WidgetSpan(
-              //               child: Text(
-              //                   '习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，习近平，')),
-              //           WidgetSpan(
-              //               child: SingleChildScrollView(
-              //             child: Column(
-              //               children: [
-              //                 Image.network(
-              //                   'https://bkimg.cdn.bcebos.com/pic/5882b2b7d0a20cf431ad7f26d25f5c36acaf2fdd3389',
-              //                   width: 200,
-              //                   height: 200,
-              //                   fit: BoxFit.scaleDown,
-              //                 ),
-              //               ],
-              //             )
-              //           ))
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              /* Expanded(
-                  child: Container(
-                child: QuillEditor.basic(
-                  controller: _controller,
-                  readOnly: false,
-                ),
-              )),*/
+                child: Markdown(
+                    data: widget.data,
+                    physics: const NeverScrollableScrollPhysics()),
+              )
             ],
           )),
     );

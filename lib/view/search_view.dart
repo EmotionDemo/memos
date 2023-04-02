@@ -28,13 +28,13 @@ class SearchView extends StatelessWidget {
         contentPadding:
             const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.black45),
+        hintStyle: const TextStyle(color: Colors.black38),
         prefixIcon: const Icon(
           Icons.search,
-          color: Colors.black87,
+          color: Colors.black45,
         ),
         suffixIcon: IconButton(
-            icon: const Icon(Icons.arrow_forward_sharp, color: Colors.black87),
+            icon: const Icon(Icons.arrow_forward_sharp, color: Colors.black45),
             onPressed: onSearchInputComplete),
         border: customBorder,
         enabledBorder: customBorder,
