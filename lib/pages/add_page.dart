@@ -16,39 +16,39 @@ class _AddPageState extends State<AddPage> {
 
   void _initNotes() {
     notes.add(NoteCard(
-        title: '1111《彬彬来了2021》',
+        title: '快来加入快乐1+1',
         data:
             '欢迎本期特约来彬2 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了2021》',
+        title: '快来加入快乐1+2',
         data:
             '欢迎本期特约来彬3 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了2021》',
+        title: '快来加入快乐1+3',
         data:
             '欢迎本期特约来彬5 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了2021》',
+        title: '快来加入Tom and jerry ',
         data:
             '欢迎本期特约来彬2 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了2021》',
+        title: '快来加入Tom and jerry ',
         data:
             '欢迎本期特约来彬3 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了2021》',
+        title: '烦恼统统忘掉',
         data:
             '欢迎本期特约来彬5 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了2021》',
+        title: '《我要喝糁汤》',
         data:
             '欢迎本期特约来彬2 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了2021》',
+        title: '《我要喝糁汤》',
         data:
             '欢迎本期特约来彬3 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
     notes.add(NoteCard(
-        title: '《彬彬来了XXXX》',
+        title: '《我要喝糁汤》',
         data:
             '欢迎本期特约来彬5 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
   }
@@ -110,20 +110,19 @@ class _AddPageState extends State<AddPage> {
               hintText: "快捷搜索",
             ),
           ),
+          const SizedBox(height: 10,),
           Expanded(
-              child: Container(
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              // itemExtent: 200,
-              itemCount: notes.length,
-              padding:
-                  const EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
-              itemBuilder: (BuildContext context, int index) {
-                return notes.toList()[index];
-              },
-            ),
-          )),
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                // itemExtent: 200,
+                itemCount: notes.length,
+                padding:
+                    const EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
+                itemBuilder: (BuildContext context, int index) {
+                  return notes.toList()[index];
+                },
+              )),
         ],
       ),
     );
