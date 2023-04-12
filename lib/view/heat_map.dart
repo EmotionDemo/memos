@@ -14,7 +14,7 @@ class _CusHeatMapState extends State<CusHeatMap> {
   Widget build(BuildContext context) {
     return HeatMap(
         showColorTip: false,
-        size: 16,
+        size: 18,
         datasets: widget.datasets,
         startDate: DateTime.now().subtract(const Duration(days: 30)),
         endDate: DateTime.now().add(const Duration(days: 60)),
