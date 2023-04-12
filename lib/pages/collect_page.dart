@@ -11,7 +11,7 @@ class _CollectPageState extends State<CollectPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('收藏',style: TextStyle(color: Colors.black,fontSize: 22),),
+      child: Text('归档',style: TextStyle(color: Colors.black,fontSize: 22),),
     );
   }
 }
