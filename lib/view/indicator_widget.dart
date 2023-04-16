@@ -14,7 +14,7 @@ class IndicatorWidget extends AnimatedWidget {
   final int itemCount;
   final Color color;
   static const double _IndicatorSize = 8.0;
-  static const double _MaxZoom = 2.0;
+  static const double _MaxZoom = 1.5;
   static const double _IndicatorSpacing = 20.0;
 
   Widget _createIndicator(int index) {

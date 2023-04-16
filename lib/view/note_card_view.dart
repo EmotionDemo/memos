@@ -14,23 +14,20 @@ class NoteCard extends StatefulWidget {
 
 class _NoteCardState extends State<NoteCard> {
   final ScrollController controller = ScrollController();
-  String data = """
-  我是彬彬 我爱吃菠萝
-  
-  '![](http://43.138.80.236:5230/o/r/9/image.png)'
-  
-  """;
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      constraints: BoxConstraints(
+        maxHeight: 180,minHeight: 100
+      ),
       alignment: Alignment.topLeft,
       child: Card(
           clipBehavior: Clip.antiAlias,
           color: Colors.white,
           shadowColor: Colors.grey,
-          elevation: 1,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             // side: BorderSide(
@@ -60,22 +57,29 @@ class _NoteCardState extends State<NoteCard> {
                   ),
                   Flexible(
                       flex: 1,
-                      child: Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.all(5),
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black26),
-                              borderRadius: BorderRadius.circular(5.0)),
-                          child: const Text(
-                            'PROTECTED',
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black26),
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              child: const Text(
+                                'NORMAL',
+                                style: TextStyle(color: Colors.grey, fontSize: 12),
+                              ))
+                        ],
+                      )),
                 ],
               ),
               Expanded(
                 child: Markdown(
                     data: widget.data,
+                    shrinkWrap: true,
+
                     physics: const NeverScrollableScrollPhysics()),
               ),
               Container(
@@ -103,7 +107,7 @@ class _NoteCardState extends State<NoteCard> {
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black26),
+                                    border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: const Icon(
                                   Icons.copy,
@@ -117,7 +121,7 @@ class _NoteCardState extends State<NoteCard> {
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black26),
+                                    border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child:const Icon(
                                   Icons.edit_note,
@@ -131,7 +135,7 @@ class _NoteCardState extends State<NoteCard> {
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black26),
+                                    border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child:const Icon(
                                   Icons.share,
@@ -145,7 +149,7 @@ class _NoteCardState extends State<NoteCard> {
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black26),
+                                    border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child:const Icon(
                                   Icons.save,

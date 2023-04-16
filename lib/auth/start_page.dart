@@ -147,7 +147,7 @@ class _LeadPageState extends State<LeadPage> {
                 },
               )),
               IndicatorWidget(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.green.withOpacity(0.8),
                 controller: pageController,
                 itemCount: maxSize,
               )

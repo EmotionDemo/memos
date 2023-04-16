@@ -14,7 +14,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int currentIndex = -1;
+  int _currentIndex = -1;
 
   late AssetImage collectImg;
   late AssetImage collectSelectedImg;
@@ -26,11 +26,13 @@ class _MainPageState extends State<MainPage> {
   late AssetImage moreSelectedImg;
   late AssetImage addImg;
   late AssetImage addSelectedImg;
+  var _pageController = PageController(initialPage: 2, keepPage: true);
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _pageController.dispose();
     imageCache.clear();
   }
 
@@ -40,14 +42,14 @@ class _MainPageState extends State<MainPage> {
     TagPage(),
     AddPage(),
     ResourcePage(),
-    MorePage(),
+    MorePage()
   ];
 
   @override
   void initState() {
     super.initState();
     //默认初始化显示的页数
-    currentIndex = 2;
+    _currentIndex = 2;
     collectImg = const AssetImage('images/ic_collect.png');
     collectSelectedImg = const AssetImage('images/ic_collect_selected.png');
     labelImg = const AssetImage('images/ic_label.png');
@@ -141,31 +143,35 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         elevation: 5.0,
         // iconSize: 30,
-        currentIndex: currentIndex,
+        currentIndex: _currentIndex,
         fixedColor: Colors.pink,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          _changePage(index);
+          _onTap(index);
         },
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).padding.top,
-          ),
-          pages[currentIndex],
-        ],
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        onPageChanged: _changePage,
+        pageSnapping: false,
+        scrollDirection: Axis.horizontal,
+        children: pages,
       ),
     );
   }
 
   void _changePage(int index) {
-    if (index != currentIndex) {
+    if (index != _currentIndex) {
       setState(() {
-        currentIndex = index;
+        _currentIndex = index;
       });
     }
+  }
+
+  void _onTap(int index) {
+    _pageController.jumpToPage(index);
   }
 }
