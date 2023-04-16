@@ -35,8 +35,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_displaymode: ^0.5.0
+  fluttertoast: ^8.2.1
+#  flutter_quill: ^6.0.1
 #  flutter_quill: ^7.0.1
 #  fleather: ^1.6.0
+#  zefyrka: ^1.4.0
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +48,8 @@ dev_dependencies:
   flutter_markdown: ^0.6.14
   flutter_screenutil: ^5.7.0
   flutter_heatmap_calendar: ^1.0.5
+
+#  flutter_quill: ^6.4.2
 #  zefyr: ^1.0.0-dev.1.0
 #  zefyr: ^1.0.0-dev.2.0
 # For information on the generic Dart part of this file, see the
@@ -83,6 +88,7 @@ flutter:
     - images/ic_call_back.png
     - images/ic_contract_us.png
     - images/ic_update.png
+    - images/ic_about_us.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

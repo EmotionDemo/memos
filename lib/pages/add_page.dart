@@ -18,15 +18,9 @@ class _AddPageState extends State<AddPage> {
     notes.add(NoteCard(
         title: '快来加入快乐1+1',
         data:
-            '欢迎本期特约来彬2 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
-    notes.add(NoteCard(
-        title: '快来加入快乐1+2',
-        data:
-            '欢迎本期特约来彬3 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
-    notes.add(NoteCard(
-        title: '快来加入快乐1+3',
-        data:
-            '欢迎本期特约来彬5 ![](https://c-ssl.duitang.com/uploads/blog/202104/12/20210412130955_c2d4c.jpg)'));
+            '欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2 !'));
+    notes.add(NoteCard(title: '快来加入快乐1+2', data: '欢迎本期特约来彬3 !'));
+    notes.add(NoteCard(title: '快来加入快乐1+3', data: '欢迎本期特约来彬5 !'));
     notes.add(NoteCard(
         title: '快来加入Tom and jerry ',
         data:
@@ -66,7 +60,9 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
-    return Expanded(
+    return Scaffold(
+        body: Container(
+      color: Colors.grey.withOpacity(0.1),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         // mainAxisSize: MainAxisSize.min,
@@ -110,21 +106,23 @@ class _AddPageState extends State<AddPage> {
               hintText: "快捷搜索",
             ),
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
               child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                // itemExtent: 200,
-                itemCount: notes.length,
-                padding:
-                    const EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
-                itemBuilder: (BuildContext context, int index) {
-                  return notes.toList()[index];
-                },
-              )),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            // itemExtent: 200,
+            itemCount: notes.length,
+            padding:
+                const EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
+            itemBuilder: (BuildContext context, int index) {
+              return notes.toList()[index];
+            },
+          )),
         ],
       ),
-    );
+    ));
   }
 }
