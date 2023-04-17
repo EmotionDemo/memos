@@ -21,7 +21,7 @@ class _TagPageState extends State<TagPage> {
     list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
     list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
     list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
- list.add(FlagItem(tagText: '#flutter'));
+    list.add(FlagItem(tagText: '#flutter'));
     list.add(FlagItem(tagText: '#memos'));
     list.add(FlagItem(tagText: '#java'));
     list.add(FlagItem(tagText: '#协程'));
@@ -47,7 +47,7 @@ class _TagPageState extends State<TagPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: Text(
                       'Flags',
                       style: TextStyle(color: Colors.grey, fontSize: 22),
@@ -72,12 +72,12 @@ class _TagPageState extends State<TagPage> {
                 margin: const EdgeInsets.only(left: 10, right: 10),
                 child: SizedBox(
                   width: double.infinity,
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      spacing: 8.0, // gap between adjacent chips
-                      runSpacing: 4.0, // gap between lines
-                      children: flags,
-                    ),
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 8.0, // gap between adjacent chips
+                    runSpacing: 4.0, // gap between lines
+                    children: flags,
+                  ),
                 ),
               ),
             ],

@@ -23,19 +23,15 @@ class _NoteCardState extends State<DeleteCard> {
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(maxHeight: 180, minHeight: 100),
-      color: Colors.blue,
       alignment: Alignment.topLeft,
       child: Card(
           clipBehavior: Clip.antiAlias,
           color: Colors.white,
           shadowColor: Colors.grey,
-          elevation: 0,
+          elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            // side: BorderSide(
-            //   color: Colors.white,
-            //   width: 1,
-            // ),
+
           ),
           margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           child: Column(

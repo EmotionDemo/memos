@@ -61,68 +61,69 @@ class _AddPageState extends State<AddPage> {
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
     return Scaffold(
-        body: Container(
-      color: Colors.grey.withOpacity(0.1),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        // mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(left: 20, top: 20),
-                child: const Text(
-                  'MEMOS',
-                  style: TextStyle(color: Colors.black, fontSize: 22),
-                ),
-              ),
-              InkWell(
-                child: Container(
-                  alignment: Alignment.topRight,
-                  margin: const EdgeInsets.only(right: 20, top: 20),
-                  child: Image.asset(
-                    'images/ic_round_add.png',
-                    width: 24,
-                    height: 24,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+            title:  Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.only(left: 5, top: 5),
+                  child: const Text(
+                    'MEMOS',
+                    style: TextStyle(color: Colors.black54, fontSize: 22),
                   ),
                 ),
-                onTap: () {
-                  print('bvbvbbvvb');
-                },
-              ),
-            ],
-          ),
-          Container(
-            height: 43,
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
-            child: SearchView(
-              onSearchInputComplete: () {
-                FocusScope.of(context).unfocus();
-                print('aaa');
-              },
-              controller: controller,
-              hintText: "快捷搜索",
+                InkWell(
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    margin: const EdgeInsets.only(right: 5, top: 5),
+                    child: Image.asset(
+                      'images/ic_round_add.png',
+                      width: 24,
+                      height: 24,
+                    ),
+                  ),
+                  onTap: () {
+                    print('bvbvbbvvb');
+                  },
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Expanded(
-              child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            // itemExtent: 200,
-            itemCount: notes.length,
-            padding:
-                const EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
-            itemBuilder: (BuildContext context, int index) {
-              return notes.toList()[index];
-            },
-          )),
-        ],
-      ),
-    ));
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 43,
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              child: SearchView(
+                onSearchInputComplete: () {
+                  FocusScope.of(context).unfocus();
+                  print('aaa');
+                },
+                controller: controller,
+                hintText: "快捷搜索",
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Expanded(
+                child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              // itemExtent: 200,
+              itemCount: notes.length,
+              padding:
+                  const EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
+              itemBuilder: (BuildContext context, int index) {
+                return notes.toList()[index];
+              },
+            )),
+          ],
+        ));
   }
 }
