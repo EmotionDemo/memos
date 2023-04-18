@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:memos/view/note_card_view.dart';
 import 'package:memos/view/search_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../view/MyAppbar.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({Key? key}) : super(key: key);
@@ -59,11 +62,11 @@ class _AddPageState extends State<AddPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.withOpacity(0.1),
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          backgroundColor: Colors.transparent,
           elevation: 0,
             title:  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +76,7 @@ class _AddPageState extends State<AddPage> {
                   margin: const EdgeInsets.only(left: 5, top: 5),
                   child: const Text(
                     'MEMOS',
-                    style: TextStyle(color: Colors.black54, fontSize: 22),
+                    style: TextStyle(color: Colors.black, fontSize: 22),
                   ),
                 ),
                 InkWell(

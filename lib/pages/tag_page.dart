@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:memos/view/flag_item.dart';
 
 class TagPage extends StatefulWidget {
@@ -31,7 +32,26 @@ class _TagPageState extends State<TagPage> {
     list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
     list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
     list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
-
+    list.add(FlagItem(tagText: '#flutter'));
+    list.add(FlagItem(tagText: '#memos'));
+    list.add(FlagItem(tagText: '#java'));
+    list.add(FlagItem(tagText: '#协程'));
+    list.add(FlagItem(tagText: '#kotlin'));
+    list.add(FlagItem(tagText: '#踏青'));
+    list.add(FlagItem(tagText: '#这颗种子 在我心里快要发芽啦'));
+    list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
+    list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
+    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
+    list.add(FlagItem(tagText: '#flutter'));
+    list.add(FlagItem(tagText: '#memos'));
+    list.add(FlagItem(tagText: '#java'));
+    list.add(FlagItem(tagText: '#协程'));
+    list.add(FlagItem(tagText: '#kotlin'));
+    list.add(FlagItem(tagText: '#踏青'));
+    list.add(FlagItem(tagText: '#这颗种子 在我心里快要发芽啦'));
+    list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
+    list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
+    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
     return list;
   }
 
@@ -39,35 +59,40 @@ class _TagPageState extends State<TagPage> {
   Widget build(BuildContext context) {
     List<FlagItem> flags = getFlags().toList();
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.07),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          InkWell(
+            child: Container(
+              margin: const EdgeInsets.only(top: 10, right: 15, bottom: 10),
+              child: const Icon(
+                Icons.add_circle_rounded,
+                size: 25,
+                color: Colors.blue,
+              ),
+            ),
+          )
+        ],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: const Text(
+                'Flags',
+                style: TextStyle(color: Colors.black, fontSize: 22),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(10),
-                    child: Text(
-                      'Flags',
-                      style: TextStyle(color: Colors.grey, fontSize: 22),
-                    ),
-                  ),
-                  InkWell(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10, right: 15, bottom: 10),
-                      child: Icon(
-                        Icons.search,
-                        size: 22,
-                      ),
-                    ),
-                    onTap: () {},
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
               Container(
                 margin: const EdgeInsets.only(left: 10, right: 10),
                 child: SizedBox(

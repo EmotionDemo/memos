@@ -28,10 +28,9 @@ class _NoteCardState extends State<DeleteCard> {
           clipBehavior: Clip.antiAlias,
           color: Colors.white,
           shadowColor: Colors.grey,
-          elevation: 2,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-
           ),
           margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           child: Column(

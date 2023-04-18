@@ -90,6 +90,7 @@ flutter:
     - images/ic_contract_us.png
     - images/ic_update.png
     - images/ic_about_us.png
+    - images/ic_not_data.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

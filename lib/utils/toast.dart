@@ -6,3 +6,4 @@ class ToastUtil{
     Fluttertoast.showToast(msg: message,gravity: ToastGravity.CENTER,toastLength:Toast.LENGTH_SHORT);
   }
 }
+

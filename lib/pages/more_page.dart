@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:memos/auth/start_page.dart';
 
@@ -17,7 +18,8 @@ class _MorePageState extends State<MorePage> {
     return Scaffold(
         backgroundColor: Colors.grey.withOpacity(0.07),
         appBar: AppBar(
-          backgroundColor: Colors.grey.withOpacity(0.07),
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          backgroundColor: Colors.transparent,
           toolbarHeight: 0.0,
           elevation: 0,
         ),
@@ -473,9 +475,9 @@ class _MorePageState extends State<MorePage> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushReplacement(context,
+                    Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return const LeadPage();
+                      return  LeadPage(showStart: false);
                     }));
                   },
                 ),
