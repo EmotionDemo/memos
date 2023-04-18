@@ -1,10 +1,15 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:memos/auth/login_page.dart';
+import 'package:memos/pages/more_page.dart';
 import 'package:memos/view/Button.dart';
 import 'package:memos/view/indicator_widget.dart';
 
 class LeadPage extends StatefulWidget {
-  const LeadPage({Key? key}) : super(key: key);
+  LeadPage({Key? key, required this.showStart}) : super(key: key);
+  bool showStart;
 
   @override
   State<LeadPage> createState() => _LeadPageState();
@@ -15,6 +20,7 @@ class _LeadPageState extends State<LeadPage> {
   final pageController = PageController();
   var indicatorIndex = 0;
   final List<Widget> leadPages = [];
+  late Widget startButton;
 
   List<Widget> _getLeadPage() {
     leadPages.add(Container(
@@ -92,23 +98,7 @@ class _LeadPageState extends State<LeadPage> {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
-            width: 100,
-            height: 40,
-            child: Button(
-              onClickListener: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (BuildContext context) {
-                  return const LoginWidget();
-                }));
-              },
-              title: '开始',
-              icon: const Icon(
-                Icons.arrow_forward_sharp,
-                color: Colors.white,
-              ),
-            ),
-          )
+          startButton
         ],
       ),
     ));
@@ -120,8 +110,42 @@ class _LeadPageState extends State<LeadPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    if (widget.showStart) {
+      startButton = SizedBox(
+        width: 100,
+        height: 40,
+        child: Button(
+          onClickListener: () {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return const LoginWidget();
+            }));
+          },
+          title: '开始',
+          icon: const Icon(
+            Icons.arrow_forward_sharp,
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else {
+      startButton = Container(
+        width: 100,
+        height: 40,
+        child: Button(
+          onClickListener: () {
+            //退出当前界面
+            Navigator.of(context).pop();
+          },
+          title: '完成',
+          icon: const Icon(
+            Icons.arrow_forward_sharp,
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
     _getLeadPage();
     maxSize = leadPages.length;
   }
@@ -129,6 +153,12 @@ class _LeadPageState extends State<LeadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0,
+      ),
       body: Stack(
         alignment: Alignment.center,
         children: [

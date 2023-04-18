@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
   late AssetImage moreSelectedImg;
   late AssetImage addImg;
   late AssetImage addSelectedImg;
-  var _pageController = PageController(initialPage: 3, keepPage: true);
+  final _pageController = PageController(initialPage: 2, keepPage: true);
 
   @override
   void dispose() {
@@ -49,7 +49,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     //默认初始化显示的页数
-    _currentIndex = 3;
+    _currentIndex = 2;
     collectImg = const AssetImage('images/ic_collect.png');
     collectSelectedImg = const AssetImage('images/ic_collect_selected.png');
     labelImg = const AssetImage('images/ic_label.png');

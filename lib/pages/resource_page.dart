@@ -16,7 +16,7 @@ class _ResourcePageState extends State<ResourcePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-
+        child: Image.network("http://43.138.80.236:5230/o/r/17/8b754ae9-e9ac-4640-9066-6133993249a8.jpg"),
       ),
     );
   }

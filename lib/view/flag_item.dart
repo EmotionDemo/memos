@@ -15,7 +15,7 @@ class _FlagItemState extends State<FlagItem> {
     return GestureDetector(
       key: GlobalKey(),
       child: Chip(
-        backgroundColor: Colors.grey.withOpacity(0.2),
+        backgroundColor: Colors.grey.withOpacity(0.3),
         label: Text(
           widget.tagText,
           style: TextStyle(

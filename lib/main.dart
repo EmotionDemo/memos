@@ -12,8 +12,6 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 void main() {
   runApp(const MyApp());
-
-
 }
 
 class MyApp extends StatefulWidget {
@@ -24,22 +22,25 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (Platform.isAndroid) {
       SystemUiOverlayStyle style = const SystemUiOverlayStyle(
-          statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
+      );
       SystemChrome.setSystemUIOverlayStyle(style);
       //高刷
       try {
         FlutterDisplayMode.setHighRefreshRate();
-      } catch (e) {}
-    }
+      } catch (e) {
 
+      }
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         );
       },
       theme: ThemeData(
-          primaryColor: Colors.white,
+          primaryColor: Colors.black12.withOpacity(0.05),
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           splashFactory: NoSplashFactory()),
@@ -63,6 +64,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-
