@@ -47,7 +47,7 @@ class _NoteCardState extends State<NoteCard>
           clipBehavior: Clip.antiAlias,
           color: Colors.white,
           shadowColor: Colors.grey,
-          elevation: 2,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
