@@ -25,7 +25,7 @@ class _CollectPageState extends State<CollectPage> {
           height: ScreenUtil.hc_ScreenWidth() / 3 * 2,
         ),
         const Text(
-          '空空如野~',
+          '什么都没有~',
           style: TextStyle(color: Colors.black45, fontSize: 18),
         )
       ],
@@ -41,7 +41,17 @@ class _CollectPageState extends State<CollectPage> {
     list.clear();
     list.add(DeleteCard(
       createTime: "2023-11-23 03:11:32",
-      data: "1111",
+      data: "你好呀，又是充满希望的一天~",
+      user: "@lifenghua",
+    ));
+    list.add(DeleteCard(
+      createTime: "2023-11-23 03:11:32",
+      data: "小猪小猪胖嘟嘟，遇到困难呼噜噜",
+      user: "@lifenghua",
+    ));
+    list.add(DeleteCard(
+      createTime: "2023-11-23 03:11:32",
+      data: "ok Go！",
       user: "@lifenghua",
     ));
 
@@ -56,10 +66,6 @@ class _CollectPageState extends State<CollectPage> {
     super.initState();
     list = _queryHoldUpBoxData();
     listItemCount = list.length;
-  }
-
-  @override
-  Widget build(BuildContext context) {
     dataPage = Column(
       children: [
         Container(
@@ -118,6 +124,10 @@ class _CollectPageState extends State<CollectPage> {
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     setState(() {
       if (listItemCount == 0) {
         showPage = defaultPage;
