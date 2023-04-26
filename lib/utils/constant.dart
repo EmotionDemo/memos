@@ -1,0 +1,4 @@
+
+
+const String isLoginFlag = "isLogin";
+

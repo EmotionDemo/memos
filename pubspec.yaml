@@ -37,6 +37,13 @@ dependencies:
   flutter_displaymode: ^0.5.0
   fluttertoast: ^8.2.1
   uuid: ^1.0.3
+  share_plus: ^5.0.0
+  shared_preferences: ^2.1.0
+  #网络请求
+  dio: ^4.0.0
+  dio_cookie_manager: ^2.0.0
+  http: ^0.13.5
+  json_holder_impl: ^1.0.0
 #  flutter_quill: ^6.0.1
 #  flutter_quill: ^7.0.1
 #  fleather: ^1.6.0
@@ -94,6 +101,14 @@ flutter:
     - images/ic_desc_pho.png
     - images/ic_desc_video.png
     - images/ic_desc_music.png
+    - images/ic_lightning.png
+    - images/ic_authentication.png
+    - images/ic_cache.png
+    - images/ic_theme.png
+    - images/ic_font_size.png
+    - images/ic_share.png
+    - images/ic_help.png
+    - images/ic_lang.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

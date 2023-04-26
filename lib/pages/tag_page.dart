@@ -59,7 +59,6 @@ class _TagPageState extends State<TagPage> {
   Widget build(BuildContext context) {
     List<FlagItem> flags = getFlags().toList();
     return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0.07),
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
@@ -82,7 +81,7 @@ class _TagPageState extends State<TagPage> {
             Container(
               margin: const EdgeInsets.all(10),
               child: const Text(
-                'Flags',
+                'Tags',
                 style: TextStyle(color: Colors.black, fontSize: 22),
               ),
             ),

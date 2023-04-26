@@ -66,6 +66,11 @@ class _CollectPageState extends State<CollectPage> {
     super.initState();
     list = _queryHoldUpBoxData();
     listItemCount = list.length;
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
     dataPage = Column(
       children: [
         Container(
@@ -124,10 +129,6 @@ class _CollectPageState extends State<CollectPage> {
         ),
       ],
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
     setState(() {
       if (listItemCount == 0) {
         showPage = defaultPage;
@@ -135,9 +136,9 @@ class _CollectPageState extends State<CollectPage> {
         showPage = dataPage;
       }
     });
-
     return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0.07),
+
+      // backgroundColor: Colors.grey.withOpacity(0.07),
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
@@ -147,16 +148,16 @@ class _CollectPageState extends State<CollectPage> {
             Container(
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
-              padding: EdgeInsets.only(top: 20, bottom: 20),
-              child: Text(
+              padding: const EdgeInsets.only(top: 20, bottom: 20),
+              child: const Text(
                 '暂存箱',
                 style: TextStyle(color: Colors.black, fontSize: 22),
               ),
             ),
             InkWell(
               child: Container(
-                margin: EdgeInsets.only(top: 5, right: 5, bottom: 5),
-                child: Icon(
+                margin: const EdgeInsets.only(top: 5, right: 5, bottom: 5),
+                child: const Icon(
                   Icons.search,
                   size: 25,
                   color: Colors.black,

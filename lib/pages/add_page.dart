@@ -21,8 +21,8 @@ class _AddPageState extends State<AddPage> {
     notes.add(NoteCard(
         title: '快来加入快乐1+1',
         data:
-            '欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2欢迎本期特约来彬2 !'));
-    notes.add(NoteCard(title: '快来加入快乐1+2', data: '欢迎本期特约来彬3 !'));
+            '123131 !'));
+    notes.add(NoteCard(title: '快来加入快乐1+2', data: '安达市多 !'));
     notes.add(NoteCard(title: '快来加入快乐1+3', data: '欢迎本期特约来彬5 !'));
     notes.add(NoteCard(
         title: '快来加入Tom and jerry ',
@@ -63,7 +63,6 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.withOpacity(0.1),
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.transparent,

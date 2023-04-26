@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -119,7 +118,7 @@ class _LeadPageState extends State<LeadPage> {
           onClickListener: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (BuildContext context) {
-              return const LoginWidget();
+              return const LoginPage();
             }));
           },
           title: '开始',
@@ -153,6 +152,7 @@ class _LeadPageState extends State<LeadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
