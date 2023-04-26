@@ -6,12 +6,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:memos/router/routers.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:memos/utils/constant.dart';
+import 'package:memos/utils/SpUtils.dart';
 import 'package:memos/utils/no_splash_factory.dart';
 import 'package:memos/view/behavior_view.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Widget firstRoutePage = Container();
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SpUtil.getInstance().then((value) {
+    var isLogin = SpUtil.getString("loginToken");
+    if (isLogin != null && isLogin.isNotEmpty) {
+      print('firstRoute---->?/');
+      firstRoutePage = const MainPage();
+    } else {
+      firstRoutePage = const LoginPage();
+      print('firstRoute---->?/login');
+    }
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -22,6 +38,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var startPage = "";
+
   @override
   void initState() {
     super.initState();
@@ -35,9 +53,7 @@ class _MyAppState extends State<MyApp> {
       //高刷
       try {
         FlutterDisplayMode.setHighRefreshRate();
-      } catch (e) {
-
-      }
+      } catch (e) {}
     }
   }
 
@@ -54,12 +70,14 @@ class _MyAppState extends State<MyApp> {
         );
       },
       theme: ThemeData(
-          primaryColor: Colors.black12.withOpacity(0.05),
+          brightness: Brightness.light,
+          primaryColor: const Color.fromARGB(242, 197, 188, 188),
+          scaffoldBackgroundColor: const Color.fromARGB(189, 255, 255, 255),
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           splashFactory: NoSplashFactory()),
-      home: const MainPage(),
-      initialRoute: "/",
+      home: firstRoutePage,
+      // initialRoute: firstRoute,
       onGenerateRoute: onGenerateRoute,
     );
   }

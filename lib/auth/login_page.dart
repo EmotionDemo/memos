@@ -1,18 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:memos/auth/main_page.dart';
+import 'package:flutter/services.dart';
+import 'package:memos/utils/toast.dart';
+import '../beans/LoginBean.dart';
+import '../network/network.dart';
 import '../view/logIntype_selected_button.dart';
 import '../view/button.dart';
 
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginWidget> createState() => _LoginWidgetState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _LoginPageState extends State<LoginPage> {
   var showInputServerType = "请输入服务器地址";
   var showInputOpenApiType = "请输入OpenApi";
   var showInputType;
@@ -38,9 +41,9 @@ class _LoginWidgetState extends State<LoginWidget> {
   );
   var screenWidth;
   var screenHeight;
-  var serverAddressController;
-  var passwordController;
-  var usernameController;
+  late TextEditingController serverAddressController;
+  late TextEditingController passwordController;
+  late TextEditingController usernameController;
 
   @override
   void initState() {
@@ -59,9 +62,14 @@ class _LoginWidgetState extends State<LoginWidget> {
     final size = MediaQuery.of(context).size;
     screenWidth = size.width;
     screenHeight = size.height;
-
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 10,
+      ),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -183,10 +191,34 @@ class _LoginWidgetState extends State<LoginWidget> {
                     margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                     child: Button(
                       onClickListener: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (BuildContext context) {
-                              return const MainPage();
-                            }));
+                        var serverPath =
+                            serverAddressController.text.toString();
+                        var userName = usernameController.text.toString();
+                        var password = passwordController.text.toString();
+                        print("openapi--->${serverPath}");
+                        if (isShowPwdAndName) {
+                          if (serverPath.isEmpty ||
+                              userName.isEmpty ||
+                              password.isEmpty) {
+                            ToastUtil.showToast(message: "输入的登录信息不正确");
+                            return;
+                          }
+                          var instance = RequestManager.getInstance(serverPath);
+                          //登录
+                          Future<LoginBean> loginInfo = instance.loginService(serverPath, userName, password);
+                          loginInfo.then((value) {
+                            print("value--->$value");
+                            ToastUtil.showToast(message: "message-->${value}");
+                          }).catchError((exception){
+                            print("exception--->$exception");
+                            ToastUtil.showToast(message: "${exception.toString()}");
+                          });
+                        } else {
+                          if (serverPath.isEmpty) {
+                            ToastUtil.showToast(message: "输入的OpenId找不到");
+                            return;
+                          }
+                        }
                       },
                       title: loginTypeTip,
                       icon: loginTypeIcon,

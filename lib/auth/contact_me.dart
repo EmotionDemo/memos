@@ -35,6 +35,7 @@ class _ContactMeState extends State<ContactMe> {
     var screenHeight = size.height;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(

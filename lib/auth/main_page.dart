@@ -3,8 +3,11 @@ import 'package:memos/pages/collect_page.dart';
 import 'package:memos/pages/more_page.dart';
 import 'package:memos/pages/resource_page.dart';
 import 'package:memos/pages/tag_page.dart';
+import 'package:memos/utils/SpUtils.dart';
 
 import '../pages/add_page.dart';
+import '../utils/Constant.dart';
+import 'login_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -48,6 +51,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    print('flutter--------->main_init');
     //默认初始化显示的页数
     _currentIndex = 2;
     collectImg = const AssetImage('images/ic_collect.png');

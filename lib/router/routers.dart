@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
 import 'package:memos/pages/more_page.dart';
+import 'package:memos/pages/user_info.dart';
 
 Map routes = {
-  '/login': (context) => const LoginWidget(),
+  '/login': (context) => const LoginPage(),
   "/contact_me": (context) => const ContactMe(),
   "/lead_page": (context) =>   LeadPage(showStart: true,),
   "/main_page": (context) =>  const MainPage(),
   "/more_page": (context) =>  const MorePage(),
+  "/user_info": (context) =>  const UserInfoPage(),
 };
 
 
