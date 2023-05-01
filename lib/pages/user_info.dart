@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:memos/auth/login_page.dart';
+import 'package:memos/network/network.dart';
 import 'package:memos/utils/ScreenUtil.dart';
 import 'package:memos/utils/file_utils.dart';
 import 'package:memos/utils/toast.dart';
@@ -253,7 +255,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                         ],
                       ),
                       onTap: () {
-                        Share.share('hello，this is my app  https://example.com');
+                        Share.share(
+                            'hello，this is my app  https://example.com');
                       },
                     ),
                   ),
@@ -457,7 +460,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 child: Container(
                   width: double.maxFinite,
                   // margin: const EdgeInsets.all(10),
-                  padding: EdgeInsets.only(top: 10,bottom: 10),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
                   alignment: Alignment.center,
                   child: const Text(
                     '退出登录',
@@ -469,7 +472,15 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 ),
               ),
               onTap: () {
-                ToastUtil.showToast(message: "退出登录，释放相关内容");
+                Future<bool> logOutResult = RequestManager.getClient().logout();
+                logOutResult.then((value) {
+                  ToastUtil.showToast(message: "退出登录，释放相关内容");
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (builder) {
+                        return const LoginPage();
+                      }), (route) => route == null);
+                });
+                print('logout--->${logOutResult}');
               },
             ),
           ),

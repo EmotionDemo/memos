@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:memos/auth/main_page.dart';
+import 'package:memos/constants/constant.dart';
 import 'package:memos/utils/toast.dart';
 import '../beans/LoginBean.dart';
 import '../network/network.dart';
+import '../utils/SpUtils.dart';
 import '../view/logIntype_selected_button.dart';
 import '../view/button.dart';
 
@@ -205,20 +208,35 @@ class _LoginPageState extends State<LoginPage> {
                           }
                           var instance = RequestManager.getInstance(serverPath);
                           //登录
-                          Future<LoginBean> loginInfo = instance.loginService(serverPath, userName, password);
+                          Future<UserInfoBean> loginInfo =  instance.loginService(
+                              serverPath, userName, password);
                           loginInfo.then((value) {
-                            print("value--->$value");
-                            ToastUtil.showToast(message: "message-->${value}");
-                          }).catchError((exception){
-                            print("exception--->$exception");
-                            ToastUtil.showToast(message: "${exception.toString()}");
+                            logInSuccessAndtoMainPage(context);
+                            ToastUtil.showToast(message: "登陆成功");
+                            SpUtil.setString(Global.BASE_PATH, serverPath);
+                          }).catchError((exception) {
+                            print("1exception--->$exception");
+                            ToastUtil.showToast(
+                                message: "${exception.toString()}");
                           });
                         } else {
                           if (serverPath.isEmpty) {
                             ToastUtil.showToast(message: "输入的OpenId找不到");
                             return;
                           }
+                          var instance = RequestManager.getInstance(serverPath);
+                          //登录
+                          Future<UserInfoBean> loginInfo = instance.loginOpenIdService(serverPath);
+                          loginInfo.then((value) {
+                            logInSuccessAndtoMainPage(context);
+                            ToastUtil.showToast(message: "登陆成功");
+                          }).catchError((exception) {
+                            print("exception--->$exception");
+                            ToastUtil.showToast(
+                                message: "${exception.toString()}");
+                          });
                         }
+
                       },
                       title: loginTypeTip,
                       icon: loginTypeIcon,
@@ -312,5 +330,15 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  void logInSuccessAndtoMainPage(BuildContext context) {
+    var isLogin = SpUtil.getBool(Global.isLoginFlag);
+    if(isLogin!){
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (builder) {
+            return const MainPage();
+          }), (route) => route == null);
+    }
   }
 }

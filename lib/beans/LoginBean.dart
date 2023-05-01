@@ -1,29 +1,29 @@
 
 import 'package:json_holder_impl/json_holder_impl.dart';
 
-class LoginBean with JsonHolderImpl<LoginBean> {
+class UserInfoBean with JsonHolderImpl<UserInfoBean> {
   /// [key : value] => [data : null]
   DataBean get data => getValue("data");
   set data(DataBean value) => setValue("data", value);
 
-  LoginBean.fromJson([Map<String, dynamic>? json]) {
+  UserInfoBean.fromJson([Map<String, dynamic>? json]) {
     fromJson(json);
     DataBean.fromJson();
   }
 
   @override
-  JsonHolderImpl<LoginBean> provideCreator(Map<String, dynamic> json) {
-    return LoginBean.fromJson(json);
+  JsonHolderImpl<UserInfoBean> provideCreator(Map<String, dynamic> json) {
+    return UserInfoBean.fromJson(json);
   }
 
   @override
-  List<LoginBean> provideListCreator() {
-    return <LoginBean>[];
+  List<UserInfoBean> provideListCreator() {
+    return <UserInfoBean>[];
   }
 
   @override
-  List<List<LoginBean>> provideListListCreator() {
-    return <List<LoginBean>>[];
+  List<List<UserInfoBean>> provideListListCreator() {
+    return <List<UserInfoBean>>[];
   }
 
 }

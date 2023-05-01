@@ -44,6 +44,10 @@ dependencies:
   dio_cookie_manager: ^2.0.0
   http: ^0.13.5
   json_holder_impl: ^1.0.0
+  path_provider: ^2.0.11
+  cookie_jar: ^3.0.1
+  permission_handler: ^10.2.0
+
 #  flutter_quill: ^6.0.1
 #  flutter_quill: ^7.0.1
 #  fleather: ^1.6.0
