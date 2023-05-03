@@ -113,6 +113,7 @@ flutter:
     - images/ic_share.png
     - images/ic_help.png
     - images/ic_lang.png
+    - images/ic_net_error.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

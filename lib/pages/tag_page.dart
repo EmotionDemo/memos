@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:memos/view/flag_item.dart';
 
+import '../beans/TagsBean.dart';
+import '../network/network.dart';
+
 class TagPage extends StatefulWidget {
   const TagPage({Key? key}) : super(key: key);
 
@@ -10,9 +13,14 @@ class TagPage extends StatefulWidget {
 }
 
 class _TagPageState extends State<TagPage> {
-  List<FlagItem> getFlags() {
+
+   List<FlagItem> flags = [];
+  List<FlagItem> getFlags(List<String> data) {
     List<FlagItem> list = [];
-    list.add(FlagItem(tagText: '#flutter'));
+    for(var tag in data){
+      list.add(FlagItem(tagText: tag));
+    }
+    /*list.add(FlagItem(tagText: '#flutter'));
     list.add(FlagItem(tagText: '#memos'));
     list.add(FlagItem(tagText: '#java'));
     list.add(FlagItem(tagText: '#协程'));
@@ -51,13 +59,25 @@ class _TagPageState extends State<TagPage> {
     list.add(FlagItem(tagText: '#这颗种子 在我心里快要发芽啦'));
     list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
     list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
-    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
+    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));*/
     return list;
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future<TagsBean> allTags = RequestManager.getClient().queryAllTags();
+    allTags.then((value) {
+      setState(() {
+        flags = getFlags(value.data).toList();
+      });
+    }).catchError((error) {
+      print('获取所有tags失败，errorinfo---》${error}');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<FlagItem> flags = getFlags().toList();
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,

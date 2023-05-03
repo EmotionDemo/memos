@@ -6,6 +6,7 @@ import 'package:memos/auth/main_page.dart';
 import 'package:memos/constants/constant.dart';
 import 'package:memos/utils/toast.dart';
 import '../beans/LoginBean.dart';
+import '../beans/StatusBean.dart';
 import '../network/network.dart';
 import '../utils/SpUtils.dart';
 import '../view/logIntype_selected_button.dart';
@@ -208,12 +209,13 @@ class _LoginPageState extends State<LoginPage> {
                           }
                           var instance = RequestManager.getInstance(serverPath);
                           //登录
-                          Future<UserInfoBean> loginInfo =  instance.loginService(
-                              serverPath, userName, password);
+                          Future<UserInfoBean> loginInfo = instance
+                              .loginService(serverPath, userName, password);
                           loginInfo.then((value) {
+                            print('alue00000---->${value}');
                             logInSuccessAndtoMainPage(context);
                             ToastUtil.showToast(message: "登陆成功");
-                            SpUtil.setString(Global.BASE_PATH, serverPath);
+                            Global.saveUserInfo(serverPath, value);
                           }).catchError((exception) {
                             print("1exception--->$exception");
                             ToastUtil.showToast(
@@ -226,17 +228,18 @@ class _LoginPageState extends State<LoginPage> {
                           }
                           var instance = RequestManager.getInstance(serverPath);
                           //登录
-                          Future<UserInfoBean> loginInfo = instance.loginOpenIdService(serverPath);
+                          Future<StatusBean> loginInfo =
+                              instance.loginOpenIdService(serverPath);
                           loginInfo.then((value) {
                             logInSuccessAndtoMainPage(context);
                             ToastUtil.showToast(message: "登陆成功");
+                            Global.saveUserInfoByOpenApi(value);
                           }).catchError((exception) {
-                            print("exception--->$exception");
+                            print("exception-2-->$exception");
                             ToastUtil.showToast(
                                 message: "${exception.toString()}");
                           });
                         }
-
                       },
                       title: loginTypeTip,
                       icon: loginTypeIcon,
@@ -332,13 +335,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
+
   void logInSuccessAndtoMainPage(BuildContext context) {
     var isLogin = SpUtil.getBool(Global.isLoginFlag);
-    if(isLogin!){
+    if (isLogin!) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (builder) {
-            return const MainPage();
-          }), (route) => route == null);
+        return const MainPage();
+      }), (route) => route == null);
     }
   }
 }

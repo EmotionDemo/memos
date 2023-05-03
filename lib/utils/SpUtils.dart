@@ -43,4 +43,8 @@ class SpUtil {
   static Future<bool> removeString(String key) async {
     return _preferences.remove(key);
   }
+
+  static Future<bool> clearSp() async {
+    return await _preferences.clear();
+  }
 }

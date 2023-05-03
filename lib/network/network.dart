@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:memos/utils/my_cookie.dart';
 
 import '../beans/LoginBean.dart';
+import '../beans/StatusBean.dart';
+import '../beans/TagsBean.dart';
 import '../constants/constant.dart';
 import '../utils/SpUtils.dart';
 
@@ -20,6 +21,7 @@ const String resource = "/api/resource";
 const String me = "/api/user/me";
 const String loginOpenApi = "/api/memo?openId=";
 const String status = "/api/status";
+const String getTags = "/api/tag";
 
 class HttpConfig {
   // static const baseUrl = BASE_URL;
@@ -32,6 +34,7 @@ class RequestManager {
   static RequestManager? _instance;
   Dio? _dio;
   PersistCookieJar? _cookieJar;
+  bool isInitSecond = false;
 
   Dio get client => _dio!;
 
@@ -45,15 +48,7 @@ class RequestManager {
   static getClient() {
     String basePath = SpUtil.getString(Global.BASE_PATH)!;
     if (basePath.isNotEmpty) {
-      var startTime = DateTime.now().millisecondsSinceEpoch;
-      var endTime = DateTime.now().millisecondsSinceEpoch;
-      while (_instance == null) {
-        if ((endTime - startTime) > 1000 || _instance != null) {
-          break;
-        }
-        _instance ??= getInstance(basePath);
-        endTime = DateTime.now().millisecondsSinceEpoch;
-      }
+      _instance ??= getInstance(basePath);
     }
     return _instance;
   }
@@ -68,8 +63,12 @@ class RequestManager {
         baseUrl: url,
         connectTimeout: HttpConfig.CONNECT_TIMEOUT,
         receiveTimeout: HttpConfig.RECEIVE_TIMEOUT);
+    if(openId == null){
+
+    }
     if (openId != null) {
       baseOptions.queryParameters = {"openId": openId};
+      baseOptions.responseType = ResponseType.plain;
     }
     _cookieJar = await MyCookieJar.cookieJar;
     _dio = Dio(baseOptions);
@@ -83,7 +82,7 @@ class RequestManager {
     _instance = null;
   }
 
-  //账号密码登录
+  ///账号密码登录
   Future<UserInfoBean> loginService(
       String url, String username, String password) async {
     await _initDio(url);
@@ -99,6 +98,7 @@ class RequestManager {
       throw Exception("登录失败，请检查网络状况");
     }
     SpUtil.setBool(Global.isLoginFlag, true);
+    print('isOk1--->${response.data}');
     return UserInfoBean.fromJson(response.data);
   }
 
@@ -110,7 +110,7 @@ class RequestManager {
   }
 
   //通过openid登录
-  Future<UserInfoBean> loginOpenIdService(String openApi) async {
+  Future<StatusBean> loginOpenIdService(String openApi) async {
     var uri = Uri.parse(openApi);
     Pattern pattern = "//";
     var lastIndexOf = openApi.lastIndexOf(pattern);
@@ -127,7 +127,6 @@ class RequestManager {
     await _initDio(path, openId: openId);
     //先调用me获取个人属性思密达
     var meResponse = await _dio!.get(me);
-    print('me---->${meResponse.data}');
     if (meResponse.statusCode != 200) {
       throw Exception("登录信息获取失败");
     }
@@ -138,15 +137,53 @@ class RequestManager {
     }
     SpUtil.setBool(Global.isLoginFlag, true);
     SpUtil.setString(Global.BASE_PATH, path);
-    return UserInfoBean.fromJson(loadStatusRes.data);
+    print('isOk--->${loadStatusRes.data}');
+    return StatusBean.fromJson(jsonDecode(loadStatusRes.data));
   }
 
+  ///登出
   Future<bool> logout() async {
-    var response = await _dio?.post(logOut);
-    if (response?.statusCode != 200) {
+    // await _setNewDioFromRamCookieData();
+    var response = await _dio!.post(logOut);
+    if (response.statusCode != 200) {
       throw Exception("退出登录失败");
     }
-    print('responsedata----->${response?.data}');
-    return response?.data;
+    print('responsedata----->${response.data}');
+    return response.data;
+  }
+
+  ///如果是从硬盘里面读出来的baseUrl，说明已经退出过APP，
+  ///需要根据sp中的用户主机地址重新构建dio的client
+  Future<void> _setNewDioFromRamCookieData() async {
+    if (isInitSecond) {
+      return;
+    }
+    String basePath = SpUtil.getString(Global.BASE_PATH)!;
+    if (basePath.isNotEmpty) {
+      await _initDio(basePath);
+      isInitSecond = true;
+    }
+  }
+
+  ///查看用户信息状态
+  Future<StatusBean?> queryUserStatus() async {
+    await _setNewDioFromRamCookieData();
+    var response = await _dio!.get(status);
+    if (response.statusCode != 200) {
+      //查看用户信息状态失败
+      print('查询用户状态信息失败${response.statusCode},${response.statusMessage}');
+      return null;
+    }
+    return StatusBean.fromJson(response.data);
+  }
+
+  ///查询所有tags
+  Future<TagsBean> queryAllTags() async {
+    await _setNewDioFromRamCookieData();
+    var response = await _dio!.get(tags);
+    if (response.statusCode != 200) {
+      throw Exception("查询Tags失败");
+    }
+    return TagsBean.fromJson((response.data));
   }
 }

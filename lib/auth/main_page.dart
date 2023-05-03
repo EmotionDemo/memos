@@ -15,9 +15,8 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin {
   int _currentIndex = -1;
-
   late AssetImage collectImg;
   late AssetImage collectSelectedImg;
   late AssetImage labelImg;
@@ -177,4 +176,7 @@ class _MainPageState extends State<MainPage> {
   void _onTap(int index) {
     _pageController.jumpToPage(index);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
