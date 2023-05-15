@@ -1,27 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+
+// import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
+import 'package:memos/utils/ImgUtil.dart';
+import 'package:memos/utils/ScreenUtil.dart';
+import 'package:flutter_highlight/themes/a11y-light.dart';
+
+import 'package:memos/utils/video.dart';
 
 class NoteCard extends StatefulWidget {
-  const NoteCard({Key? key, required this.data, required this.title})
+  const NoteCard(
+      {Key? key,
+      required this.data,
+      required this.title,
+      required this.visibility,
+      required this.updateTime,
+      required this.itemHeight})
       : super(key: key);
 
   final String data;
   final String title;
+  final String visibility;
+  final String updateTime;
+  final double itemHeight;
 
   @override
   State<NoteCard> createState() => _NoteCardState();
 }
 
-class _NoteCardState extends State<NoteCard> {
+class _NoteCardState extends State<NoteCard>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController controller = ScrollController();
-
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: 180,minHeight: 100
-      ),
+      height: widget.itemHeight,
+      constraints: const BoxConstraints(maxHeight: 400, minHeight: 150),
       alignment: Alignment.topLeft,
       child: Card(
           clipBehavior: Clip.antiAlias,
@@ -30,10 +46,6 @@ class _NoteCardState extends State<NoteCard> {
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            // side: BorderSide(
-            //   color: Colors.white,
-            //   width: 1,
-            // ),
           ),
           margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           child: Column(
@@ -51,7 +63,7 @@ class _NoteCardState extends State<NoteCard> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style:
-                            const TextStyle(color: Colors.black, fontSize: 18),
+                            const TextStyle(color: Colors.blue, fontSize: 15),
                       ),
                     ),
                   ),
@@ -62,25 +74,36 @@ class _NoteCardState extends State<NoteCard> {
                         children: [
                           Container(
                               alignment: Alignment.center,
-                              margin: const EdgeInsets.all(5),
+                              margin: const EdgeInsets.only(
+                                  right: 5, top: 5, bottom: 5),
                               padding: const EdgeInsets.all(3),
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.black26),
                                   borderRadius: BorderRadius.circular(5.0)),
-                              child: const Text(
-                                'NORMAL',
-                                style: TextStyle(color: Colors.grey, fontSize: 12),
+                              child: Text(
+                                widget.visibility,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 12),
                               ))
                         ],
                       )),
                 ],
               ),
               Expanded(
-                child: Markdown(
+                child: Container(
+                  padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                  child: MarkdownWidget(
                     data: widget.data,
                     shrinkWrap: true,
-
-                    physics: const NeverScrollableScrollPhysics()),
+                    physics: const NeverScrollableScrollPhysics(),
+                    config: MarkdownConfig(configs: [
+                      const PreConfig(theme: a11yLightTheme, language: 'dart'),
+                    ]),
+                    markdownGeneratorConfig: MarkdownGeneratorConfig(
+                      generators: [videoGeneratorWithTag],
+                    ),
+                  ),
+                ),
               ),
               Container(
                   height: 30,
@@ -93,9 +116,9 @@ class _NoteCardState extends State<NoteCard> {
                       Flexible(
                         flex: 7,
                         child: Container(
-                          margin: const EdgeInsets.only(left: 20),
-                          child: const Text(
-                            '1 小时前',
+                          margin: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            widget.updateTime,
                             style: TextStyle(color: Colors.grey),
                           ),
                         ),
@@ -117,47 +140,53 @@ class _NoteCardState extends State<NoteCard> {
                               ),
                               onTap: () {},
                             ),
-                            const SizedBox(width: 5,),
+                            const SizedBox(
+                              width: 5,
+                            ),
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child:const Icon(
+                                child: const Icon(
                                   Icons.edit_note,
                                   size: 18,
                                   color: Colors.black87,
                                 ),
                               ),
-                              onTap: (){},
+                              onTap: () {},
                             ),
-                            const SizedBox(width: 5,),
+                            const SizedBox(
+                              width: 5,
+                            ),
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child:const Icon(
+                                child: const Icon(
                                   Icons.share,
                                   size: 18,
                                   color: Colors.blue,
                                 ),
                               ),
-                              onTap: (){},
+                              onTap: () {},
                             ),
-                            const SizedBox(width: 5,),
+                            const SizedBox(
+                              width: 5,
+                            ),
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child:const Icon(
+                                child: const Icon(
                                   Icons.save,
                                   size: 18,
                                   color: Colors.red,
                                 ),
                               ),
-                              onTap: (){},
+                              onTap: () {},
                             ),
                           ],
                         ),
@@ -168,4 +197,7 @@ class _NoteCardState extends State<NoteCard> {
           )),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

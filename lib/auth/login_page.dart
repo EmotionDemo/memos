@@ -197,6 +197,10 @@ class _LoginPageState extends State<LoginPage> {
                       onClickListener: () {
                         var serverPath =
                             serverAddressController.text.toString();
+                        if(serverPath.endsWith("/")){
+                          serverPath = serverPath.substring(0,serverPath.length-1);
+                        }
+                        print('serverPath--------->${serverPath}');
                         var userName = usernameController.text.toString();
                         var password = passwordController.text.toString();
                         print("openapi--->${serverPath}");

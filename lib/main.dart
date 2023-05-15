@@ -5,6 +5,7 @@ import 'package:memos/auth/login_page.dart';
 import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:memos/beans/MeBean.dart';
 import 'package:memos/pages/error_page.dart';
 import 'package:memos/router/routers.dart';
 import 'dart:io';
@@ -31,11 +32,11 @@ void main() {
         var isLogin = SpUtil.getBool(Global.isLoginFlag);
         if (isLogin!) {
           //更新用户信息
-          Future<StatusBean?> queryUserStatus =
-              RequestManager.getClient().queryUserStatus();
-          queryUserStatus.then((statusData) {
-            if (statusData != null) {
-              Global.updateUserInfo(statusData);
+          Future<MeBean?> queryUserStatus =
+              RequestManager.getClient().queryMeInfo();
+          queryUserStatus.then((meData) {
+            if (meData != null) {
+              Global.updateUserInfo(meData);
               firstRoutePage = const MainPage();
             } else {
               firstRoutePage = const ErrorPage();

@@ -1,8 +1,15 @@
+import 'dart:collection';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:memos/auth/start_page.dart';
-import 'package:memos/pages/user_info.dart';
+import 'package:memos/constants/constant.dart';
+import 'package:memos/network/network.dart';
+import 'package:memos/utils/SpUtils.dart';
 
+import '../beans/MemosBean.dart';
+import '../beans/TagsBean.dart';
 import '../view/heat_map.dart';
 
 class MorePage extends StatefulWidget {
@@ -12,9 +19,92 @@ class MorePage extends StatefulWidget {
   State<MorePage> createState() => _MorePageState();
 }
 
-class _MorePageState extends State<MorePage> {
+class _MorePageState extends State<MorePage>
+    with AutomaticKeepAliveClientMixin {
+  final Map<DateTime, int> dateTimeMap = {};
+
+  //笔记总数
+  int memosNum = 0;
+
+  //日期数
+  int daysDiff = 0;
+
+  //标签数
+  int tasNum = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _countDays();
+    final Map<String, int> dateMap = {};
+    final List<String> dateReal = [];
+    //查询提交次数浓度
+    _queryCommitDays(dateReal, dateMap);
+
+    ///获取memos数目
+    _queryMomesNum();
+
+    ///获取tas总数
+    _queryTagsNum();
+  }
+
+  void _queryTagsNum() {
+    Future<TagsBean> tags = RequestManager.getClient().queryAllTags();
+    tags.then((value) {
+      tasNum = value.data.length;
+    });
+  }
+
+  void _queryMomesNum() {
+    Future<MemosBean> memos = RequestManager.getClient().queryAllMemos("");
+    memos.then((value) {
+      memosNum = value.data.length;
+    });
+  }
+
+  void _queryCommitDays(List<String> dateReal, Map<String, int> dateMap) {
+    Future<List<String>> queryNoteDates =
+        RequestManager.getClient().queryNoteDates();
+    queryNoteDates.then((dateList) {
+      setState(() {
+        //解析出所有年月日按格式xxxx-xx-xx存储
+        for (String date in dateList) {
+          DateTime timeReal =
+              DateTime.fromMillisecondsSinceEpoch(int.parse(date) * 1000);
+          int year = timeReal.year;
+          int month = timeReal.month;
+          int day = timeReal.day;
+          dateReal.add("$year-$month-$day");
+        }
+        //统计当天出现的次数
+        for (String date in dateReal) {
+          dateMap[date] = (dateMap[date] ?? 0) + 1;
+        }
+        //组装数据
+        dateMap.forEach((key, value) {
+          List<String> realDate = key.split('-');
+          int year = int.parse(realDate[0]);
+          int month = int.parse(realDate[1]);
+          int day = int.parse(realDate[2]);
+          dateTimeMap[DateTime(year, month, day)] = value;
+        });
+      });
+    });
+  }
+
+  ///获取用户使用天数
+  void _countDays() {
+    DateTime now = DateTime.fromMillisecondsSinceEpoch(
+        DateTime.now().millisecondsSinceEpoch);
+    DateTime oldTime = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(SpUtil.getInt(Global.USER_LOGIN_DAYS).toString()) * 1000);
+    Duration diff = now.difference(oldTime);
+    daysDiff = diff.inDays + 1;
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -33,37 +123,43 @@ class _MorePageState extends State<MorePage> {
                     Column(
                       children: [
                         Text(
-                          '14',
+                          memosNum.toString(),
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(
                           height: 5,
                         ),
-                        Text('Memos',style: TextStyle(fontSize: 18,color: Colors.black26))
+                        Text('Memos',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.black26))
                       ],
                     ),
                     Column(
                       children: [
                         Text(
-                          '14',
+                          tasNum.toString(),
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(
                           height: 5,
                         ),
-                        Text('Tags',style: TextStyle(fontSize: 18,color: Colors.black26))
+                        Text('Tags',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.black26))
                       ],
                     ),
                     Column(
                       children: [
                         Text(
-                          '14',
+                          daysDiff.toString(),
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(
                           height: 5,
                         ),
-                        Text('Days',style: TextStyle(fontSize: 18,color: Colors.black26))
+                        Text('Days',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.black26))
                       ],
                     ),
                   ],
@@ -73,13 +169,7 @@ class _MorePageState extends State<MorePage> {
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.only(left: 10, right: 0, top: 20),
                 child: CusHeatMap(
-                  datasets: {
-                    DateTime(2023, 4, 6): 1,
-                    DateTime(2023, 4, 7): 10,
-                    DateTime(2023, 4, 8): 10,
-                    DateTime(2023, 4, 9): 10,
-                    DateTime(2023, 4, 13): 1,
-                  },
+                  datasets: dateTimeMap,
                 ),
               ),
               Container(
@@ -111,12 +201,13 @@ class _MorePageState extends State<MorePage> {
                               height: 20,
                             ),
                           ),
-                          const SizedBox (
+                          const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            '啦啦啦',
-                            style: TextStyle(color: Colors.black54, fontSize: 15),
+                          Text(
+                            SpUtil.getString(Global.USER_NAME).toString(),
+                            style: const TextStyle(
+                                color: Colors.black54, fontSize: 15),
                           ),
                           const Spacer(),
                           Container(
@@ -130,7 +221,7 @@ class _MorePageState extends State<MorePage> {
                       ),
                     ),
                   ),
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, "/user_info");
                   },
                 ),
@@ -290,8 +381,8 @@ class _MorePageState extends State<MorePage> {
               SingleChildScrollView(
                 child: Container(
                   height: 160,
-                  padding:
-                      const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                  padding: const EdgeInsets.only(
+                      top: 5, bottom: 5, left: 5, right: 5),
                   child: Card(
                     clipBehavior: Clip.antiAlias,
                     color: Colors.white,
@@ -305,8 +396,8 @@ class _MorePageState extends State<MorePage> {
                       children: [
                         Container(
                           width: double.maxFinite,
-                          margin:
-                              const EdgeInsets.only(left: 10, right: 10, top: 15),
+                          margin: const EdgeInsets.only(
+                              left: 10, right: 10, top: 15),
                           child: InkWell(
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,8 +438,8 @@ class _MorePageState extends State<MorePage> {
                         const Spacer(),
                         Container(
                           width: double.maxFinite,
-                          margin:
-                              const EdgeInsets.only(left: 10, right: 10, top: 5),
+                          margin: const EdgeInsets.only(
+                              left: 10, right: 10, top: 5),
                           child: InkWell(
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -405,21 +496,21 @@ class _MorePageState extends State<MorePage> {
                                 const SizedBox(
                                   width: 20,
                                 ),
-
                                 const Text(
                                   '更新记录',
                                   style: TextStyle(
                                       color: Colors.black87, fontSize: 15),
                                 ),
                                 Spacer(),
-                               Container(
-                                 alignment: Alignment.center,
-                                 margin: EdgeInsets.only(top:5,bottom: 5),
-                                 child:  Text(
-                                   'V0.1.1',
-                                   style: TextStyle(color: Colors.grey, fontSize: 13),
-                                 ),
-                               ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(top: 5, bottom: 5),
+                                  child: Text(
+                                    'V0.1.1',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 13),
+                                  ),
+                                ),
                                 const Icon(
                                   Icons.navigate_next_rounded,
                                   color: Colors.black26,
@@ -491,7 +582,7 @@ class _MorePageState extends State<MorePage> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return  LeadPage(showStart: false);
+                      return LeadPage(showStart: false);
                     }));
                   },
                 ),
@@ -500,4 +591,7 @@ class _MorePageState extends State<MorePage> {
           ),
         ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

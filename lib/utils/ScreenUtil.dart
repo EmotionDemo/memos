@@ -18,4 +18,19 @@ class ScreenUtil {
   static double hc_FitHeight(double height) {
     return hc_ScreenHeight() / 667.0 * height;
   }
+
+  //测量Item高度
+  static double calculateItemHeight(String text, double width,double fontSize) {
+    TextSpan textSpan = TextSpan(
+      text: text,
+      style: TextStyle(fontSize: fontSize),
+    );
+    TextPainter textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+      maxLines: null,
+    );
+    textPainter.layout(maxWidth: width);
+    return textPainter.size.height + 50.0;
+  }
 }

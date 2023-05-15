@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:memos/beans/MemosBean.dart';
 import 'package:memos/utils/my_cookie.dart';
 
 import '../beans/LoginBean.dart';
+import '../beans/MeBean.dart';
 import '../beans/StatusBean.dart';
 import '../beans/TagsBean.dart';
 import '../constants/constant.dart';
@@ -22,6 +24,7 @@ const String me = "/api/user/me";
 const String loginOpenApi = "/api/memo?openId=";
 const String status = "/api/status";
 const String getTags = "/api/tag";
+const String getMemos = "/api/memo";
 
 class HttpConfig {
   // static const baseUrl = BASE_URL;
@@ -63,9 +66,7 @@ class RequestManager {
         baseUrl: url,
         connectTimeout: HttpConfig.CONNECT_TIMEOUT,
         receiveTimeout: HttpConfig.RECEIVE_TIMEOUT);
-    if(openId == null){
-
-    }
+    if (openId == null) {}
     if (openId != null) {
       baseOptions.queryParameters = {"openId": openId};
       baseOptions.responseType = ResponseType.plain;
@@ -165,6 +166,21 @@ class RequestManager {
     }
   }
 
+  ///查询所有笔记
+  Future<MemosBean> queryAllMemos(String memoType) async {
+    Response response;
+    if (memoType.isNotEmpty || memoType != "") {
+      response =
+          await _dio!.get(getMemos, queryParameters: {"rowStatus": memoType});
+    } else {
+      response = await _dio!.get(getMemos);
+    }
+    if (response.statusCode != 200) {
+      throw Exception("查询所有memos失败");
+    }
+    return MemosBean.fromJson(response.data);
+  }
+
   ///查看用户信息状态
   Future<StatusBean?> queryUserStatus() async {
     await _setNewDioFromRamCookieData();
@@ -175,6 +191,31 @@ class RequestManager {
       return null;
     }
     return StatusBean.fromJson(response.data);
+  }
+
+  ///查询个人信息
+  Future<MeBean?> queryMeInfo() async {
+    await _setNewDioFromRamCookieData();
+    var response = await _dio!.get(me);
+    if (response.statusCode != 200) {
+      return null;
+    }
+    return MeBean.fromJson(response.data);
+  }
+
+
+  ///查询所有笔记提交日期次数
+  Future<List<String>> queryNoteDates() async {
+    var response = await _dio!.get(getMemos);
+    List<String> dateList = [];
+    if (response.statusCode != 200) {
+      throw Exception("[queryNoteDates],查询所有memos失败");
+    }
+    var memosBean = MemosBean.fromJson(response.data);
+    for (var memosInfo in memosBean.data) {
+      dateList.add(memosInfo.createdTs.toString());
+    }
+    return dateList;
   }
 
   ///查询所有tags

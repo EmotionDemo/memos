@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
-class DeleteCard extends StatefulWidget {
-  const DeleteCard(
+// import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
+
+class CollectedCard extends StatefulWidget {
+  const CollectedCard(
       {Key? key,
       required this.data,
       required this.createTime,
-      required this.user})
+      required this.user,
+      required this.itemHeight})
       : super(key: key);
   final String createTime;
   final String data;
   final String user;
+  final double itemHeight;
 
   @override
-  State<DeleteCard> createState() => _NoteCardState();
+  State<CollectedCard> createState() => _NoteCardState();
 }
 
-class _NoteCardState extends State<DeleteCard> {
+class _NoteCardState extends State<CollectedCard>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
-      constraints: const BoxConstraints(maxHeight: 180, minHeight: 100),
+      height: widget.itemHeight,
+      constraints: const BoxConstraints(maxHeight: 400, minHeight: 150),
       alignment: Alignment.topLeft,
       child: Card(
           clipBehavior: Clip.antiAlias,
@@ -53,9 +60,11 @@ class _NoteCardState extends State<DeleteCard> {
                 ],
               ),
               Expanded(
-                child: Markdown(
+                child: MarkdownWidget(
                     data: widget.data,
                     shrinkWrap: true,
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 5, bottom: 5),
                     physics: const NeverScrollableScrollPhysics()),
               ),
               Container(
@@ -85,4 +94,7 @@ class _NoteCardState extends State<DeleteCard> {
           )),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -12,54 +12,15 @@ class TagPage extends StatefulWidget {
   State<TagPage> createState() => _TagPageState();
 }
 
-class _TagPageState extends State<TagPage> {
+class _TagPageState extends State<TagPage> with AutomaticKeepAliveClientMixin {
+  List<FlagItem> flags = [];
 
-   List<FlagItem> flags = [];
   List<FlagItem> getFlags(List<String> data) {
     List<FlagItem> list = [];
-    for(var tag in data){
-      list.add(FlagItem(tagText: tag));
+    //倒置一下，使最新添加的在最前面
+    for (var tag in data.reversed) {
+      list.add(FlagItem(tagText: '#$tag'));
     }
-    /*list.add(FlagItem(tagText: '#flutter'));
-    list.add(FlagItem(tagText: '#memos'));
-    list.add(FlagItem(tagText: '#java'));
-    list.add(FlagItem(tagText: '#协程'));
-    list.add(FlagItem(tagText: '#kotlin'));
-    list.add(FlagItem(tagText: '#踏青'));
-    list.add(FlagItem(tagText: '#这颗种子 在我心里快要发芽啦'));
-    list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
-    list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
-    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
-    list.add(FlagItem(tagText: '#flutter'));
-    list.add(FlagItem(tagText: '#memos'));
-    list.add(FlagItem(tagText: '#java'));
-    list.add(FlagItem(tagText: '#协程'));
-    list.add(FlagItem(tagText: '#kotlin'));
-    list.add(FlagItem(tagText: '#踏青'));
-    list.add(FlagItem(tagText: '#这颗种子 在我心里快要发芽啦'));
-    list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
-    list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
-    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
-    list.add(FlagItem(tagText: '#flutter'));
-    list.add(FlagItem(tagText: '#memos'));
-    list.add(FlagItem(tagText: '#java'));
-    list.add(FlagItem(tagText: '#协程'));
-    list.add(FlagItem(tagText: '#kotlin'));
-    list.add(FlagItem(tagText: '#踏青'));
-    list.add(FlagItem(tagText: '#这颗种子 在我心里快要发芽啦'));
-    list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
-    list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
-    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));
-    list.add(FlagItem(tagText: '#flutter'));
-    list.add(FlagItem(tagText: '#memos'));
-    list.add(FlagItem(tagText: '#java'));
-    list.add(FlagItem(tagText: '#协程'));
-    list.add(FlagItem(tagText: '#kotlin'));
-    list.add(FlagItem(tagText: '#踏青'));
-    list.add(FlagItem(tagText: '#这颗种子 在我心里快要发芽啦'));
-    list.add(FlagItem(tagText: '#每天我都为了它而更加努力呀'));
-    list.add(FlagItem(tagText: '#兄弟姐妹一起冲压'));
-    list.add(FlagItem(tagText: '#Ok go 来吧来吧'));*/
     return list;
   }
 
@@ -130,4 +91,7 @@ class _TagPageState extends State<TagPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
