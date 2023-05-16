@@ -25,6 +25,7 @@ const String loginOpenApi = "/api/memo?openId=";
 const String status = "/api/status";
 const String getTags = "/api/tag";
 const String getMemos = "/api/memo";
+const String deleteMemos = "/api/memo/";
 
 class HttpConfig {
   // static const baseUrl = BASE_URL;
@@ -227,4 +228,16 @@ class RequestManager {
     }
     return TagsBean.fromJson((response.data));
   }
+  
+  
+  Future<bool> deleteMemo(String id)async {
+    var response = await _dio!.delete(deleteMemos+"$id");
+    if(response.statusCode!=200){
+      print("删除id为${id}的memo失败 +${response.statusMessage}");
+      return false;
+    }
+    return true;
+  }
+  
+  
 }

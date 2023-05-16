@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 // import 'package:flutter_markdown/flutter_markdown.dart';
@@ -9,12 +11,14 @@ class CollectedCard extends StatefulWidget {
       required this.data,
       required this.createTime,
       required this.user,
-      required this.itemHeight})
+      required this.itemHeight,
+      required this.id})
       : super(key: key);
   final String createTime;
   final String data;
   final String user;
   final double itemHeight;
+  final int id;
 
   @override
   State<CollectedCard> createState() => _NoteCardState();

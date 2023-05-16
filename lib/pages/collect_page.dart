@@ -21,8 +21,9 @@ class CollectPage extends StatefulWidget {
   State<CollectPage> createState() => _CollectPageState();
 }
 
-class _CollectPageState extends State<CollectPage> {
-  Widget defaultPage = Center(
+class _CollectPageState extends State<CollectPage> with AutomaticKeepAliveClientMixin {
+  Widget defaultPage = Container(
+    margin: EdgeInsets.only(top: ScreenUtil.hc_ScreenHeight()/5),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -48,6 +49,7 @@ class _CollectPageState extends State<CollectPage> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final key = Key(Uuid().v4().toString());
+
   @override
   void initState() {
     super.initState();
@@ -98,13 +100,6 @@ class _CollectPageState extends State<CollectPage> {
               }
             }
           }
-          // print('wangzhibin----->${calculateItemHeight}');
-          /*notes.add(CollectedCard(
-            data: data.content + resList,
-            createTime: updateTime.substring(0, updateTime.length - 4),
-            user: userName,
-            itemHeight: calculateItemHeight,
-          ));*/
         }
       } else {
         calculateItemHeight = ScreenUtil.calculateItemHeight(
@@ -115,6 +110,7 @@ class _CollectPageState extends State<CollectPage> {
         createTime: updateTime.substring(0, updateTime.length - 4),
         user: userName,
         itemHeight: calculateItemHeight,
+        id: dataBean[i].id,
       ));
       print('num-->${num},i--->${i}-->notes.length->${notes.length}');
       num++;
@@ -123,6 +119,8 @@ class _CollectPageState extends State<CollectPage> {
 
     return notes;
   }
+
+  late BuildContext mContext;
 
   @override
   Widget build(BuildContext context) {
@@ -141,17 +139,6 @@ class _CollectPageState extends State<CollectPage> {
                 '暂存箱',
                 style: TextStyle(color: Colors.black, fontSize: 22),
               ),
-            ),
-            InkWell(
-              child: Container(
-                margin: const EdgeInsets.only(top: 5, right: 5, bottom: 5),
-                child: const Icon(
-                  Icons.search,
-                  size: 25,
-                  color: Colors.black,
-                ),
-              ),
-              onTap: () {},
             ),
           ],
         ),
@@ -199,120 +186,104 @@ class _CollectPageState extends State<CollectPage> {
                       _notes = snapshot.data;
                       _initializedFirst = true;
                     }
-                    if (_notes.isEmpty) {
+                    /* if (_notes.isEmpty) {
                       _notes.add(defaultPage);
-                    }
-                    return Expanded(
-                        child: SmartRefresher(
-                      controller: _refreshController,
-                      enablePullDown: true,
-                      enablePullUp: false,
-                      header: const ClassicHeader(),
-                      onRefresh: _onRefresh,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _notes.length,
-                        itemBuilder: (context, index) {
-                          final item = _notes[index];
-                          return Dismissible(
-                            key: key,
-                            direction: DismissDirection.endToStart,
-                            onDismissed: (DismissDirection direction) {
-                              if (direction == DismissDirection.endToStart) {
-                                //恢复
-                                _notes.removeAt(index);
-                                setState(() {
-                                  listItemCount = _notes.length;
-                                });
-                              } else {
-                                //永久删除
-                                ToastUtil.showToast(message: direction.name);
-                              }
-                            },
-                            child: Slidable(
-                              key: key,
-                              child: item,
-                              endActionPane: ActionPane(
-                                  extentRatio:0.3,
-                                  motion: ScrollMotion(),
-                                 /* dismissible: DismissiblePane(
-                                    onDismissed: () {},
-                                  ),*/
-                                  children: [
-                                    Flexible(
-                                      flex:2,
-                                      child: InkWell(
-                                        child: Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: Colors.red, width: 2),
-                                              borderRadius: BorderRadius.circular(50),
-                                              color: Colors.red
+                    }*/
+                    if (_notes.isEmpty) {
+                      return defaultPage;
+                    } else {
+                      return Expanded(
+                          child: SmartRefresher(
+                        controller: _refreshController,
+                        enablePullDown: true,
+                        enablePullUp: false,
+                        header: const ClassicHeader(),
+                        onRefresh: _onRefresh,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _notes.length,
+                          itemBuilder: (context, index) {
+                            final item = _notes[index] as CollectedCard;
+                            return SlidableAutoCloseBehavior(
+                              child: Slidable(
+                                key: key,
+                                endActionPane: ActionPane(
+                                    extentRatio: 0.3,
+                                    dragDismissible: true,
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      Flexible(
+                                        flex: 2,
+                                        child: InkWell(
+                                          child: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.red,
+                                                    width: 2),
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: Colors.red),
+                                            child: const Icon(
+                                              Icons.delete_forever,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                          child: Icon(Icons.delete_forever,color: Colors.white,),
+                                          onTap: () {
+                                            Future<bool> deleteMemo =
+                                                RequestManager.getClient()
+                                                    .deleteMemo(
+                                                        item.id.toString());
+                                            deleteMemo.then((isDeleted) {
+                                              if (isDeleted) {
+                                                setState(() {
+                                                  _notes.removeAt(index);
+                                                });
+                                                Slidable.of(context)?.close();
+                                                ToastUtil.showToast(
+                                                    message: "进行永久删除操作");
+                                              }
+                                            });
+                                          },
                                         ),
-                                        onTap: (){
-                                          ToastUtil.showToast(message: "进行永久删除操作");
-                                        },
                                       ),
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Flexible(
-                                      flex:2,
-                                      child: InkWell(
-                                        child: Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(color: Colors.blue, width: 2),
-                                              borderRadius: BorderRadius.circular(50),
-                                              color: Colors.blue
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Flexible(
+                                        flex: 2,
+                                        child: InkWell(
+                                          child: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.blue,
+                                                    width: 2),
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: Colors.blue),
+                                            child: Icon(
+                                              Icons
+                                                  .settings_backup_restore_sharp,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                          child: Icon(Icons.settings_backup_restore_sharp,color: Colors.white,),
+                                          onTap: () {
+                                            ToastUtil.showToast(
+                                                message: "进行数据恢复操作");
+                                          },
                                         ),
-                                        onTap: (){
-                                          ToastUtil.showToast(message: "进行数据恢复操作");
-                                        },
-                                      ),
-                                    )
-                                  ]),
-                            ),
-                            background: Container(
-                              color: Colors.red,
-                              width: 200,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // TODO: 编辑操作
-                                    },
-                                    child: Text(
-                                      '编辑',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // TODO: 删除操作
-                                    },
-                                    child: Text(
-                                      '删除',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                      )
+                                    ]),
+                                child: item,
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    ));
+                            );
+                          },
+                        ),
+                      ));
+                    }
                   } else {
                     return Text('获取信息失败....');
                   }
@@ -351,4 +322,7 @@ class _CollectPageState extends State<CollectPage> {
     super.dispose();
     _refreshController.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
