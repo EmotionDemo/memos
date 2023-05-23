@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
         statusBarBrightness: Brightness.dark,
         statusBarIconBrightness: Brightness.light,
       );
-      SystemChrome.setSystemUIOverlayStyle(style);
+      // SystemChrome.setSystemUIOverlayStyle(style);
       //高刷
       try {
         FlutterDisplayMode.setHighRefreshRate();

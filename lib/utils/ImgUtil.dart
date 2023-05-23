@@ -18,10 +18,7 @@ class ImgUtil {
 
   static Future<int?> getImageHeight(String imageUrl) async {
     Completer<int> completer = Completer();
-    print('imageUrl----->${imageUrl}');
-
     Image image = Image.network(imageUrl);
-
     void listener(ImageInfo info, bool synchronousCall) {
       final int height = info.image.height;
       completer.complete(height);

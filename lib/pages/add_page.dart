@@ -12,6 +12,8 @@ import '../network/network.dart';
 // import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'input_note_page.dart';
+
 class AddPage extends StatefulWidget {
   const AddPage({Key? key}) : super(key: key);
 
@@ -65,6 +67,7 @@ class _AddPageState extends State<AddPage> {
                   ),
                 ),
                 onTap: () {
+                  Navigator.pushNamed(context, "/input_note_page");
                   print('bvbvbbvvb');
                 },
               ),

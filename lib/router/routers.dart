@@ -7,6 +7,8 @@ import 'package:memos/auth/start_page.dart';
 import 'package:memos/pages/more_page.dart';
 import 'package:memos/pages/user_info.dart';
 
+import '../pages/input_note_page.dart';
+
 Map routes = {
   '/login': (context) => const LoginPage(),
   "/contact_me": (context) => const ContactMe(),
@@ -14,6 +16,7 @@ Map routes = {
   "/main_page": (context) =>  const MainPage(),
   "/more_page": (context) =>  const MorePage(),
   "/user_info": (context) =>  const UserInfoPage(),
+  "/input_note_page": (context) =>  const InputPage(),
 };
 
 
