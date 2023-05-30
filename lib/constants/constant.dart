@@ -56,9 +56,10 @@ class Global {
     if (SpUtil.getInt(Global.USER_LOGIN_DAYS).toString() != statusData.data.createdTs.toString()) {
       SpUtil.setInt(Global.USER_LOGIN_DAYS, statusData.data.createdTs);
     }
-
-
   }
+
+
+
 
   ///存储用户信息
   static void saveUserInfo(String serverPath, UserInfoBean value) {

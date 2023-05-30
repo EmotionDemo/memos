@@ -86,8 +86,8 @@ class _NoteCardState extends State<CollectedCard>
                               Container(
                                 margin: const EdgeInsets.only(left: 10),
                                 child: Text(
-                                  "@lifenghua",
-                                  style: TextStyle(color: Colors.grey),
+                                  '@${widget.user}',
+                                  style: const TextStyle(color: Colors.grey),
                                 ),
                               ),
                             ],

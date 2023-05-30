@@ -50,6 +50,8 @@ dependencies:
 #  liquid_pull_to_refresh: ^3.0.1
   pull_to_refresh: ^2.0.0
   flutter_slidable: ^2.0.0
+  keyboard_visibility: ^0.5.6
+
 
 #  flutter_quill: ^6.0.1
 #  flutter_quill: ^7.0.1
@@ -119,6 +121,12 @@ flutter:
     - images/ic_help.png
     - images/ic_lang.png
     - images/ic_net_error.png
+    - images/ic_tag_select.png
+    - images/ic_tags.png
+    - images/ic_voice.png
+    - images/ic_photo_album.png
+    - images/ic_camera_select.png
+    - images/ic_submit_note.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
