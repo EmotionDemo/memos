@@ -1,7 +1,10 @@
+import 'package:memos/beans/TagsBean.dart';
+
 import '../beans/LoginBean.dart';
 import '../beans/MeBean.dart';
 import '../beans/StatusBean.dart';
 import '../utils/SpUtils.dart';
+import '../utils/file_utils.dart';
 
 class Global {
   //屏幕长宽
@@ -29,6 +32,26 @@ class Global {
   static const String MEMO_TYPE_ARCHIVED = "ARCHIVED";
   static const String CONTENT_TYPE_IMAGE = "image";
 
+  static const String TAG_NUMS = "tagNums";
+  static const String TAGS = "TAGS_REAL";
+
+  static int INIT_STATUS = 0;
+
+  // if (_isKeyboardShow && _isShowTags) {
+  //       _notInputFiledHeight = ScreenUtil.hc_ScreenHeight() / 2.45;
+  //     } else if (_isKeyboardShow && !_isShowTags) {
+  //       _notInputFiledHeight = ScreenUtil.hc_ScreenHeight() /2.1;
+  //     } else if (!_isKeyboardShow && _isShowTags) {
+  //       _notInputFiledHeight = ScreenUtil.hc_ScreenHeight() / 1.38;
+  //     } else if (!_isKeyboardShow && !_isShowTags) {
+  //       _notInputFiledHeight = ScreenUtil.hc_ScreenHeight() / 1.26;
+  //     }
+
+  static const double HEIGHT_RATE_KEYBOARD_AND_TAG = 2.45;
+  static const double HEIGHT_RATE_KEYBOARD_AND_NOT_TAG = 2.1;
+  static const double HEIGHT_RATE_BOT_KEYBOARD_AND_TAG = 1.38;
+  static const double HEIGHT_RATE_BOT_KEYBOARD_AND_NOT_TAG = 1.26;
+
   ///更新用户信息
   static void updateUserInfo(MeBean statusData) {
     if (SpUtil.getString(Global.USER_NAME)! != statusData.data.username) {
@@ -53,13 +76,20 @@ class Global {
     if (SpUtil.getString(Global.USER_ROWSTATUS)! != statusData.data.rowStatus) {
       SpUtil.setString(Global.USER_ROWSTATUS, statusData.data.rowStatus);
     }
-    if (SpUtil.getInt(Global.USER_LOGIN_DAYS).toString() != statusData.data.createdTs.toString()) {
+    if (SpUtil.getInt(Global.USER_LOGIN_DAYS).toString() !=
+        statusData.data.createdTs.toString()) {
       SpUtil.setInt(Global.USER_LOGIN_DAYS, statusData.data.createdTs);
     }
   }
 
-
-
+  ///存储tags信息
+  static void saveUserTagsInfo(TagsBean tagsBean) {
+    if (tagsBean == null) {
+      return;
+    }
+    SpUtil.setInt(Global.TAG_NUMS, tagsBean.data.length);
+    SpUtil.setString(Global.TAGS, FileUtils.listToString(tagsBean.data)!);
+  }
 
   ///存储用户信息
   static void saveUserInfo(String serverPath, UserInfoBean value) {

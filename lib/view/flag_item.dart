@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../utils/toast.dart';
 
+typedef OnClicked = Function(String data);
 class FlagItem extends StatefulWidget {
-  FlagItem({Key? key, required this.tagText}) : super(key: key);
+  FlagItem({Key? key, required this.tagText, required this.onClickListener}) : super(key: key);
   String tagText;
+  final OnClicked onClickListener;
 
   @override
   State<FlagItem> createState() => _FlagItemState();
@@ -27,7 +29,7 @@ class _FlagItemState extends State<FlagItem> {
         ),
       ),
       onTap: () {
-        ToastUtil.showToast(message: "${widget.tagText}");
+        widget.onClickListener(widget.tagText);
       },
     );
   }

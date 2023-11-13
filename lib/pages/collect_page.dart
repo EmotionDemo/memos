@@ -8,6 +8,7 @@ import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
 import 'package:memos/utils/SpUtils.dart';
 import 'package:memos/utils/toast.dart';
+import 'package:memos/view/dialog_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -26,7 +27,7 @@ class CollectPage extends StatefulWidget {
 class _CollectPageState extends State<CollectPage>
     with AutomaticKeepAliveClientMixin {
   late Widget showPage;
-
+  late BuildContext mContext;
   var listItemCount = 0;
   List<Widget> _notes = [Container()];
   late Future<List<Widget>> _future;
@@ -72,9 +73,10 @@ class _CollectPageState extends State<CollectPage>
             print('img.isNotEmpty');
             for (var imgUrl in img) {
               if (imgUrl.isNotEmpty && imgUrl != "") {
-                int? imageHeight = await ImgUtil.getImageHeight(imgUrl);
+                /*int? imageHeight = await ImgUtil.getImageHeight(imgUrl);
                 calculateItemHeight += imageHeight!;
-                print('data--->${data.content + resList}');
+                print('data--->${data.content + resList}');*/
+                calculateItemHeight += 300;
               }
             }
           }
@@ -84,6 +86,7 @@ class _CollectPageState extends State<CollectPage>
             dataBean[i].content, ScreenUtil.hc_ScreenWidth(), 25);
       }
       notes.add(CollectedCard(
+
         data: dataBean[i].content + resList,
         createTime: updateTime.substring(0, updateTime.length - 4),
         user: userName,
@@ -98,7 +101,6 @@ class _CollectPageState extends State<CollectPage>
     return notes;
   }
 
-  late BuildContext mContext;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -106,16 +108,16 @@ class _CollectPageState extends State<CollectPage>
     super.initState();
     _initializedFirst = false;
     _future = _queryCollectNotes();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
     _scrollController.addListener(() {
       setState(() {
         print('scroller---->');
       });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -213,7 +215,6 @@ class _CollectPageState extends State<CollectPage>
                         header: const ClassicHeader(),
                         onRefresh: _onRefresh,
                         child: SlidableAutoCloseBehavior(
-                          key: key,
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: _notes.length,
@@ -248,17 +249,33 @@ class _CollectPageState extends State<CollectPage>
                                             ),
                                           ),
                                           onTap: () {
-                                            Future<bool> deleteMemo =
-                                                RequestManager.getClient()
-                                                    .deleteMemo(
-                                                        item.id.toString());
-                                            deleteMemo.then((isDeleted) {
-                                              if (isDeleted) {
-                                                setState(() {
-                                                  _notes.removeAt(index);
+                                            DialogView.alertDialog(
+                                                context,
+                                                '删除提醒',
+                                                ["删除", "取消"],
+                                                '确定要删除该笔记吗?',
+                                                Colors.red, (isDelete) {
+                                              if (isDelete) {
+                                                Future<bool> deleteMemo =
+                                                    RequestManager.getClient()
+                                                        .deleteMemo(
+                                                            item.id.toString());
+                                                deleteMemo.then((isDeleteOk) {
+                                                  if (isDeleteOk) {
+                                                    setState(() {
+                                                      _notes.removeAt(index);
+                                                      ToastUtil.showToast(
+                                                          message: "进行永久删除操作");
+                                                    });
+                                                  }
                                                 });
-                                                ToastUtil.showToast(
-                                                    message: "进行永久删除操作");
+                                              } else {
+                                                print(
+                                                    'late_BuildContext_mContext---${Slidable.of(mContext) == null}');
+                                                setState(() {
+                                                  Slidable.of(mContext)
+                                                      ?.close();
+                                                });
                                               }
                                             });
                                           },
@@ -287,6 +304,22 @@ class _CollectPageState extends State<CollectPage>
                                               ),
                                             ),
                                             onTap: () {
+                                              DialogView.alertDialog(
+                                                  context,
+                                                  '笔记恢复',
+                                                  ["恢复", "取消"],
+                                                  '确定要恢复该笔记吗?',
+                                                  Colors.blue, (isRestore) {
+                                                if (isRestore) {
+                                                } else {
+                                                  print(
+                                                      'late_BuildContext_mContext---${Slidable.of(mContext) == null}');
+                                                  setState(() {
+                                                    Slidable.of(mContext)
+                                                        ?.close();
+                                                  });
+                                                }
+                                              });
                                               ToastUtil.showToast(
                                                   message: "进行数据恢复操作");
                                             },
@@ -297,6 +330,7 @@ class _CollectPageState extends State<CollectPage>
                                         BoxConstraints constraints) {
                                   Slidable.of(contextFromLayoutBuilder)
                                       ?.close();
+                                  mContext = contextFromLayoutBuilder;
                                   return item;
                                 }),
                               );
@@ -327,7 +361,6 @@ class _CollectPageState extends State<CollectPage>
   void _onRefresh() async {
     var notes = await _queryCollectNotes();
     if (notes.isNotEmpty) {
-      print('kkkkkkk');
       if (mounted) {
         print('222223333322');
         setState(() {
@@ -348,4 +381,14 @@ class _CollectPageState extends State<CollectPage>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class CustomSlidableAutoCloseBehavior extends SlidableAutoCloseBehavior {
+  CustomSlidableAutoCloseBehavior({required super.child});
+
+  @override
+  void onSlideIsOpenChanged(bool isOpen) {
+    // 滑动操作完成后的处理逻辑
+    // 触发ListView的滚动监听
+  }
 }

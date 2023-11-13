@@ -143,15 +143,24 @@ class _AddPageState extends State<AddPage> {
 
   ///初始化笔记内容
   Future<List<Widget>> _initNotes() async {
-    List<Widget> notes = [Container()];
+    List<Widget> notes = [];
+    int currentTimeStart = DateTime.now().millisecondsSinceEpoch;
+
+    print('_initNotes开始时间${currentTimeStart}');
     MemosBean memosBean =
         await RequestManager.getClient().queryAllMemos("NORMAL");
+    int currentTimeEnd = DateTime.now().millisecondsSinceEpoch;
+    print('_initNotes结束时间${currentTimeEnd}');
+
+    print("请求耗时：${currentTimeEnd - currentTimeStart} ms");
     // MemosBean
     var memoData = memosBean.data;
+    int currentTimeStart2 = DateTime.now().millisecondsSinceEpoch;
+
+    print('_initNotes开始时间2${currentTimeStart2}');
     for (var data in memoData) {
       var titleReal = '';
-      var updateTime =
-          DateTime.fromMillisecondsSinceEpoch(data.updatedTs * 1000).toString();
+      var updateTime = DateTime.fromMillisecondsSinceEpoch(data.updatedTs * 1000).toString();
       List<ResourceListBean> resourceList = data.resourceList;
       var resList = "";
       if (data.content.length < 7) {
@@ -168,25 +177,27 @@ class _AddPageState extends State<AddPage> {
             // resList+="[![]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename}})";
             // resList += "![](../images/ic_desc_video.png)";
             // resList += ""+"[[🎦${resData.filename}-type:${resData.type}]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
-            resList +=
-                """ \n <video src="http://43.138.80.236:5230/o/r/26/video.mp4"> """;
+            // resList += """ \n <video src="http://43.138.80.236:5230/o/r/26/video.mp4"> """;
             // resList += "![](../images/ic_desc_video.png)";
           }
         }
       }
-
       var calculateItemHeight = 0.0;
       calculateItemHeight = ScreenUtil.calculateItemHeight(
           data.content + resList, ScreenUtil.hc_ScreenWidth(), 25);
       List<String> img = ImgUtil.getImgFromTxt(data.content + resList);
       if (img.isNotEmpty) {
-        print('img.isNotEmpty');
+        // print('img.isNotEmpty');
         for (var imgUrl in img) {
           if (imgUrl.isNotEmpty && imgUrl != "") {
+            /*int currentTimestart3 = DateTime.now().millisecondsSinceEpoch;
             int? imageHeight = await ImgUtil.getImageHeight(imgUrl);
-            calculateItemHeight += imageHeight!;
-            print('calculateItemHeight------->${calculateItemHeight}');
-            print('data--->${data.content + resList}');
+            int currentTimeend3 = DateTime.now().millisecondsSinceEpoch;
+            print("请求耗时3：${currentTimeend3 - currentTimestart3} ms");
+            calculateItemHeight += imageHeight!;*/
+            calculateItemHeight += 300;
+            /*print('calculateItemHeight------->${calculateItemHeight}');
+            print('data--->${data.content + resList}');*/
           }
         }
       }
@@ -198,6 +209,10 @@ class _AddPageState extends State<AddPage> {
         updateTime: updateTime.substring(0, updateTime.length - 4),
       ));
     }
+    int currentTimeEnd2 = DateTime.now().millisecondsSinceEpoch;
+    print('_initNotes结束时间2${currentTimeEnd2}');
+    print("请求耗时2：${currentTimeEnd2 - currentTimeStart2} ms");
+
     return notes;
   }
 

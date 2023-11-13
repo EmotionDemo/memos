@@ -1,11 +1,10 @@
-import 'dart:io' as io;
-
 import 'package:flutter/material.dart';
 import 'package:memos/auth/login_page.dart';
 import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:memos/beans/MeBean.dart';
+import 'package:memos/beans/TagsBean.dart';
 import 'package:memos/pages/error_page.dart';
 import 'package:memos/router/routers.dart';
 import 'dart:io';
@@ -39,10 +38,20 @@ void main() {
               Global.updateUserInfo(meData);
               firstRoutePage = const MainPage();
             } else {
-              firstRoutePage = const ErrorPage();
+              if (Global.INIT_STATUS == -1) {
+                firstRoutePage = const LoginPage();
+              } else {
+                firstRoutePage = const ErrorPage();
+              }
             }
+            Future<TagsBean> allTags =
+                RequestManager.getClient().queryAllTags();
+            allTags.then((value) {
+              Global.saveUserTagsInfo(value);
+            });
+
             runApp(const MyApp());
-          }).catchError((error){
+          }).catchError((error) {
             print('queryUserStatus error,info->${error}');
           });
         } else {
@@ -54,13 +63,16 @@ void main() {
   });
 }
 
-
+///获取权限
 Future<bool> _initStoragePermission() async {
   PermissionStatus statusStorage = await Permission.storage.request();
   PermissionStatus externalStorage =
       await Permission.manageExternalStorage.request();
-  if (statusStorage.isGranted && externalStorage.isGranted) {
-    print('已经获取读写权限');
+  PermissionStatus camera = await Permission.camera.request();
+  if (statusStorage.isGranted &&
+      externalStorage.isGranted &&
+      camera.isGranted) {
+    print('已经获取读、写、相机权限');
     return true;
   } else if (statusStorage.isPermanentlyDenied ||
       externalStorage.isPermanentlyDenied) {

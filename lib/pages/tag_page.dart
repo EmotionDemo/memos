@@ -19,7 +19,12 @@ class _TagPageState extends State<TagPage> with AutomaticKeepAliveClientMixin {
     List<FlagItem> list = [];
     //倒置一下，使最新添加的在最前面
     for (var tag in data.reversed) {
-      list.add(FlagItem(tagText: '#$tag'));
+      list.add(FlagItem(
+        tagText: '#$tag',
+        onClickListener: (String data) {
+
+        },
+      ));
     }
     return list;
   }

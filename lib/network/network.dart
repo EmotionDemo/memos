@@ -1,9 +1,14 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:memos/auth/login_page.dart';
+import 'package:memos/beans/MemoBean.dart';
 import 'package:memos/beans/MemosBean.dart';
+import 'package:memos/utils/file_utils.dart';
 import 'package:memos/utils/my_cookie.dart';
 
 import '../beans/LoginBean.dart';
@@ -26,12 +31,14 @@ const String status = "/api/status";
 const String getTags = "/api/tag";
 const String getMemos = "/api/memo";
 const String deleteMemos = "/api/memo/";
+const String createMemos = "/api/memo";
+const String uploadResource = "/api/resource";
 
 class HttpConfig {
   // static const baseUrl = BASE_URL;
   static const timeout = 3000;
-  static const CONNECT_TIMEOUT = 5000;
-  static const RECEIVE_TIMEOUT = 3000;
+  static const CONNECT_TIMEOUT = 15000;
+  static const RECEIVE_TIMEOUT = 13000;
 }
 
 class RequestManager {
@@ -197,13 +204,22 @@ class RequestManager {
   ///查询个人信息
   Future<MeBean?> queryMeInfo() async {
     await _setNewDioFromRamCookieData();
-    var response = await _dio!.get(me);
-    if (response.statusCode != 200) {
-      return null;
+    var response;
+    try {
+      response = await _dio!.get(me);
+      if (response.statusCode != 200) {
+        return null;
+      }
+    } catch (error) {
+      if (error is DioError) {
+        if (error.response?.statusCode == 401) {
+          Global. INIT_STATUS = -1;
+          return null;
+        }
+      }
     }
     return MeBean.fromJson(response.data);
   }
-
 
   ///查询所有笔记提交日期次数
   Future<List<String>> queryNoteDates() async {
@@ -226,18 +242,58 @@ class RequestManager {
     if (response.statusCode != 200) {
       throw Exception("查询Tags失败");
     }
-    return TagsBean.fromJson((response.data));
+    return TagsBean.fromJson(response.data);
   }
-  
-  
-  Future<bool> deleteMemo(String id)async {
-    var response = await _dio!.delete(deleteMemos+"$id");
-    if(response.statusCode!=200){
+
+  ///删除memos
+  Future<bool> deleteMemo(String id) async {
+    var response = await _dio!.delete(deleteMemos + "$id");
+    if (response.statusCode != 200) {
       print("删除id为${id}的memo失败 +${response.statusMessage}");
       return false;
     }
     return true;
   }
-  
-  
+
+  ///创建笔记
+  Future<MemoBean> createMemo(
+      String content, List<dynamic> resourceIdList, String visibility) async {
+    var response = await _dio!.post(createMemos, data: {
+      'content': content,
+      'resourceIdList': resourceIdList,
+      'visibility': visibility
+    });
+    if (response.statusCode != 200) {
+      throw Exception('创建Memo失败：${response.statusMessage}');
+    }
+    return MemoBean.fromJson(response.data);
+  }
+
+  ///上传资源
+  Future<void> upload(String source) async {
+    print('source------->${source}');
+    if(source.isEmpty){
+      return;
+    }
+    FormData formData2 = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        source,
+        filename: FileUtils.subStringName(source),
+        contentType: MediaType("image", "jpeg"), //add this
+      ),
+    });
+
+    try {
+      /*var formData = FormData();
+      formData.files.add(MapEntry('file', file));*/
+      var response = await _dio!.post(uploadResource, data: formData2);
+      // var response = await _dio!.put(uploadResource,data:formData );
+      if (response.statusCode != 200) {
+        throw Exception("上传资源失败：${response.statusMessage}");
+      }
+      print("response.data--->${response.data}");
+    } catch (e) {
+      print("上传资源失败:$e");
+    }
+  }
 }
