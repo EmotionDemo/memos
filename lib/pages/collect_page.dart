@@ -95,7 +95,7 @@ class _CollectPageState extends State<CollectPage>
       ));
       print('num-->${num},i--->${i}-->notes.length->${notes.length}');
       num++;
-      print('xidoubao---->${notes.length}');
+      print('xidoubao1111111111111---->${notes.length}');
     }
 
     return notes;
