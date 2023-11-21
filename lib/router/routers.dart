@@ -7,6 +7,7 @@ import 'package:memos/pages/memo_detail.dart';
 import 'package:memos/pages/more_page.dart';
 import 'package:memos/pages/user_info.dart';
 
+import '../pages/add_page.dart';
 import '../pages/input_note_page.dart';
 
 Map routes = {
@@ -19,6 +20,7 @@ Map routes = {
   "/more_page": (context) => const MorePage(),
   "/user_info": (context) => const UserInfoPage(),
   "/input_note_page": (context) => const InputPage(),
+  "/add_page":(context) => const AddPage()
 };
 
 var onGenerateRoute = (RouteSettings settings) {

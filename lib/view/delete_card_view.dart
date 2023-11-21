@@ -45,7 +45,7 @@ class _NoteCardState extends State<CollectedCard>
               context,
               CupertinoPageRoute(
                   builder: (context) => MemoDetail(
-                    data: MemoDetailBean(widget.data,_setTitle(widget.data.substring(0, 7))),
+                    data: MemoDetailBean(widget.data,/*_setTitle(widget.data.substring(0, 7))*/"信息正文"),
                   )));
         },
         child: Card(

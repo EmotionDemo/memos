@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:memos/beans/MemosBean.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
 import 'package:memos/utils/SpUtils.dart';
+import 'package:memos/utils/file_utils.dart';
 import 'package:memos/view/note_card_view.dart';
 import 'package:memos/view/search_view.dart';
 import '../constants/constant.dart';
@@ -15,13 +17,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'input_note_page.dart';
 
 class AddPage extends StatefulWidget {
-  const AddPage({Key? key}) : super(key: key);
+ const AddPage({Key? key}) : super(key: key);
+  // final VoidCallback? onCallback;
 
   @override
   State<AddPage> createState() => _AddPageState();
 }
 
-class _AddPageState extends State<AddPage> {
+class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
   final TextEditingController controller = TextEditingController();
   List<Widget> _notes = [Container()];
   late Future<List<Widget>> _future;
@@ -30,8 +33,11 @@ class _AddPageState extends State<AddPage> {
   @override
   void initState() {
     super.initState();
+    print('lfh---initState2333');
     _future = _initNotes();
     initializedFirst = false;
+    // 添加 WidgetsBindingObserver 监听器
+    WidgetsBinding.instance.addObserver(this);
   }
 
   ScrollController scrollController = ScrollController();
@@ -67,8 +73,16 @@ class _AddPageState extends State<AddPage> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, "/input_note_page");
-                  print('bvbvbbvvb');
+                  // Navigator.push(
+                  //                   context,
+                  //                   CupertinoPageRoute(
+                  //                       builder: (context) => MemoDetail(
+                  //                             data: MemoDetailBean(widget.data,widget.title),
+                  //                           )));
+
+                  // Navigator.pushNamed(context, "/input_note_page");
+                  //IOS切换动画
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => const InputPage()));
                 },
               ),
             ],
@@ -160,13 +174,14 @@ class _AddPageState extends State<AddPage> {
     print('_initNotes开始时间2${currentTimeStart2}');
     for (var data in memoData) {
       var titleReal = '';
-      var updateTime = DateTime.fromMillisecondsSinceEpoch(data.updatedTs * 1000).toString();
+      var updateTime =
+          DateTime.fromMillisecondsSinceEpoch(data.updatedTs * 1000).toString();
       List<ResourceListBean> resourceList = data.resourceList;
       var resList = "";
-      if (data.content.length < 7) {
-        titleReal = data.content;
+      if (data.content.length < 10) {
+        titleReal = FileUtils.removeSpecialCharacters(data.content);
       } else {
-        titleReal = data.content.substring(0, 7);
+        titleReal = data.content.substring(0, 10);
       }
       if (resourceList.isNotEmpty) {
         for (var resData in resourceList) {
@@ -212,7 +227,6 @@ class _AddPageState extends State<AddPage> {
     int currentTimeEnd2 = DateTime.now().millisecondsSinceEpoch;
     print('_initNotes结束时间2${currentTimeEnd2}');
     print("请求耗时2：${currentTimeEnd2 - currentTimeStart2} ms");
-
     return notes;
   }
 
@@ -234,6 +248,25 @@ class _AddPageState extends State<AddPage> {
   @override
   void dispose() {
     super.dispose();
+    // 移除 WidgetsBindingObserver 监听器
+    WidgetsBinding.instance!.removeObserver(this);
     _refreshController.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('lfh---didChangeDependencies');
+    _future = _initNotes();
+    initializedFirst = false;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // 应用程序进入 resumed 状态，类似于 onResume
+      print('lfh---didChangeAppLifecycleState');
+      _onRefresh();
+    }
   }
 }

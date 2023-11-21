@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:memos/pages/add_page.dart';
 
 import '../beans/MemoDetailBean.dart';
 
@@ -25,21 +26,22 @@ class _MemoDetailState extends State<MemoDetail> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: Text(
-              widget.data.title,
+              /*widget.data.title*/"📒笔记正文",
               style: const TextStyle(color: Colors.black87),
               textAlign: TextAlign.center,
             ),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.popAndPushNamed(context, "/add_page");
+                // Navigator.pop(context);
               },
             )),
         body: MarkdownWidget(
           data: widget.data.data,
           shrinkWrap: true,
           padding:
-              const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+              const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 10),
         ));
   }
 }

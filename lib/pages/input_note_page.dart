@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -356,23 +357,37 @@ class _InputPageState extends State<InputPage>
                                 height: 40,
                               ),
                               onTap: () {
-                                String content = _noteController.text.toString();
+                                String content =
+                                    _noteController.text.toString();
                                 if (content.isEmpty && upLoadImage.isEmpty) {
                                   ToastUtil.showToast(message: '内容为空,请完善内容');
                                   return;
                                 }
                                 DialogView.waitDialog(context);
-                                RequestManager.getClient().upload(upLoadImage[0],);
-                                Navigator.pop(context);
-                                /*Future<MemoBean> memoInputResult = RequestManager.getClient().createMemo(_noteController.text.toString(), [], visibilityReal);
-                                //String source,String fileName
-
-                                memoInputResult.then((value) {
-                                  //关闭对话框
-                                  Navigator.pop(context);
-                                  //退出编辑页面
-                                  Navigator.pop(context);
-                                });*/
+                                if (upLoadImage.isNotEmpty) {
+                                  //上传资源
+                                  RequestManager.getClient().upload(
+                                    upLoadImage[0],
+                                  );
+                                }
+                                try {
+                                  Future<MemoBean> memoInputResult =
+                                      RequestManager.getClient().createMemo(
+                                          _noteController.text.toString(),
+                                          [],
+                                          visibilityReal);
+                                  //String source,String fileName
+                                  memoInputResult.then((value) {
+                                    //关闭对话框
+                                    Navigator.pop(context);
+                                    /*//退出编辑页面
+                                  Navigator.pop(context);*/
+                                    Navigator.pop(context);
+                                  });
+                                } on DioError catch (dioError) {
+                                  ToastUtil.showToast(
+                                      message: dioError.message);
+                                }
                               },
                             ),
                           ),

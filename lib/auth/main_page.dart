@@ -6,7 +6,7 @@ import 'package:memos/pages/tag_page.dart';
 import 'package:memos/utils/SpUtils.dart';
 
 import '../pages/add_page.dart';
- import 'login_page.dart';
+import 'login_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -15,7 +15,8 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin {
+class _MainPageState extends State<MainPage>
+    with AutomaticKeepAliveClientMixin {
   int _currentIndex = -1;
   late AssetImage collectImg;
   late AssetImage collectSelectedImg;
@@ -38,12 +39,12 @@ class _MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin 
   }
 
   List<BottomNavigationBarItem> bottomItems = [];
-  final pages = const [
-    CollectPage(),
-    TagPage(),
-    AddPage(),
-    ResourcePage(),
-    MorePage()
+  final pages = [
+    const CollectPage(),
+    const TagPage(),
+    const AddPage(),
+    const ResourcePage(),
+    const MorePage()
   ];
 
   @override

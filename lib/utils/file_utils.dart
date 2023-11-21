@@ -18,4 +18,25 @@ class FileUtils{
     String result = input.substring(startIndex, endIndex);
     return result;
   }
+
+  static String setTitle(String content) {
+    int newlineIndex = content.indexOf('\n');
+    if (newlineIndex != -1) {
+      // 如果存在换行符，则截取第0个字符到换行符前面的字符并返回
+      return content.substring(0, newlineIndex);
+    } else {
+      // 如果没有换行符，则直接返回当前字符串
+      return content;
+    }
+  }
+
+  //标题移除特殊字符
+  static String removeSpecialCharacters(String input) {
+    // 定义正则表达式，匹配除了字母、数字、空格以外的所有字符
+    RegExp regExp = RegExp(r"[^a-zA-Z0-9\s]");
+
+    // 使用replaceAll方法替换匹配的字符为空字符串
+    return input.replaceAll(regExp, "");
+  }
 }
+

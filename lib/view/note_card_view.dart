@@ -209,7 +209,9 @@ class _NoteCardState extends State<NoteCard>
                   CupertinoPageRoute(
                       builder: (context) => MemoDetail(
                             data: MemoDetailBean(widget.data,widget.title),
-                          )));
+                          ))).then((value) => {
+
+              });
             },
           )),
     );
