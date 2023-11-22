@@ -14,17 +14,19 @@ import '../network/network.dart';
 // import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../utils/constant.dart';
 import 'input_note_page.dart';
 
 class AddPage extends StatefulWidget {
- const AddPage({Key? key}) : super(key: key);
+  const AddPage({Key? key}) : super(key: key);
+
   // final VoidCallback? onCallback;
 
   @override
   State<AddPage> createState() => _AddPageState();
 }
 
-class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
+class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   final TextEditingController controller = TextEditingController();
   List<Widget> _notes = [Container()];
   late Future<List<Widget>> _future;
@@ -80,9 +82,17 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
                   //                             data: MemoDetailBean(widget.data,widget.title),
                   //                           )));
 
-                  // Navigator.pushNamed(context, "/input_note_page");
+                  Navigator.pushNamed(context, "/input_note_page")
+                      .then((value) => {
+                            if (isSendNewMessage)
+                              {
+                                _onRefresh(),
+                                setState(() {}),
+                                isSendNewMessage = false
+                              }
+                          });
                   //IOS切换动画
-                  Navigator.push(context, CupertinoPageRoute(builder: (context) => const InputPage()));
+                  // Navigator.push(context, CupertinoPageRoute(builder: (context) => const InputPage()));
                 },
               ),
             ],
@@ -97,7 +107,13 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
               child: SearchView(
                 onSearchInputComplete: () {
                   FocusScope.of(context).unfocus();
-                  print('aaa');
+                  List<Widget> notes = [];
+                  Future<MemosBean> memoData = RequestManager.getClient()
+                      .queryMemosByKey(controller.text.trim());
+                  memoData.then((value) => {
+                        configMemoDate(value.data, notes),
+                        _future = notes;
+                      });
                 },
                 controller: controller,
                 hintText: "快捷搜索",
@@ -158,20 +174,15 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
   ///初始化笔记内容
   Future<List<Widget>> _initNotes() async {
     List<Widget> notes = [];
-    int currentTimeStart = DateTime.now().millisecondsSinceEpoch;
-
-    print('_initNotes开始时间${currentTimeStart}');
     MemosBean memosBean =
         await RequestManager.getClient().queryAllMemos("NORMAL");
-    int currentTimeEnd = DateTime.now().millisecondsSinceEpoch;
-    print('_initNotes结束时间${currentTimeEnd}');
-
-    print("请求耗时：${currentTimeEnd - currentTimeStart} ms");
-    // MemosBean
     var memoData = memosBean.data;
-    int currentTimeStart2 = DateTime.now().millisecondsSinceEpoch;
+    configMemoDate(memoData, notes);
+    return notes;
+  }
 
-    print('_initNotes开始时间2${currentTimeStart2}');
+  //配置Memo数据
+  void configMemoDate(List<DataBean> memoData, List<Widget> notes) {
     for (var data in memoData) {
       var titleReal = '';
       var updateTime =
@@ -205,14 +216,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
         // print('img.isNotEmpty');
         for (var imgUrl in img) {
           if (imgUrl.isNotEmpty && imgUrl != "") {
-            /*int currentTimestart3 = DateTime.now().millisecondsSinceEpoch;
-            int? imageHeight = await ImgUtil.getImageHeight(imgUrl);
-            int currentTimeend3 = DateTime.now().millisecondsSinceEpoch;
-            print("请求耗时3：${currentTimeend3 - currentTimestart3} ms");
-            calculateItemHeight += imageHeight!;*/
             calculateItemHeight += 300;
-            /*print('calculateItemHeight------->${calculateItemHeight}');
-            print('data--->${data.content + resList}');*/
           }
         }
       }
@@ -222,12 +226,11 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
         visibility: data.visibility,
         itemHeight: calculateItemHeight,
         updateTime: updateTime.substring(0, updateTime.length - 4),
+        onClickedListener: () {
+          _onRefresh();
+        },
       ));
     }
-    int currentTimeEnd2 = DateTime.now().millisecondsSinceEpoch;
-    print('_initNotes结束时间2${currentTimeEnd2}');
-    print("请求耗时2：${currentTimeEnd2 - currentTimeStart2} ms");
-    return notes;
   }
 
   ///刷新笔记内容
@@ -254,19 +257,10 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver{
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print('lfh---didChangeDependencies');
-    _future = _initNotes();
-    initializedFirst = false;
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       // 应用程序进入 resumed 状态，类似于 onResume
       print('lfh---didChangeAppLifecycleState');
-      _onRefresh();
     }
   }
 }

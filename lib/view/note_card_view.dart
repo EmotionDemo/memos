@@ -12,6 +12,8 @@ import 'package:memos/utils/video.dart';
 import '../beans/MemoDetailBean.dart';
 import '../pages/memo_detail.dart';
 
+typedef OnClickedListener = Function();
+
 class NoteCard extends StatefulWidget {
   const NoteCard(
       {Key? key,
@@ -19,7 +21,7 @@ class NoteCard extends StatefulWidget {
       required this.title,
       required this.visibility,
       required this.updateTime,
-      required this.itemHeight})
+      required this.itemHeight, required this.onClickedListener})
       : super(key: key);
 
   final String data;
@@ -27,6 +29,7 @@ class NoteCard extends StatefulWidget {
   final String visibility;
   final String updateTime;
   final double itemHeight;
+  final OnClickedListener onClickedListener;
 
   @override
   State<NoteCard> createState() => _NoteCardState();
@@ -206,11 +209,9 @@ class _NoteCardState extends State<NoteCard>
             onTap: () {
               Navigator.push(
                   context,
-                  CupertinoPageRoute(
-                      builder: (context) => MemoDetail(
-                            data: MemoDetailBean(widget.data,widget.title),
-                          ))).then((value) => {
-
+                  CupertinoPageRoute(builder: (context) => MemoDetail(data: MemoDetailBean(widget.data,widget.title),))
+              ).then((value) => {
+                widget.onClickedListener
               });
             },
           )),

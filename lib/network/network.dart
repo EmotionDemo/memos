@@ -32,7 +32,7 @@ const String getTags = "/api/tag";
 const String getMemos = "/api/memo";
 const String deleteMemos = "/api/memo/";
 const String createMemos = "/api/memo";
-const String uploadResource = "/api/resource";
+const String uploadResource = "/api/resource/";
 
 class HttpConfig {
   // static const baseUrl = BASE_URL;
@@ -213,7 +213,7 @@ class RequestManager {
     } catch (error) {
       if (error is DioError) {
         if (error.response?.statusCode == 401) {
-          Global. INIT_STATUS = -1;
+          Global.INIT_STATUS = -1;
           return null;
         }
       }
@@ -245,6 +245,20 @@ class RequestManager {
     return TagsBean.fromJson(response.data);
   }
 
+  //根据信息查询Memo
+  Future<MemosBean> queryMemosByKey(String key) async {
+    Response response;
+    if (key.isNotEmpty || key != "") {
+      response = await _dio!.get(getMemos, queryParameters: {"content": key});
+    } else {
+      response = await _dio!.get(getMemos);
+    }
+    if (response.statusCode != 200) {
+      throw Exception("查询所有memos失败");
+    }
+    return MemosBean.fromJson(response.data);
+  }
+
   ///删除memos
   Future<bool> deleteMemo(String id) async {
     var response = await _dio!.delete(deleteMemos + "$id");
@@ -272,21 +286,21 @@ class RequestManager {
   ///上传资源
   Future<void> upload(String source) async {
     print('source------->${source}');
-    if(source.isEmpty){
+    if (source.isEmpty) {
       return;
     }
-    FormData formData2 = FormData.fromMap({
+    FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(
         source,
         filename: FileUtils.subStringName(source),
-        contentType: MediaType("image", "jpeg"), //add this
+        /*contentType: MediaType("image", "jpeg"),*/
       ),
     });
 
     try {
       /*var formData = FormData();
       formData.files.add(MapEntry('file', file));*/
-      var response = await _dio!.post(uploadResource, data: formData2);
+      var response = await _dio!.post(uploadResource, data: formData);
       // var response = await _dio!.put(uploadResource,data:formData );
       if (response.statusCode != 200) {
         throw Exception("上传资源失败：${response.statusMessage}");

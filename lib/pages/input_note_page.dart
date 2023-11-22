@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:memos/beans/MemoBean.dart';
 import 'package:memos/network/network.dart';
 import 'package:memos/utils/SpUtils.dart';
+import 'package:memos/utils/constant.dart';
 import 'package:memos/utils/toast.dart';
 import 'package:memos/view/dialog_view.dart';
 import 'package:uuid/uuid.dart';
@@ -378,10 +379,10 @@ class _InputPageState extends State<InputPage>
                                           visibilityReal);
                                   //String source,String fileName
                                   memoInputResult.then((value) {
+                                    isSendNewMessage = true;
                                     //关闭对话框
                                     Navigator.pop(context);
-                                    /*//退出编辑页面
-                                  Navigator.pop(context);*/
+                                    //退出编辑页面
                                     Navigator.pop(context);
                                   });
                                 } on DioError catch (dioError) {

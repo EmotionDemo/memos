@@ -25,16 +25,16 @@ class _MemoDetailState extends State<MemoDetail> {
             systemOverlayStyle: SystemUiOverlayStyle.dark,
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: Text(
+            title:const Text(
               /*widget.data.title*/"📒笔记正文",
-              style: const TextStyle(color: Colors.black87),
+              style: TextStyle(color: Colors.black87),
               textAlign: TextAlign.center,
             ),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () {
-                Navigator.popAndPushNamed(context, "/add_page");
-                // Navigator.pop(context);
+                // Navigator.popAndPushNamed(context, "/add_page");
+                Navigator.pop(context);
               },
             )),
         body: MarkdownWidget(
