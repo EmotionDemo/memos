@@ -29,8 +29,27 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   final TextEditingController controller = TextEditingController();
   List<Widget> _notes = [Container()];
+  List<Widget> _notesOriginal = [Container()];
   late Future<List<Widget>> _future;
   late bool initializedFirst;
+  final Widget _noData = SizedBox(
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 250,
+            height: 250,
+            child: Image.asset('images/ic_not_data.png'),
+          ),
+          const Text(
+            '什么都没有~',
+            style: TextStyle(color: Colors.blue),
+          )
+        ],
+      ),
+    ),
+  );
 
   @override
   void initState() {
@@ -105,18 +124,16 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
               height: 43,
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: SearchView(
-                onSearchInputComplete: () {
+                onSearchInputComplete: () async {
                   FocusScope.of(context).unfocus();
-                  List<Widget> notes = [];
-                  Future<MemosBean> memoData = RequestManager.getClient()
-                      .queryMemosByKey(controller.text.trim());
-                  memoData.then((value) => {
-                        configMemoDate(value.data, notes),
-                        _future = notes;
-                      });
+                  _queryMemosByKey(controller.text.trim());
                 },
                 controller: controller,
-                hintText: "快捷搜索",
+                hintText: "快速搜索",
+                onCharChanged: (value) {
+                  print('xjp----->${value}');
+                  _queryMemosByKey(value.toString().trim());
+                },
               ),
             ),
             const SizedBox(
@@ -178,11 +195,42 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
         await RequestManager.getClient().queryAllMemos("NORMAL");
     var memoData = memosBean.data;
     configMemoDate(memoData, notes);
+    _notesOriginal = notes;
     return notes;
+  }
+
+  //根据条件查询
+  void _queryMemosByKey(String key) async {
+    List<Widget> notes = [];
+    if (key.isEmpty) {
+      setState(() {
+        _onRefresh();
+        //关掉键盘
+        FocusScope.of(context).unfocus();
+      });
+      return;
+    }
+    print('_notesOriginal${_notesOriginal}');
+    for (var value in _notesOriginal) {
+      if (value is Container) {
+        continue;
+      }
+      if ((value as NoteCard).data.contains(key)) {
+        notes.add(value);
+      }
+    }
+    setState(() {
+
+      if (notes.isEmpty) {
+        notes.add(_noData);
+      }
+      _notes = notes;
+    });
   }
 
   //配置Memo数据
   void configMemoDate(List<DataBean> memoData, List<Widget> notes) {
+    notes.clear();
     for (var data in memoData) {
       var titleReal = '';
       var updateTime =
@@ -220,6 +268,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
           }
         }
       }
+
       notes.add(NoteCard(
         title: titleReal,
         data: data.content + resList,
@@ -236,10 +285,11 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   ///刷新笔记内容
   void _onRefresh() async {
     var notes = await _initNotes();
-    if (_notes.isNotEmpty) {
+    if (notes.isNotEmpty) {
       if (mounted) {
         setState(() {
           _notes = notes;
+          _notesOriginal = notes;
           _refreshController.refreshCompleted();
         });
       }

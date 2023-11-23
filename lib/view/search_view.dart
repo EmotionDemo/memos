@@ -5,11 +5,12 @@ class SearchView extends StatelessWidget {
       {Key? key,
       required this.onSearchInputComplete,
       required this.controller,
-      this.hintText})
+      this.hintText, this.onCharChanged})
       : super(key: key);
   final VoidCallback? onSearchInputComplete;
   final TextEditingController? controller;
   final String? hintText;
+  final ValueChanged? onCharChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class SearchView extends StatelessWidget {
       textInputAction: TextInputAction.search,
       textAlign: TextAlign.left,
       onEditingComplete: onSearchInputComplete,
+      onChanged:onCharChanged,
       decoration: InputDecoration(
         fillColor: const Color.fromRGBO(200, 220, 210, 1.0),
         filled: true,
