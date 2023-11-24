@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +33,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   List<Widget> _notesOriginal = [Container()];
   late Future<List<Widget>> _future;
   late bool initializedFirst;
+  late String errorMessage;
   final Widget _noData = SizedBox(
     child: Center(
       child: Column(
@@ -48,6 +50,46 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
           )
         ],
       ),
+    ),
+  );
+
+  final Widget _requesting = SizedBox(
+    child: Center(
+      child: Column(
+        children: [
+          SizedBox(
+            width: 250,
+            height: 250,
+            child: Image.asset('images/ic_not_data.png'),
+          ),
+          const Text(
+            '正在加载中...',
+            style: TextStyle(color: Colors.red),
+          )
+        ],
+      ),
+    ),
+  );
+
+  late final Widget _requestError = Center(
+    child: InkWell(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 200,
+            height: 200,
+            child: Image.asset('images/ic_net_error.png'),
+          ),
+          const Text(
+            '加载失败，请点击或下拉刷新~',
+            style: TextStyle(color: Colors.black87),
+          ),
+        ],
+      ),
+      onTap: () {
+        _onRefresh();
+      },
     ),
   );
 
@@ -125,8 +167,8 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: SearchView(
                 onSearchInputComplete: () async {
-                  FocusScope.of(context).unfocus();
                   _queryMemosByKey(controller.text.trim());
+                  FocusScope.of(context).unfocus();
                 },
                 controller: controller,
                 hintText: "快速搜索",
@@ -172,15 +214,15 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
                         ),
                       ));
                     } else {
-                      return Text('获取信息失败....');
+                      return _requestError;
                     }
                   }
                 } else if (snapshot.connectionState == ConnectionState.none ||
                     snapshot.connectionState == ConnectionState.waiting ||
                     snapshot.connectionState == ConnectionState.active) {
-                  return Text('正在请求中....');
+                  return _requesting;
                 } else {
-                  return Text('未知错误....');
+                  return _requestError;
                 }
               },
             ),
@@ -191,11 +233,21 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   ///初始化笔记内容
   Future<List<Widget>> _initNotes() async {
     List<Widget> notes = [];
-    MemosBean memosBean =
-        await RequestManager.getClient().queryAllMemos("NORMAL");
-    var memoData = memosBean.data;
-    configMemoDate(memoData, notes);
-    _notesOriginal = notes;
+    try {
+      MemosBean memosBean = await RequestManager.getClient().queryAllMemos("NORMAL");
+      var memoData = memosBean.data;
+      if (memoData.isNotEmpty) {
+        configMemoDate(memoData, notes);
+        _notesOriginal = notes;
+      } else {
+        notes = [_requestError];
+      }
+    } catch (error) {
+      if (error is DioError) {
+        errorMessage = error.message;
+        notes = [_requestError];
+      }
+    }
     return notes;
   }
 
@@ -220,7 +272,6 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
       }
     }
     setState(() {
-
       if (notes.isEmpty) {
         notes.add(_noData);
       }
@@ -233,8 +284,10 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
     notes.clear();
     for (var data in memoData) {
       var titleReal = '';
+      var noteId = data.id;
       var updateTime =
           DateTime.fromMillisecondsSinceEpoch(data.updatedTs * 1000).toString();
+
       List<ResourceListBean> resourceList = data.resourceList;
       var resList = "";
       if (data.content.length < 10) {
@@ -268,7 +321,6 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
           }
         }
       }
-
       notes.add(NoteCard(
         title: titleReal,
         data: data.content + resList,
@@ -278,6 +330,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
         onClickedListener: () {
           _onRefresh();
         },
+        noteId: noteId,
       ));
     }
   }
@@ -302,7 +355,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   void dispose() {
     super.dispose();
     // 移除 WidgetsBindingObserver 监听器
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _refreshController.dispose();
   }
 

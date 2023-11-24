@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -36,66 +37,88 @@ class _CollectPageState extends State<CollectPage>
       RefreshController(initialRefresh: false);
   final key = Key(Uuid().v4().toString());
 
+  late final Widget _requestError = Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 200,
+          height: 200,
+          child: Image.asset('images/ic_net_error.png'),
+        ),
+        const SizedBox(height: 3),
+        InkWell(
+          child: const Text(
+            '加载失败，请点击或下拉刷新~',
+            style: TextStyle(color: Colors.black87),
+          ),
+          onTap: () {
+            _onRefresh(); // 重新加载的逻辑
+          },
+        ),
+      ],
+    ),
+  );
+
   ///查询被删除的笔记们
   Future<List<Widget>> _queryCollectNotes() async {
     List<Widget> notes = [];
-    MemosBean memos = await RequestManager.getClient()
-        .queryAllMemos(Global.MEMO_TYPE_ARCHIVED);
-    List<DataBean> dataBean = memos.data;
-    print('xidoubao0---->${dataBean.length}');
-    int num = 0;
-    for (int i = 0; i < dataBean.length; i++) {
-      print('lfh233---->${dataBean[i].content}');
-      var calculateItemHeight = 0.0;
-      var updateTime =
-          DateTime.fromMillisecondsSinceEpoch(dataBean[i].updatedTs * 1000)
-              .toString();
-      var userName = dataBean[i].creatorName;
-      List<ResourceListBean> resourceList = dataBean[i].resourceList;
-      var resList = "";
-      if (resourceList.isNotEmpty) {
-        for (var resData in resourceList) {
-          if (resData.type.contains(Global.CONTENT_TYPE_IMAGE)) {
-            resList +=
-                "![](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
-          } else if (resData.type.contains("video")) {
-            // resList+="[![]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename}})";
-            // resList += "![](../images/ic_desc_video.png)";
-            // resList += ""+"[[🎦${resData.filename}-type:${resData.type}]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
-            resList +=
-                """ \n <video src="http://43.138.80.236:5230/o/r/26/video.mp4"> """;
-            // resList += "![](../images/ic_desc_video.png)";
-          }
-          var data = dataBean[i];
-          List<String> img = ImgUtil.getImgFromTxt(data.content + resList);
-          print('1111--->calculateItemHeight->${calculateItemHeight}');
-          if (img.isNotEmpty) {
-            print('img.isNotEmpty');
-            for (var imgUrl in img) {
-              if (imgUrl.isNotEmpty && imgUrl != "") {
-                /*int? imageHeight = await ImgUtil.getImageHeight(imgUrl);
+    try {
+      MemosBean memos = await RequestManager.getClient()
+          .queryAllMemos(Global.MEMO_TYPE_ARCHIVED);
+      List<DataBean> dataBean = memos.data;
+      for (int i = 0; i < dataBean.length; i++) {
+        var calculateItemHeight = 0.0;
+        var updateTime =
+            DateTime.fromMillisecondsSinceEpoch(dataBean[i].updatedTs * 1000)
+                .toString();
+        var userName = dataBean[i].creatorName;
+        List<ResourceListBean> resourceList = dataBean[i].resourceList;
+        var resList = "";
+        if (resourceList.isNotEmpty) {
+          for (var resData in resourceList) {
+            if (resData.type.contains(Global.CONTENT_TYPE_IMAGE)) {
+              resList +=
+                  "![](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
+            } else if (resData.type.contains("video")) {
+              // resList+="[![]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename}})";
+              // resList += "![](../images/ic_desc_video.png)";
+              // resList += ""+"[[🎦${resData.filename}-type:${resData.type}]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
+              resList +=
+                  """ \n <video src="http://43.138.80.236:5230/o/r/26/video.mp4"> """;
+              // resList += "![](../images/ic_desc_video.png)";
+            }
+            var data = dataBean[i];
+            List<String> img = ImgUtil.getImgFromTxt(data.content + resList);
+            print('1111--->calculateItemHeight->${calculateItemHeight}');
+            if (img.isNotEmpty) {
+              print('img.isNotEmpty');
+              for (var imgUrl in img) {
+                if (imgUrl.isNotEmpty && imgUrl != "") {
+                  /*int? imageHeight = await ImgUtil.getImageHeight(imgUrl);
                 calculateItemHeight += imageHeight!;
                 print('data--->${data.content + resList}');*/
-                calculateItemHeight += 300;
+                  calculateItemHeight += 300;
+                }
               }
             }
           }
+        } else {
+          calculateItemHeight = ScreenUtil.calculateItemHeight(
+              dataBean[i].content, ScreenUtil.hc_ScreenWidth(), 25);
         }
-      } else {
-        calculateItemHeight = ScreenUtil.calculateItemHeight(
-            dataBean[i].content, ScreenUtil.hc_ScreenWidth(), 25);
+        notes.add(CollectedCard(
+          data: dataBean[i].content + resList,
+          createTime: updateTime.substring(0, updateTime.length - 4),
+          user: userName,
+          itemHeight: calculateItemHeight,
+          id: dataBean[i].id,
+        ));
       }
-      notes.add(CollectedCard(
-
-        data: dataBean[i].content + resList,
-        createTime: updateTime.substring(0, updateTime.length - 4),
-        user: userName,
-        itemHeight: calculateItemHeight,
-        id: dataBean[i].id,
-      ));
-      print('num-->${num},i--->${i}-->notes.length->${notes.length}');
-      num++;
-      print('xidoubao1111111111111---->${notes.length}');
+    } catch (error) {
+      if (error is DioError) {
+        notes.add(_requestError);
+      }
     }
 
     return notes;
@@ -118,7 +141,7 @@ class _CollectPageState extends State<CollectPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    // FocusScope.of(context).unfocus();
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -222,7 +245,12 @@ class _CollectPageState extends State<CollectPage>
                             physics: const ScrollPhysics(),
                             // physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final item = _notes[index] as CollectedCard;
+                              final CollectedCard item;
+                              if (_notes.length == 1 && _notes[0] is Center) {
+                                return _notes[0];
+                              } else {
+                                item = _notes[index] as CollectedCard;
+                              }
                               return Slidable(
                                 key: key,
                                 endActionPane: ActionPane(
@@ -362,7 +390,6 @@ class _CollectPageState extends State<CollectPage>
     var notes = await _queryCollectNotes();
     if (notes.isNotEmpty) {
       if (mounted) {
-        print('222223333322');
         setState(() {
           _notes = notes;
           _refreshController.refreshCompleted();

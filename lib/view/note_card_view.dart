@@ -1,16 +1,21 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:memos/network/network.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
 import 'package:flutter_highlight/themes/a11y-light.dart';
+import 'package:memos/utils/toast.dart';
 
 import 'package:memos/utils/video.dart';
 
 import '../beans/MemoDetailBean.dart';
+import '../beans/MemosBean.dart';
 import '../pages/memo_detail.dart';
+import 'dialog_view.dart';
 
 typedef OnClickedListener = Function();
 
@@ -21,7 +26,9 @@ class NoteCard extends StatefulWidget {
       required this.title,
       required this.visibility,
       required this.updateTime,
-      required this.itemHeight, required this.onClickedListener})
+      required this.itemHeight,
+      required this.onClickedListener,
+      required this.noteId})
       : super(key: key);
 
   final String data;
@@ -29,6 +36,7 @@ class NoteCard extends StatefulWidget {
   final String visibility;
   final String updateTime;
   final double itemHeight;
+  final int noteId;
   final OnClickedListener onClickedListener;
 
   @override
@@ -100,7 +108,7 @@ class _NoteCardState extends State<NoteCard>
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
                     child: MarkdownWidget(
                       data: widget.data,
                       shrinkWrap: true,
@@ -117,7 +125,7 @@ class _NoteCardState extends State<NoteCard>
                   ),
                 ),
                 Container(
-                    height: 30,
+                    height: 35,
                     alignment: Alignment.centerLeft,
                     color: Colors.grey.withOpacity(0.08),
                     margin: const EdgeInsets.only(top: 10),
@@ -125,7 +133,7 @@ class _NoteCardState extends State<NoteCard>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                          flex: 7,
+                          flex: 8,
                           child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             child: Text(
@@ -135,7 +143,7 @@ class _NoteCardState extends State<NoteCard>
                           ),
                         ),
                         Flexible(
-                          flex: 3,
+                          flex: 4,
                           child: Row(
                             children: [
                               InkWell(
@@ -145,7 +153,7 @@ class _NoteCardState extends State<NoteCard>
                                       borderRadius: BorderRadius.circular(5.0)),
                                   child: const Icon(
                                     Icons.copy,
-                                    size: 18,
+                                    size: 22,
                                     color: Colors.pink,
                                   ),
                                 ),
@@ -161,7 +169,7 @@ class _NoteCardState extends State<NoteCard>
                                       borderRadius: BorderRadius.circular(5.0)),
                                   child: const Icon(
                                     Icons.edit_note,
-                                    size: 18,
+                                    size: 22,
                                     color: Colors.black87,
                                   ),
                                 ),
@@ -177,7 +185,7 @@ class _NoteCardState extends State<NoteCard>
                                       borderRadius: BorderRadius.circular(5.0)),
                                   child: const Icon(
                                     Icons.share,
-                                    size: 18,
+                                    size: 22,
                                     color: Colors.blue,
                                   ),
                                 ),
@@ -193,11 +201,24 @@ class _NoteCardState extends State<NoteCard>
                                       borderRadius: BorderRadius.circular(5.0)),
                                   child: const Icon(
                                     Icons.save,
-                                    size: 18,
+                                    size: 22,
                                     color: Colors.red,
                                   ),
                                 ),
-                                onTap: () {},
+                                onTap: () {
+                                  //归档，指的是暂时删除先
+                                  // MemosBean patchMemo = RequestManager.getClient().patchMemo();
+                                  DialogView.alertDialog(
+                                      context,
+                                      '归档提醒',
+                                      ["确定", "取消"],
+                                      '确定要归档该笔记吗?',
+                                      Colors.red, (isArchived) {
+                                    if (isArchived) {
+                                      _patchNote(widget.noteId);
+                                    } else {}
+                                  });
+                                },
                               ),
                             ],
                           ),
@@ -209,13 +230,29 @@ class _NoteCardState extends State<NoteCard>
             onTap: () {
               Navigator.push(
                   context,
-                  CupertinoPageRoute(builder: (context) => MemoDetail(data: MemoDetailBean(widget.data,widget.title),))
-              ).then((value) => {
-                widget.onClickedListener
-              });
+                  CupertinoPageRoute(
+                      builder: (context) => MemoDetail(
+                            data: MemoDetailBean(widget.data, widget.title),
+                          ))).then((value) => {widget.onClickedListener});
             },
           )),
     );
+  }
+
+  //笔记归档
+  void _patchNote(int noteId) async {
+    try {
+      var memosBeanData = await RequestManager.getClient().patchMemo(noteId);
+      print('memosBeanData--->${memosBeanData}');
+      if(memosBeanData.data.isNotEmpty){
+        ToastUtil.showToast(message: "笔记归档成功...");
+      }else{
+        ToastUtil.showToast(message: "笔记归档失败..请稍后尝试");
+      }
+    } catch (error) {
+      print('_patchNote-------:${error}');
+      ToastUtil.showToast(message: "笔记归档失败..发生错误$error");
+    }
   }
 
   @override

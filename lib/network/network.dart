@@ -32,13 +32,14 @@ const String getTags = "/api/tag";
 const String getMemos = "/api/memo";
 const String deleteMemos = "/api/memo/";
 const String createMemos = "/api/memo";
+const String patchMemos = "/api/memo/";
 const String uploadResource = "/api/resource/";
 
 class HttpConfig {
   // static const baseUrl = BASE_URL;
   static const timeout = 3000;
-  static const CONNECT_TIMEOUT = 15000;
-  static const RECEIVE_TIMEOUT = 13000;
+  static const CONNECT_TIMEOUT = 1500;
+  static const RECEIVE_TIMEOUT = 1300;
 }
 
 class RequestManager {
@@ -189,6 +190,20 @@ class RequestManager {
     return MemosBean.fromJson(response.data);
   }
 
+  //归档
+  Future<MemosBean> patchMemo(int memoId) async{
+    Response response;
+    if(memoId ==-1){
+      throw Exception("当前笔记Id不合法!");
+    }
+    //ARCHIVED
+    response = await _dio!.patch(patchMemos+memoId.toString(),data: {"id":memoId,"rowStatus":"ARCHIVED"});
+    if (response.statusCode != 200) {
+      throw Exception("归档当前笔记失败");
+    }
+    return MemosBean.fromJson(response.data);
+  }
+
   ///查看用户信息状态
   Future<StatusBean?> queryUserStatus() async {
     await _setNewDioFromRamCookieData();
@@ -214,6 +229,9 @@ class RequestManager {
       if (error is DioError) {
         if (error.response?.statusCode == 401) {
           Global.INIT_STATUS = -1;
+          return null;
+        }else if(error.type == DioErrorType.connectTimeout ||error.message.contains("SocketException") ){
+          Global.INIT_STATUS = -2;
           return null;
         }
       }

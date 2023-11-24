@@ -24,6 +24,7 @@ Map routes = {
 };
 
 var onGenerateRoute = (RouteSettings settings) {
+  print('onGenerateRoute------>${settings.name}');
   final String? name = settings.name;
   final Function pageContentBuilder = routes[name];
   if (settings.arguments != null) {

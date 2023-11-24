@@ -47,6 +47,7 @@ class _NoteCardState extends State<CollectedCard>
                   builder: (context) => MemoDetail(
                     data: MemoDetailBean(widget.data,/*_setTitle(widget.data.substring(0, 7))*/"信息正文"),
                   )));
+          FocusScope.of(context).unfocus();
         },
         child: Card(
             clipBehavior: Clip.antiAlias,

@@ -5,12 +5,14 @@ import 'package:memos/auth/start_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:memos/beans/MeBean.dart';
 import 'package:memos/beans/TagsBean.dart';
+import 'package:memos/pages/add_page.dart';
 import 'package:memos/pages/error_page.dart';
 import 'package:memos/router/routers.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:memos/utils/SpUtils.dart';
 import 'package:memos/utils/no_splash_factory.dart';
+import 'package:memos/utils/toast.dart';
 import 'package:memos/view/behavior_view.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,6 +42,9 @@ void main() {
             } else {
               if (Global.INIT_STATUS == -1) {
                 firstRoutePage = const LoginPage();
+              } else if (Global.INIT_STATUS == -2) {
+                firstRoutePage = const MainPage();
+                ToastUtil.showToast(message: "连接超时");
               } else {
                 firstRoutePage = const ErrorPage();
               }
@@ -136,7 +141,7 @@ class _MyAppState extends State<MyApp> {
           splashColor: Colors.transparent,
           splashFactory: NoSplashFactory()),
       home: firstRoutePage,
-      // initialRoute: firstRoute,
+      // initialRoute: firstRoutePage,
       onGenerateRoute: onGenerateRoute,
     );
   }
