@@ -29,6 +29,8 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   final TextEditingController controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
   List<Widget> _notes = [Container()];
   List<Widget> _notesOriginal = [Container()];
   late Future<List<Widget>> _future;
@@ -100,6 +102,8 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
     _future = _initNotes();
     initializedFirst = false;
     // 添加 WidgetsBindingObserver 监听器
+    // 添加焦点监听器
+    // _focusNode.addListener(_onFocusChange);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -108,8 +112,24 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
       RefreshController(initialRefresh: false);
 
   @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        print('lfh--->键盘data${MediaQuery.of(context).viewInsets.bottom}');
+        if (MediaQuery.of(context).viewInsets.bottom == 0) {
+          print('lfh--->键盘消失了');
+        } else {
+          print('lfh--->键盘出现了');
+        }
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.transparent,
@@ -136,13 +156,6 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
                   ),
                 ),
                 onTap: () {
-                  // Navigator.push(
-                  //                   context,
-                  //                   CupertinoPageRoute(
-                  //                       builder: (context) => MemoDetail(
-                  //                             data: MemoDetailBean(widget.data,widget.title),
-                  //                           )));
-
                   Navigator.pushNamed(context, "/input_note_page")
                       .then((value) => {
                             if (isSendNewMessage)
@@ -159,74 +172,82 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
             ],
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: 43,
-              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-              child: SearchView(
-                onSearchInputComplete: () async {
-                  _queryMemosByKey(controller.text.trim());
-                  FocusScope.of(context).unfocus();
-                },
-                controller: controller,
-                hintText: "快速搜索",
-                onCharChanged: (value) {
-                  print('xjp----->${value}');
-                  _queryMemosByKey(value.toString().trim());
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            FutureBuilder(
-              future: _future,
-              initialData: _notes,
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Text('请求失败...${snapshot.error}');
-                  } else {
-                    if (snapshot.hasData) {
-                      if (!initializedFirst) {
-                        _notes = snapshot.data;
-                        initializedFirst = true;
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: 43,
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: SearchView(
+                    onSearchInputComplete: () async {
+                      _queryMemosByKey(controller.text.trim());
+                      FocusScope.of(context).unfocus();
+                    },
+                    controller: controller,
+                    hintText: "快速搜索",
+                    onCharChanged: (value) {
+                      print('xjp----->${value}');
+                      _queryMemosByKey(value.toString().trim());
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                FutureBuilder(
+                  future: _future,
+                  initialData: _notes,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return Text('请求失败...${snapshot.error}');
+                      } else {
+                        if (snapshot.hasData) {
+                          if (!initializedFirst) {
+                            _notes = snapshot.data;
+                            initializedFirst = true;
+                          }
+                          return Expanded(
+                              child: SmartRefresher(
+                            controller: _refreshController,
+                            enablePullDown: true,
+                            enablePullUp: false,
+                            header: const ClassicHeader(),
+                            onRefresh: _onRefresh,
+                            child: ListView.builder(
+                              // key: UniqueKey(),
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              shrinkWrap: false,
+                              scrollDirection: Axis.vertical,
+                              itemCount: _notes.toList().length,
+                              padding: const EdgeInsets.only(
+                                  top: 5, bottom: 5, left: 0, right: 0),
+                              itemBuilder: (BuildContext context, int index) {
+                                return _notes.toList()[index];
+                              },
+                            ),
+                          ));
+                        } else {
+                          return _requestError;
+                        }
                       }
-                      return Expanded(
-                          child: SmartRefresher(
-                        controller: _refreshController,
-                        enablePullDown: true,
-                        enablePullUp: false,
-                        header: const ClassicHeader(),
-                        onRefresh: _onRefresh,
-                        child: ListView.builder(
-                          // key: UniqueKey(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: _notes.toList().length,
-                          padding: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 0, right: 0),
-                          itemBuilder: (BuildContext context, int index) {
-                            return _notes.toList()[index];
-                          },
-                        ),
-                      ));
+                    } else if (snapshot.connectionState ==
+                            ConnectionState.none ||
+                        snapshot.connectionState == ConnectionState.waiting ||
+                        snapshot.connectionState == ConnectionState.active) {
+                      return _requesting;
                     } else {
                       return _requestError;
                     }
-                  }
-                } else if (snapshot.connectionState == ConnectionState.none ||
-                    snapshot.connectionState == ConnectionState.waiting ||
-                    snapshot.connectionState == ConnectionState.active) {
-                  return _requesting;
-                } else {
-                  return _requestError;
-                }
-              },
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ));
   }
 
@@ -234,8 +255,10 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   Future<List<Widget>> _initNotes() async {
     List<Widget> notes = [];
     try {
-      MemosBean memosBean = await RequestManager.getClient().queryAllMemos("NORMAL");
+      MemosBean memosBean =
+          await RequestManager.getClient().queryAllMemos("NORMAL");
       var memoData = memosBean.data;
+
       if (memoData.isNotEmpty) {
         configMemoDate(memoData, notes);
         _notesOriginal = notes;
@@ -331,6 +354,9 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
           _onRefresh();
         },
         noteId: noteId,
+        onArchivedListener: () {
+          _onRefresh();
+        },
       ));
     }
   }
@@ -357,6 +383,9 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
     // 移除 WidgetsBindingObserver 监听器
     WidgetsBinding.instance.removeObserver(this);
     _refreshController.dispose();
+    // 移除焦点监听器，防止内存泄漏
+    // _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
   }
 
   @override

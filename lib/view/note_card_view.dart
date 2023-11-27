@@ -8,9 +8,11 @@ import 'package:memos/network/network.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
 import 'package:flutter_highlight/themes/a11y-light.dart';
+import 'package:memos/utils/file_utils.dart';
 import 'package:memos/utils/toast.dart';
 
 import 'package:memos/utils/video.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../beans/MemoDetailBean.dart';
 import '../beans/MemosBean.dart';
@@ -18,6 +20,7 @@ import '../pages/memo_detail.dart';
 import 'dialog_view.dart';
 
 typedef OnClickedListener = Function();
+typedef OnArchivedListener = Function();
 
 class NoteCard extends StatefulWidget {
   const NoteCard(
@@ -28,7 +31,8 @@ class NoteCard extends StatefulWidget {
       required this.updateTime,
       required this.itemHeight,
       required this.onClickedListener,
-      required this.noteId})
+      required this.noteId,
+      required this.onArchivedListener})
       : super(key: key);
 
   final String data;
@@ -38,6 +42,7 @@ class NoteCard extends StatefulWidget {
   final double itemHeight;
   final int noteId;
   final OnClickedListener onClickedListener;
+  final OnArchivedListener onArchivedListener;
 
   @override
   State<NoteCard> createState() => _NoteCardState();
@@ -157,7 +162,7 @@ class _NoteCardState extends State<NoteCard>
                                     color: Colors.pink,
                                   ),
                                 ),
-                                onTap: () {},
+                                onTap: () {FileUtils.copyToClipboard(widget.data,context);},
                               ),
                               const SizedBox(
                                 width: 5,
@@ -189,7 +194,9 @@ class _NoteCardState extends State<NoteCard>
                                     color: Colors.blue,
                                   ),
                                 ),
-                                onTap: () {},
+                                onTap: () {
+                                  Share.share('@来自[memos笔记]\r\n \r\n ${widget.data}');
+                                },
                               ),
                               const SizedBox(
                                 width: 5,
@@ -216,7 +223,10 @@ class _NoteCardState extends State<NoteCard>
                                       Colors.red, (isArchived) {
                                     if (isArchived) {
                                       _patchNote(widget.noteId);
-                                    } else {}
+                                      FocusScope.of(context).unfocus();
+                                    } else {
+                                      FocusScope.of(context).unfocus();
+                                    }
                                   });
                                 },
                               ),
@@ -242,16 +252,17 @@ class _NoteCardState extends State<NoteCard>
   //笔记归档
   void _patchNote(int noteId) async {
     try {
-      var memosBeanData = await RequestManager.getClient().patchMemo(noteId);
-      print('memosBeanData--->${memosBeanData}');
-      if(memosBeanData.data.isNotEmpty){
+      int archivedMemoResult =
+          await RequestManager.getClient().patchMemo(noteId);
+      if (archivedMemoResult == 200) {
         ToastUtil.showToast(message: "笔记归档成功...");
-      }else{
+        widget.onArchivedListener();
+      } else {
         ToastUtil.showToast(message: "笔记归档失败..请稍后尝试");
       }
-    } catch (error) {
-      print('_patchNote-------:${error}');
+    } catch (error, stackTrace) {
       ToastUtil.showToast(message: "笔记归档失败..发生错误$error");
+      print("笔记归档失败..发生错误$error, 具体信息为${stackTrace}");
     }
   }
 

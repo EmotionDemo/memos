@@ -191,17 +191,18 @@ class RequestManager {
   }
 
   //归档
-  Future<MemosBean> patchMemo(int memoId) async{
+  Future<int?> patchMemo(int memoId) async {
     Response response;
-    if(memoId ==-1){
+    if (memoId == -1) {
       throw Exception("当前笔记Id不合法!");
     }
     //ARCHIVED
-    response = await _dio!.patch(patchMemos+memoId.toString(),data: {"id":memoId,"rowStatus":"ARCHIVED"});
+    response = await _dio!.patch(patchMemos + memoId.toString(),
+        data: {"id": memoId, "rowStatus": "ARCHIVED"});
     if (response.statusCode != 200) {
-      throw Exception("归档当前笔记失败");
+      print("归档当前笔记失败，错误码:${response.statusCode}");
     }
-    return MemosBean.fromJson(response.data);
+    return response.statusCode;
   }
 
   ///查看用户信息状态
@@ -230,7 +231,8 @@ class RequestManager {
         if (error.response?.statusCode == 401) {
           Global.INIT_STATUS = -1;
           return null;
-        }else if(error.type == DioErrorType.connectTimeout ||error.message.contains("SocketException") ){
+        } else if (error.type == DioErrorType.connectTimeout ||
+            error.message.contains("SocketException")) {
           Global.INIT_STATUS = -2;
           return null;
         }
