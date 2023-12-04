@@ -196,21 +196,21 @@ class _ResourcePageState extends State<ResourcePage> {
                ),
                Container(
                  alignment: Alignment.topRight,
-                 child: InkWell(
+                 margin: const EdgeInsets.only(top: 10, right: 10),
+                 child:const InkWell(
                    child: Icon(
                      Icons.more_horiz,
                      size: 30,
                      color: Colors.black45,
                    ),
                  ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
                )
              ],
            ),
            Container(
              alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('audio/mpeg',
+             margin: const EdgeInsets.only(left: 10,top: 6),
+             child:const Text('audio/mpeg',
                  style:
                  TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
                  )),
