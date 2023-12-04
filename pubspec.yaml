@@ -132,6 +132,9 @@ flutter:
     - images/ic_submit_note.png
     - images/ic_img_bg.png
     - images/ic_bg_img.png
+    - images/ic_data_no_result.png
+    - images/ic_network_error.png
+    - images/ic_send.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

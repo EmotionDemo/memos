@@ -13,6 +13,8 @@ import 'package:memos/utils/my_cookie.dart';
 
 import '../beans/LoginBean.dart';
 import '../beans/MeBean.dart';
+import '../beans/ResourceBean.dart';
+import '../beans/ResourceData.dart';
 import '../beans/StatusBean.dart';
 import '../beans/TagsBean.dart';
 import '../constants/constant.dart';
@@ -205,6 +207,19 @@ class RequestManager {
     return response.statusCode;
   }
 
+  Future<int?> restoreMemo(String visibility, int memoId) async {
+    Response response;
+    if (visibility.isEmpty) {
+      throw Exception("当前笔记可见性不合法");
+    }
+    response = await _dio!.patch(patchMemos + memoId.toString(),
+        data: {"id": memoId, "rowStatus": Global.MEMO_TYPE_NORMAL});
+    if (response.statusCode != 200) {
+      print("归档当前笔记失败，错误码:${response.statusCode}");
+    }
+    return response.statusCode;
+  }
+
   ///查看用户信息状态
   Future<StatusBean?> queryUserStatus() async {
     await _setNewDioFromRamCookieData();
@@ -254,6 +269,17 @@ class RequestManager {
     }
     return dateList;
   }
+
+
+  Future<ResourceBean> queryResources()async{
+    var response = await _dio!.get(resource);
+    List<ResourceBean> resources = [];
+    if(response.statusCode!=200){
+      throw Exception("[queryResources],查询所有资源失败");
+    }
+    return ResourceBean.fromJson(response.data);
+  }
+
 
   ///查询所有tags
   Future<TagsBean> queryAllTags() async {

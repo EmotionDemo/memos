@@ -16,13 +16,17 @@ class CollectedCard extends StatefulWidget {
       required this.createTime,
       required this.user,
       required this.itemHeight,
-      required this.id})
+      required this.id,
+      required this.visibility
+      })
+
       : super(key: key);
   final String createTime;
   final String data;
   final String user;
   final double itemHeight;
   final int id;
+  final String visibility;
 
   @override
   State<CollectedCard> createState() => _NoteCardState();

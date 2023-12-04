@@ -10,7 +10,7 @@ class ResourcePage extends StatefulWidget {
 }
 
 class _ResourcePageState extends State<ResourcePage> {
-  List<Widget> list = [];
+  List<Card> list = [];
   var screenWidth = ScreenUtil.hc_ScreenWidth();
   var screenHeight = ScreenUtil.hc_ScreenHeight();
 

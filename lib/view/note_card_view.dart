@@ -255,7 +255,13 @@ class _NoteCardState extends State<NoteCard>
       int archivedMemoResult =
           await RequestManager.getClient().patchMemo(noteId);
       if (archivedMemoResult == 200) {
-        ToastUtil.showToast(message: "笔记归档成功...");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('📒笔记归档成功'),
+            duration: Duration(milliseconds: 700),
+            backgroundColor: Colors.green,
+          ),
+        );
         widget.onArchivedListener();
       } else {
         ToastUtil.showToast(message: "笔记归档失败..请稍后尝试");

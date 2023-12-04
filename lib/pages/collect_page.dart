@@ -30,39 +30,19 @@ class _CollectPageState extends State<CollectPage>
   late Widget showPage;
   late BuildContext mContext;
   var listItemCount = 0;
-  List<Widget> _notes = [Container()];
+  List<CollectedCard> _notes = [];
   late Future<List<Widget>> _future;
   late bool _initializedFirst;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final key = Key(Uuid().v4().toString());
-
-  late final Widget _requestError = Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 200,
-          height: 200,
-          child: Image.asset('images/ic_net_error.png'),
-        ),
-        const SizedBox(height: 3),
-        InkWell(
-          child: const Text(
-            '加载失败，请点击或下拉刷新~',
-            style: TextStyle(color: Colors.black87),
-          ),
-          onTap: () {
-            _onRefresh(); // 重新加载的逻辑
-          },
-        ),
-      ],
-    ),
-  );
+  final String TAG = "CollectPage";
+  String networkError = '数据空空~尝试点击刷新~';
+  var noDataShow = 'images/ic_data_no_result.png';
 
   ///查询被删除的笔记们
-  Future<List<Widget>> _queryCollectNotes() async {
-    List<Widget> notes = [];
+  Future<List<CollectedCard>> _queryCollectNotes() async {
+    List<CollectedCard> notes = [];
     try {
       MemosBean memos = await RequestManager.getClient()
           .queryAllMemos(Global.MEMO_TYPE_ARCHIVED);
@@ -113,11 +93,32 @@ class _CollectPageState extends State<CollectPage>
           user: userName,
           itemHeight: calculateItemHeight,
           id: dataBean[i].id,
+          visibility: dataBean[i].visibility,
         ));
       }
+
+      networkError = '📒更新成功,共更新${notes.length}条信息';
+      noDataShow = 'images/ic_data_no_result.png';
+     /* ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(networkError),
+          duration: const Duration(milliseconds: 1000),
+          backgroundColor: Colors.green,
+        ),
+      );*/
     } catch (error) {
       if (error is DioError) {
-        notes.add(_requestError);
+        print('TAG [_queryCollectNotes] error:$error');
+        // notes.add(_requestError);
+        networkError = "网络异常,请检查网络⚠️";
+        noDataShow = 'images/ic_network_error.png';
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('📒 网络未连接'),
+            duration: Duration(milliseconds: 1000),
+            backgroundColor: Colors.green,
+          ),
+        );
       }
     }
 
@@ -204,6 +205,10 @@ class _CollectPageState extends State<CollectPage>
                       _notes = snapshot.data;
                       _initializedFirst = true;
                     }
+                    print('noteIsEmpty');
+                    print('noteIsEmpty2${_notes.isEmpty}');
+                    print('noteIsEmpty2${_notes.length}');
+
                     if (_notes.isEmpty) {
                       return InkWell(
                         onTap: () {
@@ -212,24 +217,30 @@ class _CollectPageState extends State<CollectPage>
                         child: Container(
                           margin: EdgeInsets.only(
                               top: ScreenUtil.hc_ScreenHeight() / 5),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'images/ic_not_data.png',
-                                width: ScreenUtil.hc_ScreenWidth() / 3 * 2,
-                                height: ScreenUtil.hc_ScreenWidth() / 3 * 2,
-                              ),
-                              const Text(
-                                '什么都没有，点击尝试刷新~',
-                                style: TextStyle(
-                                    color: Colors.black45, fontSize: 18),
-                              )
-                            ],
+                          child: InkWell(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  noDataShow,
+                                  width: ScreenUtil.hc_ScreenWidth() / 3 * 2,
+                                  height: ScreenUtil.hc_ScreenWidth() / 3 * 2,
+                                ),
+                                Text(
+                                  networkError,
+                                  style: const TextStyle(
+                                      color: Colors.black45, fontSize: 15),
+                                )
+                              ],
+                            ),
+                            onTap: () {
+                              _onRefresh();
+                            },
                           ),
                         ),
                       );
                     } else {
+                      // print('noteIsEmpty3${(_notes as CollectedCard ).data}');
                       return Expanded(
                           child: SmartRefresher(
                         controller: _refreshController,
@@ -245,12 +256,13 @@ class _CollectPageState extends State<CollectPage>
                             physics: const ScrollPhysics(),
                             // physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final CollectedCard item;
-                              if (_notes.length == 1 && _notes[0] is Center) {
+                              final CollectedCard item =
+                                  _notes[index] as CollectedCard;
+                              /*if (_notes.length == 1 && _notes[0] is Center) {
                                 return _notes[0];
                               } else {
                                 item = _notes[index] as CollectedCard;
-                              }
+                              }*/
                               return Slidable(
                                 key: key,
                                 endActionPane: ActionPane(
@@ -291,9 +303,21 @@ class _CollectPageState extends State<CollectPage>
                                                 deleteMemo.then((isDeleteOk) {
                                                   if (isDeleteOk) {
                                                     setState(() {
-                                                      _notes.removeAt(index);
-                                                      ToastUtil.showToast(
-                                                          message: "进行永久删除操作");
+                                                      _notes.remove(item);
+                                                      // _notes.removeAt(index);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content:
+                                                              Text('📒当前笔记已删除'),
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  1000),
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                        ),
+                                                      );
                                                     });
                                                   }
                                                 });
@@ -339,17 +363,40 @@ class _CollectPageState extends State<CollectPage>
                                                   '确定要恢复该笔记吗?',
                                                   Colors.blue, (isRestore) {
                                                 if (isRestore) {
+                                                  Future<int> restore =
+                                                      RequestManager.getClient()
+                                                          .restoreMemo(
+                                                              item.visibility,
+                                                              item.id);
+                                                  restore.then((value) => {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                '笔记📒恢复成功'),
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    700),
+                                                            backgroundColor:
+                                                                Colors.green,
+                                                          ),
+                                                        ),
+                                                        setState(() {
+                                                          // _notes.remove(item);
+                                                          _onRefresh();
+                                                        }),
+                                                      });
+                                                  /*setState(() {
+                                                    Slidable.of(mContext)
+                                                        ?.close();
+                                                    // _onRefresh();
+                                                  });*/
                                                 } else {
                                                   print(
                                                       'late_BuildContext_mContext---${Slidable.of(mContext) == null}');
-                                                  setState(() {
-                                                    Slidable.of(mContext)
-                                                        ?.close();
-                                                  });
                                                 }
                                               });
-                                              ToastUtil.showToast(
-                                                  message: "进行数据恢复操作");
                                             },
                                           ))
                                     ]),
@@ -392,12 +439,14 @@ class _CollectPageState extends State<CollectPage>
       if (mounted) {
         setState(() {
           _notes = notes;
-          _refreshController.refreshCompleted();
         });
       }
     } else {
-      _refreshController.refreshFailed();
+      setState(() {
+        _notes = [];
+      });
     }
+    _refreshController.refreshCompleted();
   }
 
   @override

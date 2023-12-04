@@ -79,12 +79,12 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 200,
-            height: 200,
+            width: 150,
+            height: 150,
             child: Image.asset('images/ic_net_error.png'),
           ),
           const Text(
-            '加载失败，请点击或下拉刷新~',
+            '暂无数据，请点击或下拉刷新~',
             style: TextStyle(color: Colors.black87),
           ),
         ],

@@ -253,7 +253,7 @@ class _InputPageState extends State<InputPage>
                               },
                             ),
                           ),
-                          Container(
+                         /* Container(
                             decoration: BoxDecoration(
                                 color: Colors.black12.withOpacity(0.08),
                                 shape: BoxShape.rectangle,
@@ -265,7 +265,7 @@ class _InputPageState extends State<InputPage>
                               width: 30,
                               height: 30,
                             ),
-                          ),
+                          ),*/
                           const Spacer(),
                           InkWell(
                             onTap: () {
@@ -353,7 +353,7 @@ class _InputPageState extends State<InputPage>
                             margin: const EdgeInsets.all(10),
                             child: InkWell(
                               child: Image.asset(
-                                'images/ic_submit_note.png',
+                                'images/ic_send.png',
                                 width: 40,
                                 height: 40,
                               ),

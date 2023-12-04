@@ -53,7 +53,7 @@ class DataBean with JsonHolderImpl<DataBean> {
   int get updatedTs => getValue("updatedTs");
   set updatedTs(int value) => setValue("updatedTs", value);
 
-  /// [key : value] => [content : #习猪头哈哈哈]
+  /// [key : value] => [content : 哈哈哈]
   String get content => getValue("content");
   set content(String value) => setValue("content", value);
 
