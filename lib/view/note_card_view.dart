@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:memos/beans/ModifyNoteBean.dart';
 import 'package:memos/network/network.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
@@ -16,11 +17,13 @@ import 'package:share_plus/share_plus.dart';
 
 import '../beans/MemoDetailBean.dart';
 import '../beans/MemosBean.dart';
+import '../pages/input_note_page.dart';
 import '../pages/memo_detail.dart';
 import 'dialog_view.dart';
 
 typedef OnClickedListener = Function();
 typedef OnArchivedListener = Function();
+typedef OnEditClickedListener = Function();
 
 class NoteCard extends StatefulWidget {
   const NoteCard(
@@ -32,7 +35,7 @@ class NoteCard extends StatefulWidget {
       required this.itemHeight,
       required this.onClickedListener,
       required this.noteId,
-      required this.onArchivedListener})
+      required this.onArchivedListener, required this.onEditClickedListener})
       : super(key: key);
 
   final String data;
@@ -43,6 +46,7 @@ class NoteCard extends StatefulWidget {
   final int noteId;
   final OnClickedListener onClickedListener;
   final OnArchivedListener onArchivedListener;
+  final OnEditClickedListener onEditClickedListener;
 
   @override
   State<NoteCard> createState() => _NoteCardState();
@@ -162,7 +166,10 @@ class _NoteCardState extends State<NoteCard>
                                     color: Colors.pink,
                                   ),
                                 ),
-                                onTap: () {FileUtils.copyToClipboard(widget.data,context);},
+                                onTap: () {
+                                  FileUtils.copyToClipboard(
+                                      widget.data, context);
+                                },
                               ),
                               const SizedBox(
                                 width: 5,
@@ -178,7 +185,17 @@ class _NoteCardState extends State<NoteCard>
                                     color: Colors.black87,
                                   ),
                                 ),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => InputPage(
+                                              modifyNoteBean: ModifyNoteBean(
+                                                  widget.data,
+                                                  ModifyNoteBean.DEIT,widget.noteId)
+                                          ))).then(
+                                      (value) => {widget.onEditClickedListener});
+                                },
                               ),
                               const SizedBox(
                                 width: 5,
@@ -195,7 +212,8 @@ class _NoteCardState extends State<NoteCard>
                                   ),
                                 ),
                                 onTap: () {
-                                  Share.share('@来自[memos笔记]\r\n \r\n ${widget.data}');
+                                  Share.share(
+                                      '@来自[memos笔记]\r\n \r\n ${widget.data}');
                                 },
                               ),
                               const SizedBox(

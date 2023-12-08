@@ -36,7 +36,9 @@ class _MemoDetailState extends State<MemoDetail> {
                 // Navigator.popAndPushNamed(context, "/add_page");
                 Navigator.pop(context);
               },
-            )),
+            ),
+          titleSpacing: 0,
+        ),
         body: MarkdownWidget(
           data: widget.data.data,
           shrinkWrap: true,

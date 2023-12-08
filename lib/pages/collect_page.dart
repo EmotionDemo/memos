@@ -205,9 +205,6 @@ class _CollectPageState extends State<CollectPage>
                       _notes = snapshot.data;
                       _initializedFirst = true;
                     }
-                    print('noteIsEmpty');
-                    print('noteIsEmpty2${_notes.isEmpty}');
-                    print('noteIsEmpty2${_notes.length}');
 
                     if (_notes.isEmpty) {
                       return InkWell(
@@ -240,7 +237,6 @@ class _CollectPageState extends State<CollectPage>
                         ),
                       );
                     } else {
-                      // print('noteIsEmpty3${(_notes as CollectedCard ).data}');
                       return Expanded(
                           child: SmartRefresher(
                         controller: _refreshController,
@@ -322,8 +318,7 @@ class _CollectPageState extends State<CollectPage>
                                                   }
                                                 });
                                               } else {
-                                                print(
-                                                    'late_BuildContext_mContext---${Slidable.of(mContext) == null}');
+                                                print('late_BuildContext_mContext---${Slidable.of(mContext) == null}');
                                                 setState(() {
                                                   Slidable.of(mContext)
                                                       ?.close();
@@ -387,11 +382,9 @@ class _CollectPageState extends State<CollectPage>
                                                           _onRefresh();
                                                         }),
                                                       });
-                                                  /*setState(() {
-                                                    Slidable.of(mContext)
-                                                        ?.close();
-                                                    // _onRefresh();
-                                                  });*/
+                                                  setState(() {
+                                                    Slidable.of(mContext)?.close();
+                                                  });
                                                 } else {
                                                   print(
                                                       'late_BuildContext_mContext---${Slidable.of(mContext) == null}');

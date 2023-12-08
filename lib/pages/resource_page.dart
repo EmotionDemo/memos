@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:memos/network/network.dart';
 import 'package:memos/utils/ScreenUtil.dart';
+import 'package:memos/utils/SpUtils.dart';
+
+import '../beans/ResourceBean.dart';
+import '../constants/constant.dart';
+
+import 'package:flutter_advanced_networkimage_2/provider.dart';
+import 'package:flutter_advanced_networkimage_2/transition.dart';
+import 'package:flutter_advanced_networkimage_2/zoomable.dart';
 
 class ResourcePage extends StatefulWidget {
   const ResourcePage({Key? key}) : super(key: key);
@@ -14,534 +23,96 @@ class _ResourcePageState extends State<ResourcePage> {
   var screenWidth = ScreenUtil.hc_ScreenWidth();
   var screenHeight = ScreenUtil.hc_ScreenHeight();
 
-  List<Widget> getResources() {
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_pho.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('image/png',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 0.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_pho.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('image/jpeg',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 1.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_video.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('video/mp4',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 11.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_music.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('audio/mpeg',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 3.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_pho.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('image/jpeg',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 0.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_pho.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('image/png',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 0.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_pho.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('image/jpeg',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 1.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_video.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('video/mp4',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 11.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_music.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('audio/mpeg',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 3.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
-     list.add(Card(
-       // margin:const EdgeInsets.all(3),
-       clipBehavior: Clip.antiAlias,
-       color: Colors.white,
-       shadowColor: Colors.grey.withOpacity(0.6),
-       elevation: 1,
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Column(
-         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(left: 10, top: 10),
-                 child: Image.asset(
-                   "images/ic_desc_pho.png",
-                   width: ScreenUtil.hc_ScreenWidth() / 4,
-                   height: ScreenUtil.hc_ScreenWidth() / 4,
-                 ),
-               ),
-               Container(
-                 alignment: Alignment.topRight,
-                 child: InkWell(
-                   child: Icon(
-                     Icons.more_horiz,
-                     size: 30,
-                     color: Colors.black45,
-                   ),
-                 ),
-                 margin: EdgeInsets.only(top: 10, right: 10),
-               )
-             ],
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('image/jpeg',
-                 style:
-                 TextStyle(color: Colors.black54, fontSize: 18,fontWeight: FontWeight.w500
-                 )),
-           ),
-           Container(
-             alignment: Alignment.topLeft,
-             margin: EdgeInsets.only(left: 10,top: 6),
-             child: Text('size: 0.9MB',style: TextStyle(color: Colors.grey),),
-           ),
-         ],
-       ),
-     ));
+
+  List<Widget> getResources(List<Card> list) {
     return list;
   }
 
   @override
   void initState() {
     super.initState();
-    getResources();
+    // getResources();
+    Future<ResourceBean> resources =
+        RequestManager.getClient().queryResources();
+    resources.then((resourceBean) => {
+          print('ResourcePage--->${resourceBean.data}'),
+          resourceBean.data.forEach((element) {
+            Widget showItem = Container();
+            if(element.type.contains("image")){
+              showItem = Image.network(
+                "${SpUtil.getString(Global.BASE_PATH)!}/o/r/${element.id}/${element.filename}",
+                width: ScreenUtil.hc_ScreenWidth() / 4,
+                height: ScreenUtil.hc_ScreenWidth() / 4,
+              );
+            }else if(element.type.contains("video")){
+              showItem =Image(
+                image: AdvancedNetworkImage(
+                  "${SpUtil.getString(Global.BASE_PATH)!}/o/r/${element.id}/${element.filename}",
+                  useDiskCache: true,
+
+                  cacheRule: const CacheRule(maxAge: Duration(days: 7)),
+                ),
+                fit: BoxFit.cover,
+              );
+            }
+            print('xjpppp----->' +
+                "${SpUtil.getString(Global.BASE_PATH)!}/o/r/${element.id}/${element.filename}");
+            setState(() {
+              list.add(Card(
+                // margin:const EdgeInsets.all(3),
+                clipBehavior: Clip.antiAlias,
+                color: Colors.white,
+                shadowColor: Colors.grey.withOpacity(0.6),
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 10, top: 10),
+                          child: showItem,
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          margin: const EdgeInsets.only(top: 10, right: 10),
+                          child: const InkWell(
+                            child: Icon(
+                              Icons.more_horiz,
+                              size: 30,
+                              color: Colors.black45,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(left: 10, top: 6),
+                      child: Text('${element.type}',
+                          style: const TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(left: 10, top: 6),
+                      child: Text(
+                        'size: 0.9MB',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+            });
+          }),
+        });
   }
 
   @override
