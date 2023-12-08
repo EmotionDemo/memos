@@ -195,6 +195,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_advanced_networkimage_2:
+    dependency: "direct dev"
+    description:
+      name: flutter_advanced_networkimage_2
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   flutter_displaymode:
     dependency: "direct main"
     description:
@@ -578,6 +585,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.5"
+  pool:
+    dependency: transitive
+    description:
+      name: pool
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.5.1"
   provider:
     dependency: transitive
     description:

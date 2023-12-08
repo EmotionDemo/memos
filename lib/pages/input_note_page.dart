@@ -8,7 +8,7 @@ import 'package:memos/utils/SpUtils.dart';
 import 'package:memos/utils/constant.dart';
 import 'package:memos/utils/toast.dart';
 import 'package:memos/view/dialog_view.dart';
-import 'package:uuid/uuid.dart';
+import '../beans/ModifyNoteBean.dart';
 import '../constants/constant.dart';
 import '../utils/ScreenUtil.dart';
 import '../view/flag_item.dart';
@@ -17,7 +17,8 @@ import '../view/img_card.dart';
 typedef OnDeleteClickListener = Function(bool isDelete);
 
 class InputPage extends StatefulWidget {
-  const InputPage({Key? key}) : super(key: key);
+  const InputPage({Key? key, required this.modifyNoteBean}) : super(key: key);
+  final ModifyNoteBean modifyNoteBean;
 
   @override
   State<InputPage> createState() => _InputPageState();
@@ -43,6 +44,8 @@ class _InputPageState extends State<InputPage>
   // List<dynamic> serousList = [];
   List<String> upLoadImage = [];
 
+  // String get dataInput => "123";
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +53,9 @@ class _InputPageState extends State<InputPage>
     _noteController = TextEditingController();
     _focusNode = FocusNode();
     List<String> tagsInfo = SpUtil.getString(Global.TAGS)!.split('-');
+    if (widget.modifyNoteBean.type == ModifyNoteBean.DEIT) {
+      _addContent(widget.modifyNoteBean.content);
+    }
     for (var tag in tagsInfo) {
       tagsReal.add(FlagItem(
         tagText: '#$tag',
@@ -253,7 +259,7 @@ class _InputPageState extends State<InputPage>
                               },
                             ),
                           ),
-                         /* Container(
+                          /* Container(
                             decoration: BoxDecoration(
                                 color: Colors.black12.withOpacity(0.08),
                                 shape: BoxShape.rectangle,
@@ -372,19 +378,35 @@ class _InputPageState extends State<InputPage>
                                   );
                                 }
                                 try {
-                                  Future<MemoBean> memoInputResult =
-                                      RequestManager.getClient().createMemo(
-                                          _noteController.text.toString(),
-                                          [],
-                                          visibilityReal);
-                                  //String source,String fileName
-                                  memoInputResult.then((value) {
-                                    isSendNewMessage = true;
-                                    //关闭对话框
-                                    Navigator.pop(context);
-                                    //退出编辑页面
-                                    Navigator.pop(context);
-                                  });
+                                  if (widget.modifyNoteBean.type ==
+                                      ModifyNoteBean.INPUT) {
+                                    Future<MemoBean> memoInputResult =
+                                        RequestManager.getClient().createMemo(
+                                            _noteController.text.toString(),
+                                            [],
+                                            visibilityReal);
+                                    //String source,String fileName
+                                    memoInputResult.then((value) {
+                                      isSendNewMessage = true;
+                                      //关闭对话框
+                                      Navigator.pop(context);
+                                      //退出编辑页面
+                                      Navigator.pop(context);
+                                    });
+                                  } else {
+                                    Future<int?> result =
+                                        RequestManager.getClient().updateMemo(
+                                      _noteController.text.toString().trim(),
+                                      widget.modifyNoteBean.memoId,
+                                      visibilityReal,
+                                    );
+                                    result.then((value) => {
+                                          isSendNewMessage = true,
+                                          //退出编辑页面
+                                          Navigator.pop(context),
+                                          Navigator.pop(context),
+                                        });
+                                  }
                                 } on DioError catch (dioError) {
                                   ToastUtil.showToast(
                                       message: dioError.message);

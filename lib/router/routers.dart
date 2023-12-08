@@ -3,6 +3,7 @@ import 'package:memos/auth/contact_me.dart';
 import 'package:flutter/material.dart';
 import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
+import 'package:memos/beans/ModifyNoteBean.dart';
 import 'package:memos/pages/memo_detail.dart';
 import 'package:memos/pages/more_page.dart';
 import 'package:memos/pages/user_info.dart';
@@ -19,8 +20,10 @@ Map routes = {
   "/main_page": (context) => const MainPage(),
   "/more_page": (context) => const MorePage(),
   "/user_info": (context) => const UserInfoPage(),
-  "/input_note_page": (context) => const InputPage(),
-  "/add_page":(context) => const AddPage()
+  "/input_note_page": (context) => InputPage(
+        modifyNoteBean: ModifyNoteBean("", ModifyNoteBean.INPUT,-1),
+      ),
+  "/add_page": (context) => const AddPage()
 };
 
 var onGenerateRoute = (RouteSettings settings) {

@@ -115,14 +115,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
   void didChangeMetrics() {
     super.didChangeMetrics();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        print('lfh--->键盘data${MediaQuery.of(context).viewInsets.bottom}');
-        if (MediaQuery.of(context).viewInsets.bottom == 0) {
-          print('lfh--->键盘消失了');
-        } else {
-          print('lfh--->键盘出现了');
-        }
-      });
+      setState(() {});
     });
   }
 
@@ -356,6 +349,14 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
         noteId: noteId,
         onArchivedListener: () {
           _onRefresh();
+        },
+        onEditClickedListener: () {
+          if (isSendNewMessage) {
+            setState(() {
+              _onRefresh();
+              isSendNewMessage = false;
+            });
+          }
         },
       ));
     }
