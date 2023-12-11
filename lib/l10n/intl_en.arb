@@ -1,0 +1,23 @@
+{
+  "main_title": "MEMOS",
+  "temporary_storage_title": "BOX",
+  "tags_title": "TAGS",
+  "resource_title": "RESOURCE",
+  "lang_setting":"Language Settings",
+  "settingLanguageChinese":"Chinese",
+  "settingLanguageEnglish":"English",
+  "lang_lange": "Language",
+  "lang_share": "Share",
+  "lang_help": "Help",
+  "lang_font_size": "Font size",
+  "lang_theme_color": "Theme colors",
+  "lang_clear_cache": "Clearing the cache",
+  "lang_log_out": "Log Out",
+  "lang_official_website": "Official Website",
+  "lang_terms_conditions": "Terms Conditions",
+  "lang_privacy_policy": "Privacy Policy",
+  "lang_feedback": "Feedback",
+  "lang_contact": "Contact Us",
+  "lang_update_records": "Update Records",
+  "lang_about": "About"
+}
