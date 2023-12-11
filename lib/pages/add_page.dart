@@ -11,6 +11,7 @@ import 'package:memos/view/note_card_view.dart';
 import 'package:memos/view/search_view.dart';
 import '../constants/constant.dart';
 import '../network/network.dart';
+import 'package:memos/generated/l10n.dart';
 
 // import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -133,9 +134,9 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
               Container(
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.only(left: 5, top: 5),
-                child: const Text(
-                  'MEMOS',
-                  style: TextStyle(color: Colors.black, fontSize: 22),
+                child: Text(
+                  S.of(context).main_title,
+                  style: const TextStyle(color: Colors.black, fontSize: 22),
                 ),
               ),
               InkWell(

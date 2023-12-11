@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:memos/view/flag_item.dart';
 
 import '../beans/TagsBean.dart';
+import '../generated/l10n.dart';
 import '../network/network.dart';
 
 class TagPage extends StatefulWidget {
@@ -66,9 +67,9 @@ class _TagPageState extends State<TagPage> with AutomaticKeepAliveClientMixin {
           children: [
             Container(
               margin: const EdgeInsets.all(10),
-              child: const Text(
-                'Tags',
-                style: TextStyle(color: Colors.black, fontSize: 22),
+              child: Text(
+                  S.of(context).tags_title,
+                style: const TextStyle(color: Colors.black, fontSize: 22),
               ),
             ),
           ],

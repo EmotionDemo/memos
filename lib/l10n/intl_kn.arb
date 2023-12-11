@@ -1,0 +1,23 @@
+{
+  "main_title":                      "메모",
+  "temporary_storage_title":         "상자",
+  "tags_title":                      "태그",
+  "resource_title":                  "자원",
+  "lang_setting":                    "언어 설정",
+  "settingLanguageChinese":          "중국어",
+  "settingLanguageEnglish":          "영어",
+  "lang_lange":                      "언어",
+  "lang_share":                      "공유",
+  "lang_help":                       "도움말",
+  "lang_font_size":                  "글꼴 크기",
+  "lang_theme_color":                "테마 색상",
+  "lang_clear_cache":                "캐시 지우기",
+  "lang_log_out":                    "로그아웃",
+  "lang_official_website":           "공식 웹 사이트",
+  "lang_terms_conditions":           "이용 약관",
+  "lang_privacy_policy":             "개인 정보 정책",
+  "lang_feedback":                   "피드백",
+  "lang_contact":                    "문의하기",
+  "lang_update_records":             "업데이트 기록",
+  "lang_about":                      "소개"
+}

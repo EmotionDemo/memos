@@ -11,6 +11,8 @@ import 'package:flutter_advanced_networkimage_2/provider.dart';
 import 'package:flutter_advanced_networkimage_2/transition.dart';
 import 'package:flutter_advanced_networkimage_2/zoomable.dart';
 
+import '../generated/l10n.dart';
+
 class ResourcePage extends StatefulWidget {
   const ResourcePage({Key? key}) : super(key: key);
 
@@ -22,7 +24,6 @@ class _ResourcePageState extends State<ResourcePage> {
   List<Card> list = [];
   var screenWidth = ScreenUtil.hc_ScreenWidth();
   var screenHeight = ScreenUtil.hc_ScreenHeight();
-
 
   List<Widget> getResources(List<Card> list) {
     return list;
@@ -38,18 +39,17 @@ class _ResourcePageState extends State<ResourcePage> {
           print('ResourcePage--->${resourceBean.data}'),
           resourceBean.data.forEach((element) {
             Widget showItem = Container();
-            if(element.type.contains("image")){
+            if (element.type.contains("image")) {
               showItem = Image.network(
                 "${SpUtil.getString(Global.BASE_PATH)!}/o/r/${element.id}/${element.filename}",
                 width: ScreenUtil.hc_ScreenWidth() / 4,
                 height: ScreenUtil.hc_ScreenWidth() / 4,
               );
-            }else if(element.type.contains("video")){
-              showItem =Image(
+            } else if (element.type.contains("video")) {
+              showItem = Image(
                 image: AdvancedNetworkImage(
                   "${SpUtil.getString(Global.BASE_PATH)!}/o/r/${element.id}/${element.filename}",
                   useDiskCache: true,
-
                   cacheRule: const CacheRule(maxAge: Duration(days: 7)),
                 ),
                 fit: BoxFit.cover,
@@ -127,9 +127,9 @@ class _ResourcePageState extends State<ResourcePage> {
               Container(
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.only(left: 5, top: 5),
-                child: const Text(
-                  '资源',
-                  style: TextStyle(color: Colors.black, fontSize: 22),
+                child: Text(
+                  S.of(context).resource_title,
+                  style: const TextStyle(color: Colors.black, fontSize: 22),
                 ),
               ),
             ],

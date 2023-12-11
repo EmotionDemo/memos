@@ -54,6 +54,7 @@ class Global {
 
   ///更新用户信息
   static void updateUserInfo(MeBean statusData) {
+    print('updateUserInfo---->$statusData');
     if (SpUtil.getString(Global.USER_NAME)! != statusData.data.username) {
       SpUtil.setString(Global.USER_NAME, statusData.data.username);
     }

@@ -59,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
     serverAddressController = TextEditingController();
     passwordController = TextEditingController();
     usernameController = TextEditingController();
+    serverAddressController.text = "http://43.138.80.236:5230/";
   }
 
   @override

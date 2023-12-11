@@ -15,6 +15,7 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../beans/MemosBean.dart';
+import '../generated/l10n.dart';
 import '../network/network.dart';
 import '../view/delete_card_view.dart';
 
@@ -154,9 +155,9 @@ class _CollectPageState extends State<CollectPage>
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
               padding: const EdgeInsets.only(top: 20, bottom: 20),
-              child: const Text(
-                '暂存箱',
-                style: TextStyle(color: Colors.black, fontSize: 22),
+              child:  Text(
+                S.of(context).temporary_storage_title,
+                style: const TextStyle(color: Colors.black, fontSize: 22),
               ),
             ),
           ],

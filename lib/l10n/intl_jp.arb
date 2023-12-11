@@ -1,0 +1,23 @@
+{
+  "main_title":                       "メモ",
+  "temporary_storage_title":          "ボックス",
+  "tags_title":                       "タグ",
+  "resource_title":                   "リソース",
+  "lang_setting":                     "言語設定",
+  "settingLanguageChinese":           "中国語",
+  "settingLanguageEnglish":           "英語",
+  "lang_lange":                       "言語",
+  "lang_share":                       "共有",
+  "lang_help":                        "ヘルプ",
+  "lang_font_size":                   "フォントサイズ",
+  "lang_theme_color":                 "テーマの色",
+  "lang_clear_cache":                 "キャッシュのクリア",
+  "lang_log_out":                     "ログアウト",
+  "lang_official_website":            "公式ウェブサイト",
+  "lang_terms_conditions":            "利用規約",
+  "lang_privacy_policy":              "プライバシーポリシー",
+  "lang_feedback":                    "フィードバック",
+  "lang_contact":                     "お問い合わせ",
+  "lang_update_records":              "更新履歴",
+  "lang_about":                       "について"
+}

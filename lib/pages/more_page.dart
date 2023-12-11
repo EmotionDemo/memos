@@ -10,6 +10,7 @@ import 'package:memos/utils/SpUtils.dart';
 
 import '../beans/MemosBean.dart';
 import '../beans/TagsBean.dart';
+import '../generated/l10n.dart';
 import '../view/heat_map.dart';
 
 class MorePage extends StatefulWidget {
@@ -260,7 +261,7 @@ class _MorePageState extends State<MorePage>
                           width: 20,
                         ),
                         Text(
-                          '官方网站',
+                          S.of(context).lang_official_website,
                           style: const TextStyle(
                               color: Colors.black87, fontSize: 15),
                         ),
@@ -314,9 +315,9 @@ class _MorePageState extends State<MorePage>
                             const SizedBox(
                               width: 20,
                             ),
-                            const Text(
-                              '用户条款',
-                              style: TextStyle(
+                             Text(
+                              S.of(context).lang_terms_conditions,
+                              style: const TextStyle(
                                   color: Colors.black87, fontSize: 15),
                             ),
                             const Spacer(),
@@ -410,9 +411,9 @@ class _MorePageState extends State<MorePage>
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                const Text(
-                                  '反馈与建议',
-                                  style: TextStyle(
+                                 Text(
+                                  S.of(context).lang_feedback,
+                                  style: const TextStyle(
                                       color: Colors.black87, fontSize: 15),
                                 ),
                                 const Spacer(),
@@ -452,9 +453,9 @@ class _MorePageState extends State<MorePage>
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                const Text(
-                                  '联系我们',
-                                  style: TextStyle(
+                                 Text(
+                                  S.of(context).lang_contact,
+                                  style:const TextStyle(
                                       color: Colors.black87, fontSize: 15),
                                 ),
                                 const Spacer(),
@@ -496,9 +497,9 @@ class _MorePageState extends State<MorePage>
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                const Text(
-                                  '更新记录',
-                                  style: TextStyle(
+                                 Text(
+                                  S.of(context).lang_update_records,
+                                  style:const TextStyle(
                                       color: Colors.black87, fontSize: 15),
                                 ),
                                 Spacer(),
@@ -561,7 +562,7 @@ class _MorePageState extends State<MorePage>
                             width: 20,
                           ),
                           Text(
-                            '关于',
+                            S.of(context).lang_about,
                             style: const TextStyle(
                                 color: Colors.black87, fontSize: 15),
                           ),

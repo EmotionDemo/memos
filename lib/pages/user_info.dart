@@ -8,10 +8,12 @@ import 'package:memos/utils/ScreenUtil.dart';
 import 'package:memos/utils/SpUtils.dart';
 import 'package:memos/utils/file_utils.dart';
 import 'package:memos/utils/toast.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../beans/LoginBean.dart';
 import '../constants/constant.dart';
+import '../generated/l10n.dart';
+import '../utils/LangCurrentLocale.dart';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({Key? key}) : super(key: key);
@@ -28,7 +30,7 @@ class _UserInfoPageState extends State<UserInfoPage>
   late String role;
   late String avatarurl;
   late String rowstatus;
-
+  late Widget userImg ;
   @override
   void initState() {
     super.initState();
@@ -37,6 +39,19 @@ class _UserInfoPageState extends State<UserInfoPage>
     email = SpUtil.getString(Global.USER_EMAIL)!;
     role = SpUtil.getString(Global.USER_ROLE)!;
     avatarurl = SpUtil.getString(Global.USER_AVATARURL)!;
+    if(avatarurl.isEmpty){
+      avatarurl = "https://blog-front-bucket-1252400532.cos.ap-beijing.myqcloud.com/blog/img/bg_user.png";
+      userImg = Image.network(avatarurl, fit: BoxFit.cover,
+        width: ScreenUtil.hc_ScreenWidth() / 4,
+        height: ScreenUtil.hc_ScreenWidth() / 4);
+    }else{
+      userImg = Image.memory(
+        base64.decode(avatarurl.split(',').last),
+        fit: BoxFit.cover,
+        width: ScreenUtil.hc_ScreenWidth() / 4,
+        height: ScreenUtil.hc_ScreenWidth() / 4,
+      );
+    }
     rowstatus = SpUtil.getString(Global.USER_ROWSTATUS)!;
   }
 
@@ -86,15 +101,7 @@ class _UserInfoPageState extends State<UserInfoPage>
                           border: Border.all(color: Colors.yellow, width: 2),
                           borderRadius: BorderRadius.circular(50)),
                       child: ClipOval(
-                        child: Image.memory(
-                          base64.decode(avatarurl.split(',').last),
-                          fit: BoxFit.cover,
-                          width: ScreenUtil.hc_ScreenWidth() / 4,
-                          height: ScreenUtil.hc_ScreenWidth() / 4,
-                        ),
-                        /*child: Image.memory(
-                          base64.decode(FileUtils.base64.split(',').last)
-                        ),*/
+                        child: userImg
                       ),
                     ),
                   )
@@ -222,10 +229,9 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            '语言',
-                            style:
-                                TextStyle(color: Colors.black87, fontSize: 15),
+                           Text(
+                            S.of(context).lang_lange,
+                            style:const TextStyle(color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -235,6 +241,14 @@ class _UserInfoPageState extends State<UserInfoPage>
                           ),
                         ],
                       ),
+                      onTap: () async{
+                        int? index = await _showLanguageDialog(context);
+                        if (index == 1) {
+                          Provider.of<LangCurrentLocale>(context, listen: false).setLocale(const Locale('zh', "CH"));
+                        } else if (index == 2) {
+                          Provider.of<LangCurrentLocale>(context, listen: false).setLocale(const Locale('en', "US"));
+                        }
+                      },
                     ),
                   ),
                   const Spacer(),
@@ -263,10 +277,9 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            '分享',
-                            style:
-                                TextStyle(color: Colors.black87, fontSize: 15),
+                           Text(
+                            S.of(context).lang_share,
+                            style:const TextStyle(color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -308,10 +321,9 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            '帮助',
-                            style:
-                                TextStyle(color: Colors.black87, fontSize: 15),
+                           Text(
+                            S.of(context).lang_help,
+                            style:const TextStyle(color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -358,10 +370,10 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            '字体大小',
+                           Text(
+                            S.of(context).lang_font_size,
                             style:
-                                TextStyle(color: Colors.black87, fontSize: 15),
+                            const TextStyle(color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -399,9 +411,9 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            '主题颜色',
-                            style:
+                           Text(
+                            S.of(context).lang_theme_color,
+                            style:const
                                 TextStyle(color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
@@ -443,10 +455,9 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            '清除缓存',
-                            style:
-                                TextStyle(color: Colors.black87, fontSize: 15),
+                           Text(
+                            S.of(context).lang_clear_cache,
+                            style:const TextStyle(color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -456,7 +467,9 @@ class _UserInfoPageState extends State<UserInfoPage>
                           ),
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        FileUtils.clearFileCache(context);
+                      },
                     ),
                   ),
                 ],
@@ -482,11 +495,11 @@ class _UserInfoPageState extends State<UserInfoPage>
                 child: Container(
                   width: double.maxFinite,
                   // margin: const EdgeInsets.all(10),
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
                   alignment: Alignment.center,
-                  child: const Text(
-                    '退出登录',
-                    style: TextStyle(
+                  child:  Text(
+                    S.of(context).lang_log_out,
+                    style: const TextStyle(
                         color: Colors.red,
                         fontSize: 15,
                         fontWeight: FontWeight.w600),
@@ -512,6 +525,37 @@ class _UserInfoPageState extends State<UserInfoPage>
           ),
         ],
       )),
+    );
+  }
+
+  Future<int?> _showLanguageDialog(BuildContext context) async {
+    return showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(S.of(context).lang_setting),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 1);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text(S.of(context).settingLanguageChinese),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 2);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text(S.of(context).settingLanguageEnglish),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

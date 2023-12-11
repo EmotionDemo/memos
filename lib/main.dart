@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:memos/auth/login_page.dart';
 import 'package:memos/auth/main_page.dart';
@@ -10,6 +11,7 @@ import 'package:memos/pages/error_page.dart';
 import 'package:memos/router/routers.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:memos/utils/LangCurrentLocale.dart';
 import 'package:memos/utils/SpUtils.dart';
 import 'package:memos/utils/no_splash_factory.dart';
 import 'package:memos/utils/toast.dart';
@@ -17,11 +19,14 @@ import 'package:memos/view/behavior_view.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'beans/StatusBean.dart';
 import 'constants/constant.dart';
+import 'generated/l10n.dart';
 import 'network/network.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Widget firstRoutePage = Container();
 
@@ -55,7 +60,12 @@ void main() {
               Global.saveUserTagsInfo(value);
             });
 
-            runApp(const MyApp());
+            runApp(MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (context) => LangCurrentLocale())
+              ],
+              child: const MyApp(),
+            ));
           }).catchError((error) {
             print('queryUserStatus error,info->${error}');
           });
@@ -124,25 +134,39 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'memos',
-      builder: (context, child) {
-        return ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: child!,
+    return Consumer<LangCurrentLocale>(
+      builder: (context,currentLocale,child){
+
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            S.delegate
+          ],
+          locale: currentLocale.value,
+          supportedLocales: S.delegate.supportedLocales,
+          title: 'memos',
+          builder: (context, child) {
+            return ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: child!,
+            );
+          },
+          theme: ThemeData(
+              brightness: Brightness.light,
+              primaryColor: const Color.fromARGB(242, 197, 188, 188),
+              scaffoldBackgroundColor: const Color.fromARGB(189, 255, 255, 255),
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              splashFactory: NoSplashFactory()),
+          home: firstRoutePage,
+          // initialRoute: firstRoutePage,
+          onGenerateRoute: onGenerateRoute,
         );
       },
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: const Color.fromARGB(242, 197, 188, 188),
-          scaffoldBackgroundColor: const Color.fromARGB(189, 255, 255, 255),
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          splashFactory: NoSplashFactory()),
-      home: firstRoutePage,
-      // initialRoute: firstRoutePage,
-      onGenerateRoute: onGenerateRoute,
     );
+
   }
 }
