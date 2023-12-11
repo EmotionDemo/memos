@@ -3,12 +3,15 @@
   "temporary_storage_title": "暂存箱",
   "tags_title": "标签",
   "resource_title": "资源",
-  "lang_setting":"语言设置",
-  "settingLanguageChinese":"汉语",
-  "settingLanguageEnglish":"英语",
+  "lang_setting": "语言设置",
+  "settingLanguageChineseSimple": "汉语(简)",
+  "settingLanguageChineseTraditional": "汉语(繁)",
+  "settingLanguageEnglish": "英语",
+  "settingLanguageJapanese": "日语",
+  "settingLanguageKorean": "韩语",
   "lang_lange": "语言",
   "lang_share": "分享",
-  "lang_help": "分享",
+  "lang_help": "帮助",
   "lang_font_size": "字体大小",
   "lang_theme_color": "主题颜色",
   "lang_clear_cache": "清除缓存",
@@ -20,11 +23,4 @@
   "lang_contact": "联系我们",
   "lang_update_records": "更新记录",
   "lang_about": "关于"
-
-
-
-
-
-
-
 }

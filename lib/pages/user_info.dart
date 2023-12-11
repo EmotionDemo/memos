@@ -30,7 +30,8 @@ class _UserInfoPageState extends State<UserInfoPage>
   late String role;
   late String avatarurl;
   late String rowstatus;
-  late Widget userImg ;
+  late Widget userImg;
+
   @override
   void initState() {
     super.initState();
@@ -39,12 +40,14 @@ class _UserInfoPageState extends State<UserInfoPage>
     email = SpUtil.getString(Global.USER_EMAIL)!;
     role = SpUtil.getString(Global.USER_ROLE)!;
     avatarurl = SpUtil.getString(Global.USER_AVATARURL)!;
-    if(avatarurl.isEmpty){
-      avatarurl = "https://blog-front-bucket-1252400532.cos.ap-beijing.myqcloud.com/blog/img/bg_user.png";
-      userImg = Image.network(avatarurl, fit: BoxFit.cover,
-        width: ScreenUtil.hc_ScreenWidth() / 4,
-        height: ScreenUtil.hc_ScreenWidth() / 4);
-    }else{
+    if (avatarurl.isEmpty) {
+      avatarurl =
+          "https://blog-front-bucket-1252400532.cos.ap-beijing.myqcloud.com/blog/img/bg_user.png";
+      userImg = Image.network(avatarurl,
+          fit: BoxFit.cover,
+          width: ScreenUtil.hc_ScreenWidth() / 4,
+          height: ScreenUtil.hc_ScreenWidth() / 4);
+    } else {
       userImg = Image.memory(
         base64.decode(avatarurl.split(',').last),
         fit: BoxFit.cover,
@@ -100,9 +103,7 @@ class _UserInfoPageState extends State<UserInfoPage>
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.yellow, width: 2),
                           borderRadius: BorderRadius.circular(50)),
-                      child: ClipOval(
-                        child: userImg
-                      ),
+                      child: ClipOval(child: userImg),
                     ),
                   )
                 ],
@@ -229,9 +230,10 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                           Text(
+                          Text(
                             S.of(context).lang_lange,
-                            style:const TextStyle(color: Colors.black87, fontSize: 15),
+                            style: const TextStyle(
+                                color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -241,12 +243,14 @@ class _UserInfoPageState extends State<UserInfoPage>
                           ),
                         ],
                       ),
-                      onTap: () async{
+                      onTap: () async {
                         int? index = await _showLanguageDialog(context);
-                        if (index == 1) {
-                          Provider.of<LangCurrentLocale>(context, listen: false).setLocale(const Locale('zh', "CH"));
-                        } else if (index == 2) {
-                          Provider.of<LangCurrentLocale>(context, listen: false).setLocale(const Locale('en', "US"));
+                        print('tw2--->${LangCurrentLocale.getValue(index!).languageCode}');
+                        if (mounted) {
+                          setState(() {
+                            Provider.of<LangCurrentLocale>(context, listen: false)
+                                .setLocale(LangCurrentLocale.getValue(index!));
+                          });
                         }
                       },
                     ),
@@ -277,9 +281,10 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                           Text(
+                          Text(
                             S.of(context).lang_share,
-                            style:const TextStyle(color: Colors.black87, fontSize: 15),
+                            style: const TextStyle(
+                                color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -321,9 +326,10 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                           Text(
+                          Text(
                             S.of(context).lang_help,
-                            style:const TextStyle(color: Colors.black87, fontSize: 15),
+                            style: const TextStyle(
+                                color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -370,10 +376,10 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                           Text(
+                          Text(
                             S.of(context).lang_font_size,
-                            style:
-                            const TextStyle(color: Colors.black87, fontSize: 15),
+                            style: const TextStyle(
+                                color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -411,10 +417,10 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                           Text(
+                          Text(
                             S.of(context).lang_theme_color,
-                            style:const
-                                TextStyle(color: Colors.black87, fontSize: 15),
+                            style: const TextStyle(
+                                color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -455,9 +461,10 @@ class _UserInfoPageState extends State<UserInfoPage>
                           const SizedBox(
                             width: 20,
                           ),
-                           Text(
+                          Text(
                             S.of(context).lang_clear_cache,
-                            style:const TextStyle(color: Colors.black87, fontSize: 15),
+                            style: const TextStyle(
+                                color: Colors.black87, fontSize: 15),
                           ),
                           const Spacer(),
                           const Icon(
@@ -497,7 +504,7 @@ class _UserInfoPageState extends State<UserInfoPage>
                   // margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   alignment: Alignment.center,
-                  child:  Text(
+                  child: Text(
                     S.of(context).lang_log_out,
                     style: const TextStyle(
                         color: Colors.red,
@@ -529,6 +536,7 @@ class _UserInfoPageState extends State<UserInfoPage>
   }
 
   Future<int?> _showLanguageDialog(BuildContext context) async {
+    print('tw---->${S.of(context).settingLanguageChineseTraditional}');
     return showDialog<int>(
       context: context,
       builder: (BuildContext context) {
@@ -537,20 +545,47 @@ class _UserInfoPageState extends State<UserInfoPage>
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context, 1);
+                Navigator.pop(context, LangCurrentLocale.CN);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(S.of(context).settingLanguageChinese),
+                child: Text(S.of(context).settingLanguageChineseSimple),
               ),
             ),
             SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context, 2);
+                Navigator.pop(context, LangCurrentLocale.TW);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text(S.of(context).settingLanguageChineseTraditional),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, LangCurrentLocale.EN);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Text(S.of(context).settingLanguageEnglish),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, LangCurrentLocale.JP);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text(S.of(context).settingLanguageJapanese),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, LangCurrentLocale.KR);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text(S.of(context).settingLanguageKorean),
               ),
             ),
           ],

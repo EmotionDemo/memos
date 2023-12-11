@@ -59,23 +59,27 @@ void main() {
             allTags.then((value) {
               Global.saveUserTagsInfo(value);
             });
-
-            runApp(MultiProvider(
-              providers: [
-                ChangeNotifierProvider(create: (context) => LangCurrentLocale())
-              ],
-              child: const MyApp(),
-            ));
+            startActivity();
           }).catchError((error) {
             print('queryUserStatus error,info->${error}');
           });
         } else {
           firstRoutePage = const LoginPage();
-          runApp(const MyApp());
+          startActivity();
         }
       });
     }
   });
+}
+
+///启动！
+void startActivity() {
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<LangCurrentLocale>(create: (context) => LangCurrentLocale())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 ///获取权限
@@ -136,7 +140,6 @@ class _MyAppState extends State<MyApp> {
     ]);
     return Consumer<LangCurrentLocale>(
       builder: (context,currentLocale,child){
-
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [

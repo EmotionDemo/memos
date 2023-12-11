@@ -358,9 +358,9 @@ class _MorePageState extends State<MorePage>
                             const SizedBox(
                               width: 20,
                             ),
-                            const Text(
-                              '隐私政策',
-                              style: TextStyle(
+                             Text(
+                              S.of(context).lang_privacy_policy,
+                              style: const TextStyle(
                                   color: Colors.black87, fontSize: 15),
                             ),
                             const Spacer(),

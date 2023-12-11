@@ -1,0 +1,22 @@
+{
+  "main_title": "筆記",
+  "temporary_storage_title": "暫存箱",
+  "tags_title": "標籤",
+  "resource_title": "資源",
+  "lang_setting":"語言設置",
+  "settingLanguage":"漢語(繁)",
+  "lang_lange": "語言",
+  "lang_share": "分享",
+  "lang_help": "幫助",
+  "lang_font_size": "字體大小",
+  "lang_theme_color": "主題顏色",
+  "lang_clear_cache": "清除緩存",
+  "lang_log_out": "退出登錄",
+  "lang_official_website": "官方網站",
+  "lang_terms_conditions": "用戶條款",
+  "lang_privacy_policy": "隱私政策",
+  "lang_feedback": "反饋建議",
+  "lang_contact": "聯繫我們",
+  "lang_update_records": "更新記錄",
+  "lang_about": "關於"
+}

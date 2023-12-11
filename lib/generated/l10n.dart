@@ -100,11 +100,21 @@ class S {
     );
   }
 
-  /// `Chinese`
-  String get settingLanguageChinese {
+  /// `Simplified Chinese`
+  String get settingLanguageChineseSimple {
     return Intl.message(
-      'Chinese',
-      name: 'settingLanguageChinese',
+      'Simplified Chinese',
+      name: 'settingLanguageChineseSimple',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Traditional Chinese`
+  String get settingLanguageChineseTraditional {
+    return Intl.message(
+      'Traditional Chinese',
+      name: 'settingLanguageChineseTraditional',
       desc: '',
       args: [],
     );
@@ -115,6 +125,26 @@ class S {
     return Intl.message(
       'English',
       name: 'settingLanguageEnglish',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Japanese`
+  String get settingLanguageJapanese {
+    return Intl.message(
+      'Japanese',
+      name: 'settingLanguageJapanese',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Korean`
+  String get settingLanguageKorean {
+    return Intl.message(
+      'Korean',
+      name: 'settingLanguageKorean',
       desc: '',
       args: [],
     );
@@ -267,9 +297,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'jp'),
-      Locale.fromSubtags(languageCode: 'kn'),
-      Locale.fromSubtags(languageCode: 'zh'),
+      Locale.fromSubtags(languageCode: 'ja'),
+      Locale.fromSubtags(languageCode: 'ko'),
+      Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
+      Locale.fromSubtags(languageCode: 'zh', countryCode: 'TW'),
     ];
   }
 

@@ -46,10 +46,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Update Records"),
         "main_title": MessageLookupByLibrary.simpleMessage("MEMOS"),
         "resource_title": MessageLookupByLibrary.simpleMessage("RESOURCE"),
-        "settingLanguageChinese":
-            MessageLookupByLibrary.simpleMessage("Chinese"),
+        "settingLanguageChineseSimple":
+            MessageLookupByLibrary.simpleMessage("Simplified Chinese"),
+        "settingLanguageChineseTraditional":
+            MessageLookupByLibrary.simpleMessage("Traditional Chinese"),
         "settingLanguageEnglish":
             MessageLookupByLibrary.simpleMessage("English"),
+        "settingLanguageJapanese":
+            MessageLookupByLibrary.simpleMessage("Japanese"),
+        "settingLanguageKorean": MessageLookupByLibrary.simpleMessage("Korean"),
         "tags_title": MessageLookupByLibrary.simpleMessage("TAGS"),
         "temporary_storage_title": MessageLookupByLibrary.simpleMessage("BOX")
       };
