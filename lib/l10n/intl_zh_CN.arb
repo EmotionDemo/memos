@@ -22,5 +22,8 @@
   "lang_feedback": "反馈建议",
   "lang_contact": "联系我们",
   "lang_update_records": "更新记录",
-  "lang_about": "关于"
+  "lang_about": "关于",
+  "lang_update_success": "更新成功，共更新",
+  "lang_information_updated": "条信息",
+  "lang_slide_delete": "滑动来删除"
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memos/utils/SpUtils.dart';
 
 class LangCurrentLocale with ChangeNotifier {
   ///汉语-简
@@ -21,13 +22,12 @@ class LangCurrentLocale with ChangeNotifier {
   static const Locale _localeTW = Locale('zh', "TW");
   static const Locale _localeJP = Locale('ja', "JP");
   static const Locale _localeKR = Locale('ko', "KR");
-  Locale _locale = _localeCN;
+  Locale _locale = getValue(SpUtil.getInt("LANG_SET")!);
 
   Locale get value => _locale;
 
   static Locale getValue(int index) {
     Locale result = _localeCN;
-    print('getValue--->${index}');
     switch (index) {
       case CN:
         result = _localeCN;
@@ -51,7 +51,8 @@ class LangCurrentLocale with ChangeNotifier {
     return result;
   }
 
-  void setLocale(locale) {
+  void setLocale(int index) {
+    Locale locale = getValue(index);
     _locale = locale;
     notifyListeners();
   }

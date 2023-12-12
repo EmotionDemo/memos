@@ -289,6 +289,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Updated Successfully`
+  String get lang_update_success {
+    return Intl.message(
+      'Updated Successfully',
+      name: 'lang_update_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Information Is Updated`
+  String get lang_information_updated {
+    return Intl.message(
+      'Information Is Updated',
+      name: 'lang_information_updated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe To Delete`
+  String get lang_slide_delete {
+    return Intl.message(
+      'Swipe To Delete',
+      name: 'lang_slide_delete',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

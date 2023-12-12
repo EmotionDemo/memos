@@ -22,5 +22,8 @@
   "lang_feedback": "피드백",
   "lang_contact": "문의하기",
   "lang_update_records": "업데이트 기록",
-  "lang_about": "소개"
+  "lang_about": "소개",
+  "lang_update_success": "업데이트 성공,공동 업데이트",
+  "lang_information_updated": "메시지 한 통",
+  "lang_slide_delete": "삭제하기 위해 미끄러짐"
 }

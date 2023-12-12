@@ -4,7 +4,11 @@
   "tags_title": "標籤",
   "resource_title": "資源",
   "lang_setting":"語言設置",
-  "settingLanguage":"漢語(繁)",
+  "settingLanguageChineseSimple": "漢語(簡)",
+  "settingLanguageChineseTraditional": "漢語(繁)",
+  "settingLanguageEnglish": "英語",
+  "settingLanguageJapanese": "日語",
+  "settingLanguageKorean": "韓語",
   "lang_lange": "語言",
   "lang_share": "分享",
   "lang_help": "幫助",
@@ -18,5 +22,8 @@
   "lang_feedback": "反饋建議",
   "lang_contact": "聯繫我們",
   "lang_update_records": "更新記錄",
-  "lang_about": "關於"
+  "lang_about": "關於",
+  "lang_update_success": "更新成功,共更新",
+  "lang_information_updated": "條信息",
+  "lang_slide_delete": "滑動來刪除"
 }

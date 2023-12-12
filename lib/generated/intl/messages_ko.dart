@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "lang_feedback": MessageLookupByLibrary.simpleMessage("피드백"),
         "lang_font_size": MessageLookupByLibrary.simpleMessage("글꼴 크기"),
         "lang_help": MessageLookupByLibrary.simpleMessage("도움"),
+        "lang_information_updated":
+            MessageLookupByLibrary.simpleMessage("메시지 한 통"),
         "lang_lange": MessageLookupByLibrary.simpleMessage("언어"),
         "lang_log_out": MessageLookupByLibrary.simpleMessage("로그아웃"),
         "lang_official_website":
@@ -35,9 +37,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "lang_privacy_policy": MessageLookupByLibrary.simpleMessage("개인 정보 정책"),
         "lang_setting": MessageLookupByLibrary.simpleMessage("언어 설정"),
         "lang_share": MessageLookupByLibrary.simpleMessage("공유"),
+        "lang_slide_delete":
+            MessageLookupByLibrary.simpleMessage("삭제하기 위해 미끄러짐"),
         "lang_terms_conditions": MessageLookupByLibrary.simpleMessage("이용 약관"),
         "lang_theme_color": MessageLookupByLibrary.simpleMessage("테마 색상"),
         "lang_update_records": MessageLookupByLibrary.simpleMessage("업데이트 기록"),
+        "lang_update_success":
+            MessageLookupByLibrary.simpleMessage("업데이트 성공,공동 업데이트"),
         "main_title": MessageLookupByLibrary.simpleMessage("메모"),
         "resource_title": MessageLookupByLibrary.simpleMessage("자원"),
         "settingLanguageChineseSimple":

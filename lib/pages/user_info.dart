@@ -245,11 +245,11 @@ class _UserInfoPageState extends State<UserInfoPage>
                       ),
                       onTap: () async {
                         int? index = await _showLanguageDialog(context);
-                        print('tw2--->${LangCurrentLocale.getValue(index!).languageCode}');
+                        SpUtil.setInt("LANG_SET", index!);
                         if (mounted) {
                           setState(() {
                             Provider.of<LangCurrentLocale>(context, listen: false)
-                                .setLocale(LangCurrentLocale.getValue(index!));
+                                .setLocale(index);
                           });
                         }
                       },
@@ -486,7 +486,7 @@ class _UserInfoPageState extends State<UserInfoPage>
           Container(
             height: 70,
             alignment: Alignment.center,
-            margin: EdgeInsets.only(top: 10),
+            margin:const EdgeInsets.only(top: 10),
             padding:
                 const EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
             child: InkWell(

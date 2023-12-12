@@ -22,5 +22,8 @@
   "lang_feedback":                    "フィードバック",
   "lang_contact":                     "お問い合わせ",
   "lang_update_records":              "更新履歴",
-  "lang_about":                       "について"
+  "lang_about":                       "について",
+  "lang_update_success":              "更新が成功しました",
+  "lang_information_updated":         "件データ更新",
+  "lang_slide_delete":                "スライドして削除"
 }

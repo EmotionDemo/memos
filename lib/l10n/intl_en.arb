@@ -22,5 +22,8 @@
   "lang_feedback": "Feedback",
   "lang_contact": "Contact Us",
   "lang_update_records": "Update Records",
-  "lang_about": "About"
+  "lang_about": "About",
+  "lang_update_success": "Updated Successfully",
+  "lang_information_updated": "Information Is Updated",
+  "lang_slide_delete": "Swipe To Delete"
 }

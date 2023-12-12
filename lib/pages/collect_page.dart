@@ -98,7 +98,7 @@ class _CollectPageState extends State<CollectPage>
         ));
       }
 
-      networkError = '📒更新成功,共更新${notes.length}条信息';
+      networkError = '📒${S.of(context).lang_update_success} ${notes.length} ${S.of(context).lang_information_updated}';
       noDataShow = 'images/ic_data_no_result.png';
      /* ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -175,18 +175,18 @@ class _CollectPageState extends State<CollectPage>
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
+              children:  [
+                const Icon(
                   Icons.info,
                   color: Colors.greenAccent,
                   size: 20,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Text(
-                  '在条目中左滑恢复右滑永久删除',
-                  style: TextStyle(color: Colors.black54),
+                  S.of(context).lang_slide_delete,
+                  style:const TextStyle(color: Colors.black54),
                 )
               ],
             ),

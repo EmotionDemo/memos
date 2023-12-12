@@ -29,6 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "lang_feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
         "lang_font_size": MessageLookupByLibrary.simpleMessage("Font size"),
         "lang_help": MessageLookupByLibrary.simpleMessage("Help"),
+        "lang_information_updated":
+            MessageLookupByLibrary.simpleMessage("Information Is Updated"),
         "lang_lange": MessageLookupByLibrary.simpleMessage("Language"),
         "lang_log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
         "lang_official_website":
@@ -38,12 +40,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "lang_setting":
             MessageLookupByLibrary.simpleMessage("Language Settings"),
         "lang_share": MessageLookupByLibrary.simpleMessage("Share"),
+        "lang_slide_delete":
+            MessageLookupByLibrary.simpleMessage("Swipe To Delete"),
         "lang_terms_conditions":
             MessageLookupByLibrary.simpleMessage("Terms Conditions"),
         "lang_theme_color":
             MessageLookupByLibrary.simpleMessage("Theme colors"),
         "lang_update_records":
             MessageLookupByLibrary.simpleMessage("Update Records"),
+        "lang_update_success":
+            MessageLookupByLibrary.simpleMessage("Updated Successfully"),
         "main_title": MessageLookupByLibrary.simpleMessage("MEMOS"),
         "resource_title": MessageLookupByLibrary.simpleMessage("RESOURCE"),
         "settingLanguageChineseSimple":

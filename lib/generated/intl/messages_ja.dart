@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "lang_feedback": MessageLookupByLibrary.simpleMessage("フィードバック"),
         "lang_font_size": MessageLookupByLibrary.simpleMessage("フォントサイズ"),
         "lang_help": MessageLookupByLibrary.simpleMessage("ヘルプ"),
+        "lang_information_updated":
+            MessageLookupByLibrary.simpleMessage("件データ更新"),
         "lang_lange": MessageLookupByLibrary.simpleMessage("言語"),
         "lang_log_out": MessageLookupByLibrary.simpleMessage("ログアウト"),
         "lang_official_website":
@@ -36,9 +38,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("プライバシーポリシー"),
         "lang_setting": MessageLookupByLibrary.simpleMessage("言語設定"),
         "lang_share": MessageLookupByLibrary.simpleMessage("共有"),
+        "lang_slide_delete": MessageLookupByLibrary.simpleMessage("スライドして削除"),
         "lang_terms_conditions": MessageLookupByLibrary.simpleMessage("利用規約"),
         "lang_theme_color": MessageLookupByLibrary.simpleMessage("テーマの色"),
         "lang_update_records": MessageLookupByLibrary.simpleMessage("更新履歴"),
+        "lang_update_success":
+            MessageLookupByLibrary.simpleMessage("更新が成功しました"),
         "main_title": MessageLookupByLibrary.simpleMessage("メモ"),
         "resource_title": MessageLookupByLibrary.simpleMessage("リソース"),
         "settingLanguageChineseSimple":

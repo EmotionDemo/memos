@@ -28,17 +28,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "lang_feedback": MessageLookupByLibrary.simpleMessage("反饋建議"),
         "lang_font_size": MessageLookupByLibrary.simpleMessage("字體大小"),
         "lang_help": MessageLookupByLibrary.simpleMessage("幫助"),
+        "lang_information_updated": MessageLookupByLibrary.simpleMessage("條信息"),
         "lang_lange": MessageLookupByLibrary.simpleMessage("語言"),
         "lang_log_out": MessageLookupByLibrary.simpleMessage("退出登錄"),
         "lang_official_website": MessageLookupByLibrary.simpleMessage("官方網站"),
         "lang_privacy_policy": MessageLookupByLibrary.simpleMessage("隱私政策"),
         "lang_setting": MessageLookupByLibrary.simpleMessage("語言設置"),
         "lang_share": MessageLookupByLibrary.simpleMessage("分享"),
+        "lang_slide_delete": MessageLookupByLibrary.simpleMessage("滑動來刪除"),
         "lang_terms_conditions": MessageLookupByLibrary.simpleMessage("用戶條款"),
         "lang_theme_color": MessageLookupByLibrary.simpleMessage("主題顏色"),
         "lang_update_records": MessageLookupByLibrary.simpleMessage("更新記錄"),
+        "lang_update_success": MessageLookupByLibrary.simpleMessage("更新成功,共更新"),
         "main_title": MessageLookupByLibrary.simpleMessage("筆記"),
         "resource_title": MessageLookupByLibrary.simpleMessage("資源"),
+        "settingLanguageChineseSimple":
+            MessageLookupByLibrary.simpleMessage("漢語(簡)"),
+        "settingLanguageChineseTraditional":
+            MessageLookupByLibrary.simpleMessage("漢語(繁)"),
+        "settingLanguageEnglish": MessageLookupByLibrary.simpleMessage("英語"),
+        "settingLanguageJapanese": MessageLookupByLibrary.simpleMessage("日語"),
+        "settingLanguageKorean": MessageLookupByLibrary.simpleMessage("韓語"),
         "tags_title": MessageLookupByLibrary.simpleMessage("標籤"),
         "temporary_storage_title": MessageLookupByLibrary.simpleMessage("暫存箱")
       };

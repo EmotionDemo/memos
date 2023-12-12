@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:memos/auth/login_page.dart';
 import 'package:memos/auth/main_page.dart';
@@ -76,7 +75,8 @@ void main() {
 void startActivity() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<LangCurrentLocale>(create: (context) => LangCurrentLocale())
+      ChangeNotifierProvider<LangCurrentLocale>(
+          create: (context) => LangCurrentLocale())
     ],
     child: const MyApp(),
   ));
@@ -139,7 +139,7 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
     return Consumer<LangCurrentLocale>(
-      builder: (context,currentLocale,child){
+      builder: (context, currentLocale, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
@@ -170,6 +170,5 @@ class _MyAppState extends State<MyApp> {
         );
       },
     );
-
   }
 }
