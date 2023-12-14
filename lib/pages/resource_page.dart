@@ -8,8 +8,6 @@ import '../beans/ResourceBean.dart';
 import '../constants/constant.dart';
 
 import 'package:flutter_advanced_networkimage_2/provider.dart';
-import 'package:flutter_advanced_networkimage_2/transition.dart';
-import 'package:flutter_advanced_networkimage_2/zoomable.dart';
 
 import '../generated/l10n.dart';
 
@@ -135,18 +133,16 @@ class _ResourcePageState extends State<ResourcePage> {
             ],
           ),
         ),
-        body: Container(
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 5.0,
-                crossAxisSpacing: 6.0,
-                childAspectRatio: 1,
-              ),
-              itemCount: list.toList().length,
-              itemBuilder: (BuildContext context, int index) {
-                return list.toList()[index];
-              }),
-        ));
+        body: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 5.0,
+              crossAxisSpacing: 6.0,
+              childAspectRatio: 1,
+            ),
+            itemCount: list.toList().length,
+            itemBuilder: (BuildContext context, int index) {
+              return list.toList()[index];
+            }));
   }
 }

@@ -40,6 +40,7 @@ class _CollectPageState extends State<CollectPage>
   final String TAG = "CollectPage";
   String networkError = '数据空空~尝试点击刷新~';
   var noDataShow = 'images/ic_data_no_result.png';
+  int notesLength=0;
 
   ///查询被删除的笔记们
   Future<List<CollectedCard>> _queryCollectNotes() async {
@@ -97,8 +98,10 @@ class _CollectPageState extends State<CollectPage>
           visibility: dataBean[i].visibility,
         ));
       }
-
-      networkError = '📒${S.of(context).lang_update_success} ${notes.length} ${S.of(context).lang_information_updated}';
+      setState((){
+        notesLength = notes.length;
+        networkError = '📒${S.of(context).lang_update_success} ${notes.length} ${S.of(context).lang_information_updated}';
+      });
       noDataShow = 'images/ic_data_no_result.png';
      /* ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -225,7 +228,7 @@ class _CollectPageState extends State<CollectPage>
                                   height: ScreenUtil.hc_ScreenWidth() / 3 * 2,
                                 ),
                                 Text(
-                                  networkError,
+                                  '📒${S.of(context).lang_update_success} $notesLength ${S.of(context).lang_information_updated}',
                                   style: const TextStyle(
                                       color: Colors.black45, fontSize: 15),
                                 )

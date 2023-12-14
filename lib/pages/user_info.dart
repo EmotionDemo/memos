@@ -431,7 +431,7 @@ class _UserInfoPageState extends State<UserInfoPage>
                         ],
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, "/contact_me");
+                        Navigator.pushNamed(context, "/theme_page");
                       },
                     ),
                   ),

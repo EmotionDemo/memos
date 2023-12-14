@@ -6,6 +6,7 @@ import 'package:memos/auth/start_page.dart';
 import 'package:memos/beans/ModifyNoteBean.dart';
 import 'package:memos/pages/memo_detail.dart';
 import 'package:memos/pages/more_page.dart';
+import 'package:memos/pages/theme_page.dart';
 import 'package:memos/pages/user_info.dart';
 
 import '../pages/add_page.dart';
@@ -23,7 +24,8 @@ Map routes = {
   "/input_note_page": (context) => InputPage(
         modifyNoteBean: ModifyNoteBean("", ModifyNoteBean.INPUT,-1),
       ),
-  "/add_page": (context) => const AddPage()
+  "/add_page": (context) => const AddPage(),
+  "/theme_page":(context) => const ThemePage()
 };
 
 var onGenerateRoute = (RouteSettings settings) {
