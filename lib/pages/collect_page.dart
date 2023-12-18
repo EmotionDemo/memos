@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:memos/constants/constant.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
@@ -160,7 +162,8 @@ class _CollectPageState extends State<CollectPage>
               padding: const EdgeInsets.only(top: 20, bottom: 20),
               child:  Text(
                 S.of(context).temporary_storage_title,
-                style: const TextStyle(color: Colors.black, fontSize: 22),
+                style: /*const TextStyle(color: Colors.black, fontSize: 22)*/
+                Get.textTheme.headlineSmall,
               ),
             ),
           ],

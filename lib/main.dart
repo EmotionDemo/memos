@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:memos/auth/login_page.dart';
 import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
@@ -12,6 +13,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:memos/utils/LangCurrentLocale.dart';
 import 'package:memos/utils/SpUtils.dart';
+import 'package:memos/utils/ThemeController.dart';
 import 'package:memos/utils/no_splash_factory.dart';
 import 'package:memos/utils/toast.dart';
 import 'package:memos/view/behavior_view.dart';
@@ -129,6 +131,7 @@ class _MyAppState extends State<MyApp> {
       } catch (e) {}
     }
   }
+  final ThemeController _themeController = ThemeController();
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +143,8 @@ class _MyAppState extends State<MyApp> {
     ]);
     return Consumer<LangCurrentLocale>(
       builder: (context, currentLocale, child) {
-        return MaterialApp(
+        return GetMaterialApp(
+          theme: _themeController.switchThemeColor(SpUtil.getInt("THEME_COLOR_SAVE")!),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -157,13 +161,13 @@ class _MyAppState extends State<MyApp> {
               child: child!,
             );
           },
-          theme: ThemeData(
+         /* theme: ThemeData(
               brightness: Brightness.light,
               primaryColor: const Color.fromARGB(242, 197, 188, 188),
               scaffoldBackgroundColor: const Color.fromARGB(189, 255, 255, 255),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
-              splashFactory: NoSplashFactory()),
+              splashFactory: NoSplashFactory()),*/
           home: firstRoutePage,
           // initialRoute: firstRoutePage,
           onGenerateRoute: onGenerateRoute,
