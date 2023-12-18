@@ -5,7 +5,7 @@ import 'package:memos/utils/SpUtils.dart';
 class ThemeController extends GetxController {
 
   final ThemeData redThemeData = ThemeData(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primaryColor: Colors.red,
       // 主要部分背景颜色（导航和tabBar等）
       scaffoldBackgroundColor: Colors.red,
