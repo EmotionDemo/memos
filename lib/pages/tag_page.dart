@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:memos/view/flag_item.dart';
 
 import '../beans/TagsBean.dart';
@@ -69,7 +71,7 @@ class _TagPageState extends State<TagPage> with AutomaticKeepAliveClientMixin {
               margin: const EdgeInsets.all(10),
               child: Text(
                   S.of(context).tags_title,
-                style: const TextStyle(color: Colors.black, fontSize: 22),
+                style: /*const TextStyle(color: Colors.black, fontSize: 22)*/ Get.textTheme.headline6,
               ),
             ),
           ],

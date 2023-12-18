@@ -163,7 +163,7 @@ class _CollectPageState extends State<CollectPage>
               child:  Text(
                 S.of(context).temporary_storage_title,
                 style: /*const TextStyle(color: Colors.black, fontSize: 22)*/
-                Get.textTheme.headlineSmall,
+                Get.textTheme.headline6,
               ),
             ),
           ],
@@ -192,7 +192,7 @@ class _CollectPageState extends State<CollectPage>
                 ),
                 Text(
                   S.of(context).lang_slide_delete,
-                  style:const TextStyle(color: Colors.black54),
+                  style:/*const TextStyle(color: Colors.black54)*/Get.textTheme.button,
                 )
               ],
             ),
@@ -232,8 +232,8 @@ class _CollectPageState extends State<CollectPage>
                                 ),
                                 Text(
                                   '📒${S.of(context).lang_update_success} $notesLength ${S.of(context).lang_information_updated}',
-                                  style: const TextStyle(
-                                      color: Colors.black45, fontSize: 15),
+                                  style: /*const TextStyle(
+                                      color: Colors.black45, fontSize: 15)*/Get.textTheme.button,
                                 )
                               ],
                             ),

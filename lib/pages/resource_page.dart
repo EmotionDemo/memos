@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:memos/network/network.dart';
 import 'package:memos/utils/ScreenUtil.dart';
 import 'package:memos/utils/SpUtils.dart';
@@ -127,7 +129,7 @@ class _ResourcePageState extends State<ResourcePage> {
                 margin: const EdgeInsets.only(left: 5, top: 5),
                 child: Text(
                   S.of(context).resource_title,
-                  style: const TextStyle(color: Colors.black, fontSize: 22),
+                  style: /*const TextStyle(color: Colors.black, fontSize: 22)*/Get.textTheme.headline6,
                 ),
               ),
             ],

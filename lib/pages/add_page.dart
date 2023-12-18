@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:memos/beans/MemosBean.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
@@ -136,7 +138,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
                 margin: const EdgeInsets.only(left: 5, top: 5),
                 child: Text(
                   S.of(context).main_title,
-                  style: const TextStyle(color: Colors.black, fontSize: 22),
+                  style: /*const TextStyle(color: Colors.black, fontSize: 22)*/Get.textTheme.headline6,
                 ),
               ),
               InkWell(

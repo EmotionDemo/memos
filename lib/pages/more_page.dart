@@ -3,6 +3,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:memos/auth/start_page.dart';
 import 'package:memos/constants/constant.dart';
 import 'package:memos/network/network.dart';
@@ -132,7 +134,7 @@ class _MorePageState extends State<MorePage>
                         ),
                         Text('Memos',
                             style:
-                                TextStyle(fontSize: 18, color: Colors.black26))
+                            Get.textTheme.subtitle1)
                       ],
                     ),
                     Column(
@@ -146,7 +148,7 @@ class _MorePageState extends State<MorePage>
                         ),
                         Text('Tags',
                             style:
-                                TextStyle(fontSize: 18, color: Colors.black26))
+                            Get.textTheme.subtitle1)
                       ],
                     ),
                     Column(
@@ -160,7 +162,7 @@ class _MorePageState extends State<MorePage>
                         ),
                         Text('Days',
                             style:
-                                TextStyle(fontSize: 18, color: Colors.black26))
+                                /*TextStyle(fontSize: 18, color: Colors.black26)*/Get.textTheme.subtitle1)
                       ],
                     ),
                   ],
