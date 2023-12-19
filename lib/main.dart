@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:memos/auth/login_page.dart';
 import 'package:memos/auth/main_page.dart';
 import 'package:memos/auth/start_page.dart';
@@ -11,9 +10,10 @@ import 'package:memos/pages/error_page.dart';
 import 'package:memos/router/routers.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+// import 'package:memos/utils/AppInfoProvider.dart';
 import 'package:memos/utils/LangCurrentLocale.dart';
 import 'package:memos/utils/SpUtils.dart';
-import 'package:memos/utils/ThemeController.dart';
+import 'package:memos/utils/constant.dart';
 import 'package:memos/utils/no_splash_factory.dart';
 import 'package:memos/utils/toast.dart';
 import 'package:memos/view/behavior_view.dart';
@@ -40,7 +40,7 @@ void main() {
         if (isLogin!) {
           //更新用户信息
           Future<MeBean?> queryUserStatus =
-              RequestManager.getClient().queryMeInfo();
+          RequestManager.getClient().queryMeInfo();
           queryUserStatus.then((meData) {
             if (meData != null) {
               Global.updateUserInfo(meData);
@@ -56,7 +56,7 @@ void main() {
               }
             }
             Future<TagsBean> allTags =
-                RequestManager.getClient().queryAllTags();
+            RequestManager.getClient().queryAllTags();
             allTags.then((value) {
               Global.saveUserTagsInfo(value);
             });
@@ -88,7 +88,7 @@ void startActivity() {
 Future<bool> _initStoragePermission() async {
   PermissionStatus statusStorage = await Permission.storage.request();
   PermissionStatus externalStorage =
-      await Permission.manageExternalStorage.request();
+  await Permission.manageExternalStorage.request();
   PermissionStatus camera = await Permission.camera.request();
   if (statusStorage.isGranted &&
       externalStorage.isGranted &&
@@ -114,6 +114,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var startPage = "";
+  Color _themeColor = themeColorMap["blue"]!;
 
   @override
   void initState() {
@@ -131,7 +132,6 @@ class _MyAppState extends State<MyApp> {
       } catch (e) {}
     }
   }
-  final ThemeController _themeController = ThemeController();
 
   @override
   Widget build(BuildContext context) {
@@ -143,35 +143,35 @@ class _MyAppState extends State<MyApp> {
     ]);
     return Consumer<LangCurrentLocale>(
       builder: (context, currentLocale, child) {
-        return GetMaterialApp(
-          theme: _themeController.switchThemeColor(SpUtil.getInt("THEME_COLOR_SAVE")!),
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            S.delegate
-          ],
-          locale: currentLocale.value,
-          supportedLocales: S.delegate.supportedLocales,
-          title: 'memos',
-          builder: (context, child) {
-            return ScrollConfiguration(
-              behavior: MyBehavior(),
-              child: child!,
-            );
-          },
-         /* theme: ThemeData(
-              brightness: Brightness.light,
-              primaryColor: const Color.fromARGB(242, 197, 188, 188),
-              scaffoldBackgroundColor: const Color.fromARGB(189, 255, 255, 255),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              splashFactory: NoSplashFactory()),*/
-          home: firstRoutePage,
-          // initialRoute: firstRoutePage,
-          onGenerateRoute: onGenerateRoute,
-        );
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              S.delegate
+            ],
+            locale: currentLocale.value,
+            supportedLocales: S.delegate.supportedLocales,
+            title: 'memos',
+            builder: (context, child) {
+              return ScrollConfiguration(
+                behavior: MyBehavior(),
+                child: child!,
+              );
+            },
+            theme: ThemeData(
+                brightness: Brightness.light,
+                primaryColor: /*const Color.fromARGB(242, 197, 188, 188)*/ _themeColor,
+                scaffoldBackgroundColor:
+                const Color.fromARGB(189, 255, 255, 255),
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                splashFactory: NoSplashFactory()),
+            home: firstRoutePage,
+            // initialRoute: firstRoutePage,
+            onGenerateRoute: onGenerateRoute,
+          );
       },
     );
   }

@@ -4,8 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:memos/constants/constant.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
@@ -37,7 +35,7 @@ class _CollectPageState extends State<CollectPage>
   late Future<List<Widget>> _future;
   late bool _initializedFirst;
   final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
   final key = Key(Uuid().v4().toString());
   final String TAG = "CollectPage";
   String networkError = '数据空空~尝试点击刷新~';
@@ -54,8 +52,8 @@ class _CollectPageState extends State<CollectPage>
       for (int i = 0; i < dataBean.length; i++) {
         var calculateItemHeight = 0.0;
         var updateTime =
-            DateTime.fromMillisecondsSinceEpoch(dataBean[i].updatedTs * 1000)
-                .toString();
+        DateTime.fromMillisecondsSinceEpoch(dataBean[i].updatedTs * 1000)
+            .toString();
         var userName = dataBean[i].creatorName;
         List<ResourceListBean> resourceList = dataBean[i].resourceList;
         var resList = "";
@@ -63,13 +61,13 @@ class _CollectPageState extends State<CollectPage>
           for (var resData in resourceList) {
             if (resData.type.contains(Global.CONTENT_TYPE_IMAGE)) {
               resList +=
-                  "![](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
+              "![](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
             } else if (resData.type.contains("video")) {
               // resList+="[![]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename}})";
               // resList += "![](../images/ic_desc_video.png)";
               // resList += ""+"[[🎦${resData.filename}-type:${resData.type}]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
               resList +=
-                  """ \n <video src="http://43.138.80.236:5230/o/r/26/video.mp4"> """;
+              """ \n <video src="http://43.138.80.236:5230/o/r/26/video.mp4"> """;
               // resList += "![](../images/ic_desc_video.png)";
             }
             var data = dataBean[i];
@@ -105,7 +103,7 @@ class _CollectPageState extends State<CollectPage>
         networkError = '📒${S.of(context).lang_update_success} ${notes.length} ${S.of(context).lang_information_updated}';
       });
       noDataShow = 'images/ic_data_no_result.png';
-     /* ScaffoldMessenger.of(context).showSnackBar(
+      /* ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(networkError),
           duration: const Duration(milliseconds: 1000),
@@ -162,8 +160,7 @@ class _CollectPageState extends State<CollectPage>
               padding: const EdgeInsets.only(top: 20, bottom: 20),
               child:  Text(
                 S.of(context).temporary_storage_title,
-                style: /*const TextStyle(color: Colors.black, fontSize: 22)*/
-                Get.textTheme.headline6,
+                style: const TextStyle(color: Colors.black, fontSize: 22),
               ),
             ),
           ],
@@ -192,7 +189,7 @@ class _CollectPageState extends State<CollectPage>
                 ),
                 Text(
                   S.of(context).lang_slide_delete,
-                  style:/*const TextStyle(color: Colors.black54)*/Get.textTheme.button,
+                  style:const TextStyle(color: Colors.black54),
                 )
               ],
             ),
@@ -232,8 +229,8 @@ class _CollectPageState extends State<CollectPage>
                                 ),
                                 Text(
                                   '📒${S.of(context).lang_update_success} $notesLength ${S.of(context).lang_information_updated}',
-                                  style: /*const TextStyle(
-                                      color: Colors.black45, fontSize: 15)*/Get.textTheme.button,
+                                  style: const TextStyle(
+                                      color: Colors.black45, fontSize: 15),
                                 )
                               ],
                             ),
@@ -246,142 +243,142 @@ class _CollectPageState extends State<CollectPage>
                     } else {
                       return Expanded(
                           child: SmartRefresher(
-                        controller: _refreshController,
-                        enablePullDown: true,
-                        enablePullUp: false,
-                        header: const ClassicHeader(),
-                        onRefresh: _onRefresh,
-                        child: SlidableAutoCloseBehavior(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: _notes.length,
-                            controller: _scrollController,
-                            physics: const ScrollPhysics(),
-                            // physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final CollectedCard item =
+                            controller: _refreshController,
+                            enablePullDown: true,
+                            enablePullUp: false,
+                            header: const ClassicHeader(),
+                            onRefresh: _onRefresh,
+                            child: SlidableAutoCloseBehavior(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _notes.length,
+                                controller: _scrollController,
+                                physics: const ScrollPhysics(),
+                                // physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final CollectedCard item =
                                   _notes[index] as CollectedCard;
-                              /*if (_notes.length == 1 && _notes[0] is Center) {
+                                  /*if (_notes.length == 1 && _notes[0] is Center) {
                                 return _notes[0];
                               } else {
                                 item = _notes[index] as CollectedCard;
                               }*/
-                              return Slidable(
-                                key: key,
-                                endActionPane: ActionPane(
-                                    extentRatio: 0.3,
-                                    dragDismissible: true,
-                                    motion: const ScrollMotion(),
-                                    children: [
-                                      Flexible(
-                                        flex: 2,
-                                        child: InkWell(
-                                          child: Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.red,
-                                                    width: 2),
-                                                borderRadius:
+                                  return Slidable(
+                                    key: key,
+                                    endActionPane: ActionPane(
+                                        extentRatio: 0.3,
+                                        dragDismissible: true,
+                                        motion: const ScrollMotion(),
+                                        children: [
+                                          Flexible(
+                                            flex: 2,
+                                            child: InkWell(
+                                              child: Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.red,
+                                                        width: 2),
+                                                    borderRadius:
                                                     BorderRadius.circular(50),
-                                                color: Colors.red),
-                                            child: const Icon(
-                                              Icons.delete_forever,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            DialogView.alertDialog(
-                                                context,
-                                                '删除提醒',
-                                                ["删除", "取消"],
-                                                '确定要删除该笔记吗?',
-                                                Colors.red, (isDelete) {
-                                              if (isDelete) {
-                                                Future<bool> deleteMemo =
+                                                    color: Colors.red),
+                                                child: const Icon(
+                                                  Icons.delete_forever,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                DialogView.alertDialog(
+                                                    context,
+                                                    '删除提醒',
+                                                    ["删除", "取消"],
+                                                    '确定要删除该笔记吗?',
+                                                    Colors.red, (isDelete) {
+                                                  if (isDelete) {
+                                                    Future<bool> deleteMemo =
                                                     RequestManager.getClient()
                                                         .deleteMemo(
-                                                            item.id.toString());
-                                                deleteMemo.then((isDeleteOk) {
-                                                  if (isDeleteOk) {
-                                                    setState(() {
-                                                      _notes.remove(item);
-                                                      // _notes.removeAt(index);
-                                                      ScaffoldMessenger.of(
+                                                        item.id.toString());
+                                                    deleteMemo.then((isDeleteOk) {
+                                                      if (isDeleteOk) {
+                                                        setState(() {
+                                                          _notes.remove(item);
+                                                          // _notes.removeAt(index);
+                                                          ScaffoldMessenger.of(
                                                               context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content:
+                                                              .showSnackBar(
+                                                            const SnackBar(
+                                                              content:
                                                               Text('📒当前笔记已删除'),
-                                                          duration: Duration(
-                                                              milliseconds:
+                                                              duration: Duration(
+                                                                  milliseconds:
                                                                   1000),
-                                                          backgroundColor:
+                                                              backgroundColor:
                                                               Colors.red,
-                                                        ),
-                                                      );
+                                                            ),
+                                                          );
+                                                        });
+                                                      }
+                                                    });
+                                                  } else {
+                                                    print('late_BuildContext_mContext---${Slidable.of(mContext) == null}');
+                                                    setState(() {
+                                                      Slidable.of(mContext)
+                                                          ?.close();
                                                     });
                                                   }
                                                 });
-                                              } else {
-                                                print('late_BuildContext_mContext---${Slidable.of(mContext) == null}');
-                                                setState(() {
-                                                  Slidable.of(mContext)
-                                                      ?.close();
-                                                });
-                                              }
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Flexible(
-                                          flex: 2,
-                                          child: InkWell(
-                                            child: Container(
-                                              width: 40,
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.blue,
-                                                      width: 2),
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  color: Colors.blue),
-                                              child: const Icon(
-                                                Icons
-                                                    .settings_backup_restore_sharp,
-                                                color: Colors.white,
-                                              ),
+                                              },
                                             ),
-                                            onTap: () {
-                                              DialogView.alertDialog(
-                                                  context,
-                                                  '笔记恢复',
-                                                  ["恢复", "取消"],
-                                                  '确定要恢复该笔记吗?',
-                                                  Colors.blue, (isRestore) {
-                                                if (isRestore) {
-                                                  Future<int> restore =
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Flexible(
+                                              flex: 2,
+                                              child: InkWell(
+                                                child: Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.blue,
+                                                          width: 2),
+                                                      borderRadius:
+                                                      BorderRadius.circular(50),
+                                                      color: Colors.blue),
+                                                  child: const Icon(
+                                                    Icons
+                                                        .settings_backup_restore_sharp,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  DialogView.alertDialog(
+                                                      context,
+                                                      '笔记恢复',
+                                                      ["恢复", "取消"],
+                                                      '确定要恢复该笔记吗?',
+                                                      Colors.blue, (isRestore) {
+                                                    if (isRestore) {
+                                                      Future<int> restore =
                                                       RequestManager.getClient()
                                                           .restoreMemo(
-                                                              item.visibility,
-                                                              item.id);
-                                                  restore.then((value) => {
+                                                          item.visibility,
+                                                          item.id);
+                                                      restore.then((value) => {
                                                         ScaffoldMessenger.of(
-                                                                context)
+                                                            context)
                                                             .showSnackBar(
                                                           const SnackBar(
                                                             content: Text(
                                                                 '笔记📒恢复成功'),
                                                             duration: Duration(
                                                                 milliseconds:
-                                                                    700),
+                                                                700),
                                                             backgroundColor:
-                                                                Colors.green,
+                                                            Colors.green,
                                                           ),
                                                         ),
                                                         setState(() {
@@ -389,30 +386,30 @@ class _CollectPageState extends State<CollectPage>
                                                           _onRefresh();
                                                         }),
                                                       });
-                                                  setState(() {
-                                                    Slidable.of(mContext)?.close();
+                                                      setState(() {
+                                                        Slidable.of(mContext)?.close();
+                                                      });
+                                                    } else {
+                                                      print(
+                                                          'late_BuildContext_mContext---${Slidable.of(mContext) == null}');
+                                                    }
                                                   });
-                                                } else {
-                                                  print(
-                                                      'late_BuildContext_mContext---${Slidable.of(mContext) == null}');
-                                                }
-                                              });
-                                            },
-                                          ))
-                                    ]),
-                                child: LayoutBuilder(builder:
-                                    (contextFromLayoutBuilder,
+                                                },
+                                              ))
+                                        ]),
+                                    child: LayoutBuilder(builder:
+                                        (contextFromLayoutBuilder,
                                         BoxConstraints constraints) {
-                                  Slidable.of(contextFromLayoutBuilder)
-                                      ?.close();
-                                  mContext = contextFromLayoutBuilder;
-                                  return item;
-                                }),
-                              );
-                            },
-                          ),
-                        ),
-                      ));
+                                      Slidable.of(contextFromLayoutBuilder)
+                                          ?.close();
+                                      mContext = contextFromLayoutBuilder;
+                                      return item;
+                                    }),
+                                  );
+                                },
+                              ),
+                            ),
+                          ));
                     }
                   } else {
                     return Text('获取信息失败....');

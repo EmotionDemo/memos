@@ -1,3 +1,5 @@
+import 'dart:collection';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,13 +65,13 @@ class _MorePageState extends State<MorePage>
 
   void _queryCommitDays(List<String> dateReal, Map<String, int> dateMap) {
     Future<List<String>> queryNoteDates =
-        RequestManager.getClient().queryNoteDates();
+    RequestManager.getClient().queryNoteDates();
     queryNoteDates.then((dateList) {
       setState(() {
         //解析出所有年月日按格式xxxx-xx-xx存储
         for (String date in dateList) {
           DateTime timeReal =
-              DateTime.fromMillisecondsSinceEpoch(int.parse(date) * 1000);
+          DateTime.fromMillisecondsSinceEpoch(int.parse(date) * 1000);
           int year = timeReal.year;
           int month = timeReal.month;
           int day = timeReal.day;
@@ -128,31 +130,37 @@ class _MorePageState extends State<MorePage>
                         SizedBox(
                           height: 5,
                         ),
-                        const Text('Memos', style: TextStyle(fontSize: 20))
+                        Text('Memos',
+                            style:
+                            TextStyle(fontSize: 18, color: Colors.black26))
                       ],
                     ),
                     Column(
                       children: [
                         Text(
                           tasNum.toString(),
-                          style: const TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18),
                         ),
-                       const SizedBox(
+                        SizedBox(
                           height: 5,
                         ),
-                        const Text('Tags',style:  TextStyle(fontSize: 20))
+                        Text('Tags',
+                            style:
+                            TextStyle(fontSize: 18, color: Colors.black26))
                       ],
                     ),
                     Column(
                       children: [
                         Text(
                           daysDiff.toString(),
-                          style: const TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18),
                         ),
-                       const SizedBox(
+                        SizedBox(
                           height: 5,
                         ),
-                        const Text('Days', style:  TextStyle(fontSize: 20))
+                        Text('Days',
+                            style:
+                            TextStyle(fontSize: 18, color: Colors.black26))
                       ],
                     ),
                   ],
@@ -168,12 +176,13 @@ class _MorePageState extends State<MorePage>
               Container(
                 height: 65,
                 alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(top: 10),
+                margin: EdgeInsets.only(top: 10),
                 padding:
-                    const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
                 child: InkWell(
                   child: Card(
                     clipBehavior: Clip.antiAlias,
+                    color: Colors.white,
                     shadowColor: Colors.grey,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -204,8 +213,9 @@ class _MorePageState extends State<MorePage>
                           const Spacer(),
                           Container(
                               alignment: Alignment.center,
-                              child: const Icon(
+                              child: Icon(
                                 Icons.navigate_next_rounded,
+                                color: Colors.black26,
                                 size: 25,
                               ))
                         ],
@@ -221,9 +231,10 @@ class _MorePageState extends State<MorePage>
                 height: 65,
                 alignment: Alignment.topLeft,
                 padding:
-                    const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
                 child: Card(
                   clipBehavior: Clip.antiAlias,
+                  color: Colors.white,
                   shadowColor: Colors.grey,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -251,17 +262,20 @@ class _MorePageState extends State<MorePage>
                         ),
                         Text(
                           S.of(context).lang_official_website,
-                          style: const TextStyle(fontSize: 15),
+                          style: const TextStyle(
+                              color: Colors.black87, fontSize: 15),
                         ),
-                       const Spacer(),
-                       const Text(
+                        Spacer(),
+                        Text(
                           'memos.moe',
+                          style: TextStyle(color: Colors.grey),
                         ),
                         Container(
                             alignment: Alignment.center,
                             child: InkWell(
-                              child:const Icon(
+                              child: Icon(
                                 Icons.navigate_next_rounded,
+                                color: Colors.black26,
                                 size: 25,
                               ),
                               onTap: () {},
@@ -274,9 +288,10 @@ class _MorePageState extends State<MorePage>
               Container(
                 height: 120,
                 padding:
-                    const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
                 child: Card(
                   clipBehavior: Clip.antiAlias,
+                  color: Colors.white,
                   shadowColor: Colors.grey,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -288,7 +303,7 @@ class _MorePageState extends State<MorePage>
                       Container(
                         width: double.maxFinite,
                         margin:
-                            const EdgeInsets.only(left: 10, right: 10, top: 13),
+                        const EdgeInsets.only(left: 10, right: 10, top: 13),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -300,14 +315,16 @@ class _MorePageState extends State<MorePage>
                             const SizedBox(
                               width: 20,
                             ),
-                             Text(
+                            Text(
                               S.of(context).lang_terms_conditions,
-                              style: const TextStyle( fontSize: 15),
+                              style: const TextStyle(
+                                  color: Colors.black87, fontSize: 15),
                             ),
                             const Spacer(),
                             InkWell(
                               child: const Icon(
                                 Icons.navigate_next_rounded,
+                                color: Colors.black26,
                                 size: 25,
                               ),
                               onTap: () {},
@@ -341,14 +358,16 @@ class _MorePageState extends State<MorePage>
                             const SizedBox(
                               width: 20,
                             ),
-                             Text(
+                            Text(
                               S.of(context).lang_privacy_policy,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(
+                                  color: Colors.black87, fontSize: 15),
                             ),
                             const Spacer(),
                             InkWell(
                               child: const Icon(
                                 Icons.navigate_next_rounded,
+                                color: Colors.black26,
                                 size: 25,
                               ),
                               onTap: () {},
@@ -367,6 +386,8 @@ class _MorePageState extends State<MorePage>
                       top: 5, bottom: 5, left: 5, right: 5),
                   child: Card(
                     clipBehavior: Clip.antiAlias,
+                    color: Colors.white,
+                    shadowColor: Colors.grey,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -390,13 +411,15 @@ class _MorePageState extends State<MorePage>
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                 Text(
+                                Text(
                                   S.of(context).lang_feedback,
-                                  style: const TextStyle(fontSize: 15),
+                                  style: const TextStyle(
+                                      color: Colors.black87, fontSize: 15),
                                 ),
                                 const Spacer(),
                                 const Icon(
                                   Icons.navigate_next_rounded,
+                                  color: Colors.black26,
                                   size: 25,
                                 ),
                               ],
@@ -430,13 +453,15 @@ class _MorePageState extends State<MorePage>
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                 Text(
+                                Text(
                                   S.of(context).lang_contact,
-                                  style:const TextStyle(fontSize: 15),
+                                  style:const TextStyle(
+                                      color: Colors.black87, fontSize: 15),
                                 ),
                                 const Spacer(),
                                 const Icon(
                                   Icons.navigate_next_rounded,
+                                  color: Colors.black26,
                                   size: 25,
                                 ),
                               ],
@@ -472,9 +497,10 @@ class _MorePageState extends State<MorePage>
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                 Text(
+                                Text(
                                   S.of(context).lang_update_records,
-                                  style:const TextStyle(fontSize: 15),
+                                  style:const TextStyle(
+                                      color: Colors.black87, fontSize: 15),
                                 ),
                                 Spacer(),
                                 Container(
@@ -482,11 +508,13 @@ class _MorePageState extends State<MorePage>
                                   margin: EdgeInsets.only(top: 5, bottom: 5),
                                   child: Text(
                                     'V0.1.1',
-                                    style: TextStyle(fontSize: 13),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 13),
                                   ),
                                 ),
                                 const Icon(
                                   Icons.navigate_next_rounded,
+                                  color: Colors.black26,
                                   size: 25,
                                 ),
                               ],
@@ -503,10 +531,11 @@ class _MorePageState extends State<MorePage>
                 height: 65,
                 alignment: Alignment.topLeft,
                 padding:
-                    const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
                 child: InkWell(
                   child: Card(
                     clipBehavior: Clip.antiAlias,
+                    color: Colors.white,
                     shadowColor: Colors.grey,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -534,7 +563,8 @@ class _MorePageState extends State<MorePage>
                           ),
                           Text(
                             S.of(context).lang_about,
-                            style: const TextStyle(fontSize: 15),
+                            style: const TextStyle(
+                                color: Colors.black87, fontSize: 15),
                           ),
                           Spacer(),
                           Text(
@@ -543,6 +573,7 @@ class _MorePageState extends State<MorePage>
                           ),
                           Icon(
                             Icons.navigate_next_rounded,
+                            color: Colors.black26,
                             size: 25,
                           ),
                         ],
@@ -552,8 +583,8 @@ class _MorePageState extends State<MorePage>
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return LeadPage(showStart: false);
-                    }));
+                          return LeadPage(showStart: false);
+                        }));
                   },
                 ),
               ),

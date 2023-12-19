@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:memos/beans/MemosBean.dart';
 import 'package:memos/utils/ImgUtil.dart';
 import 'package:memos/utils/ScreenUtil.dart';
@@ -112,7 +110,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
 
   ScrollController scrollController = ScrollController();
   final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
   @override
   void didChangeMetrics() {
@@ -138,7 +136,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
                 margin: const EdgeInsets.only(left: 5, top: 5),
                 child: Text(
                   S.of(context).main_title,
-                  style: /*const TextStyle(color: Colors.black, fontSize: 22)*/Get.textTheme.headline6,
+                  style: const TextStyle(color: Colors.black, fontSize: 22),
                 ),
               ),
               InkWell(
@@ -154,13 +152,13 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
                 onTap: () {
                   Navigator.pushNamed(context, "/input_note_page")
                       .then((value) => {
-                            if (isSendNewMessage)
-                              {
-                                _onRefresh(),
-                                setState(() {}),
-                                isSendNewMessage = false
-                              }
-                          });
+                    if (isSendNewMessage)
+                      {
+                        _onRefresh(),
+                        setState(() {}),
+                        isSendNewMessage = false
+                      }
+                  });
                   //IOS切换动画
                   // Navigator.push(context, CupertinoPageRoute(builder: (context) => const InputPage()));
                 },
@@ -168,81 +166,79 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: 43,
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: SearchView(
-                    onSearchInputComplete: () async {
-                      _queryMemosByKey(controller.text.trim());
-                      FocusScope.of(context).unfocus();
-                    },
-                    controller: controller,
-                    hintText: "快速搜索",
-                    onCharChanged: (value) {
-                      print('xjp----->${value}');
-                      _queryMemosByKey(value.toString().trim());
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                FutureBuilder(
-                  future: _future,
-                  initialData: _notes,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return Text('请求失败...${snapshot.error}');
-                      } else {
-                        if (snapshot.hasData) {
-                          if (!initializedFirst) {
-                            _notes = snapshot.data;
-                            initializedFirst = true;
-                          }
-                          return Expanded(
-                              child: SmartRefresher(
-                            controller: _refreshController,
-                            enablePullDown: true,
-                            enablePullUp: false,
-                            header: const ClassicHeader(),
-                            onRefresh: _onRefresh,
-                            child: ListView.builder(
-                              // key: UniqueKey(),
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              shrinkWrap: false,
-                              scrollDirection: Axis.vertical,
-                              itemCount: _notes.toList().length,
-                              padding: const EdgeInsets.only(
-                                  top: 5, bottom: 5, left: 0, right: 0),
-                              itemBuilder: (BuildContext context, int index) {
-                                return _notes.toList()[index];
-                              },
-                            ),
-                          ));
-                        } else {
-                          return _requestError;
-                        }
-                      }
-                    } else if (snapshot.connectionState ==
-                            ConnectionState.none ||
-                        snapshot.connectionState == ConnectionState.waiting ||
-                        snapshot.connectionState == ConnectionState.active) {
-                      return _requesting;
-                    } else {
-                      return _requestError;
-                    }
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: 43,
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                child: SearchView(
+                  onSearchInputComplete: () async {
+                    _queryMemosByKey(controller.text.trim());
+                    FocusScope.of(context).unfocus();
+                  },
+                  controller: controller,
+                  hintText: "快速搜索",
+                  onCharChanged: (value) {
+                    print('xjp----->${value}');
+                    _queryMemosByKey(value.toString().trim());
                   },
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              FutureBuilder(
+                future: _future,
+                initialData: _notes,
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Text('请求失败...${snapshot.error}');
+                    } else {
+                      if (snapshot.hasData) {
+                        if (!initializedFirst) {
+                          _notes = snapshot.data;
+                          initializedFirst = true;
+                        }
+                        return Expanded(
+                            child: SmartRefresher(
+                              controller: _refreshController,
+                              enablePullDown: true,
+                              enablePullUp: false,
+                              header: const ClassicHeader(),
+                              onRefresh: _onRefresh,
+                              child: ListView.builder(
+                                // key: UniqueKey(),
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                shrinkWrap: false,
+                                scrollDirection: Axis.vertical,
+                                itemCount: _notes.toList().length,
+                                padding: const EdgeInsets.only(
+                                    top: 5, bottom: 5, left: 0, right: 0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return _notes.toList()[index];
+                                },
+                              ),
+                            ));
+                      } else {
+                        return _requestError;
+                      }
+                    }
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.none ||
+                      snapshot.connectionState == ConnectionState.waiting ||
+                      snapshot.connectionState == ConnectionState.active) {
+                    return _requesting;
+                  } else {
+                    return _requestError;
+                  }
+                },
+              ),
+            ],
           ),
         ));
   }
@@ -252,7 +248,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
     List<Widget> notes = [];
     try {
       MemosBean memosBean =
-          await RequestManager.getClient().queryAllMemos("NORMAL");
+      await RequestManager.getClient().queryAllMemos("NORMAL");
       var memoData = memosBean.data;
 
       if (memoData.isNotEmpty) {
@@ -305,7 +301,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
       var titleReal = '';
       var noteId = data.id;
       var updateTime =
-          DateTime.fromMillisecondsSinceEpoch(data.updatedTs * 1000).toString();
+      DateTime.fromMillisecondsSinceEpoch(data.updatedTs * 1000).toString();
 
       List<ResourceListBean> resourceList = data.resourceList;
       var resList = "";
@@ -318,7 +314,7 @@ class _AddPageState extends State<AddPage> with WidgetsBindingObserver {
         for (var resData in resourceList) {
           if (resData.type.contains("image")) {
             resList +=
-                "![](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
+            "![](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename})";
           } else if (resData.type.contains("video")) {
             // resList+="[![]](${SpUtil.getString(Global.BASE_PATH)}/o/r/${resData.id}/${resData.filename}})";
             // resList += "![](../images/ic_desc_video.png)";
