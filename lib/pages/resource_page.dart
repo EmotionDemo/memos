@@ -24,7 +24,8 @@ class _ResourcePageState extends State<ResourcePage> {
   List<Card> list = [];
   var screenWidth = ScreenUtil.hc_ScreenWidth();
   var screenHeight = ScreenUtil.hc_ScreenHeight();
-
+  late Future<List<Widget>> _future;
+  bool _initializedFirst = false;
   List<Widget> getResources(List<Card> list) {
     return list;
   }
@@ -36,7 +37,6 @@ class _ResourcePageState extends State<ResourcePage> {
     Future<ResourceBean> resources =
         RequestManager.getClient().queryResources();
     resources.then((resourceBean) => {
-          print('ResourcePage--->${resourceBean.data}'),
           resourceBean.data.forEach((element) {
             Widget showItem = Container();
             if (element.type.contains("image")) {
@@ -55,8 +55,6 @@ class _ResourcePageState extends State<ResourcePage> {
                 fit: BoxFit.cover,
               );
             }
-            print('xjpppp----->' +
-                "${SpUtil.getString(Global.BASE_PATH)!}/o/r/${element.id}/${element.filename}");
             setState(() {
               list.add(Card(
                 // margin:const EdgeInsets.all(3),
@@ -101,8 +99,8 @@ class _ResourcePageState extends State<ResourcePage> {
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(left: 10, top: 6),
-                      child: Text(
+                      margin: const EdgeInsets.only(left: 10, top: 6),
+                      child: const Text(
                         'size: 0.9MB',
                         style: TextStyle(color: Colors.grey),
                       ),
@@ -129,13 +127,159 @@ class _ResourcePageState extends State<ResourcePage> {
                 margin: const EdgeInsets.only(left: 5, top: 5),
                 child: Text(
                   S.of(context).resource_title,
-                  style: /*const TextStyle(color: Colors.black, fontSize: 22)*/Get.textTheme.headline6,
+                  style: /*const TextStyle(color: Colors.black, fontSize: 22)*/ Get
+                      .textTheme.headline6,
                 ),
               ),
             ],
           ),
         ),
-        body: GridView.builder(
+        body: Container(
+          child:  FutureBuilder(
+            future: _future,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Text('请求失败...${snapshot.error}');
+                } else {
+                  if (snapshot.hasData) {
+                    if (!_initializedFirst) {
+                      _notes = snapshot.data;
+                      _initializedFirst = true;
+                    }
+
+                    if (_notes.isEmpty) {
+                      return InkWell(
+                        onTap: () {
+                          _onRefresh();
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: ScreenUtil.hc_ScreenHeight() / 5),
+                          child: InkWell(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  noDataShow,
+                                  width: ScreenUtil.hc_ScreenWidth() / 3 * 2,
+                                  height: ScreenUtil.hc_ScreenWidth() / 3 * 2,
+                                ),
+                                Text(
+                                  '📒${S.of(context).lang_update_success} $notesLength ${S.of(context).lang_information_updated}',
+                                  style: const TextStyle(
+                                      color: Colors.black45, fontSize: 15),
+                                )
+                              ],
+                            ),
+                            onTap: () {
+                              _onRefresh();
+                            },
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Expanded(
+                          child: SmartRefresher(
+                            controller: _refreshController,
+                            enablePullDown: true,
+                            enablePullUp: false,
+                            header: const ClassicHeader(),
+                            onRefresh: _onRefresh,
+                            child: SlidableAutoCloseBehavior(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _notes.length,
+                                controller: _scrollController,
+                                physics: const ScrollPhysics(),
+                                // physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final CollectedCard item =
+                                  _notes[index] as CollectedCard;
+                                  /*if (_notes.length == 1 && _notes[0] is Center) {
+                                return _notes[0];
+                              } else {
+                                item = _notes[index] as CollectedCard;
+                              }*/
+                                  return Slidable(
+                                    key: key,
+                                    endActionPane: ActionPane(
+                                        extentRatio: 0.3,
+                                        dragDismissible: true,
+                                        motion: const ScrollMotion(),
+                                        children: [
+                                          Flexible(
+                                            flex: 2,
+                                            child: InkWell(
+                                              child: Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.red,
+                                                        width: 2),
+                                                    borderRadius:
+                                                    BorderRadius.circular(50),
+                                                    color: Colors.red),
+                                                child: const Icon(
+                                                  Icons.delete_forever,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              onTap: () {
+                                              },
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Flexible(
+                                              flex: 2,
+                                              child: InkWell(
+                                                child: Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.blue,
+                                                          width: 2),
+                                                      borderRadius:
+                                                      BorderRadius.circular(50),
+                                                      color: Colors.blue),
+                                                  child: const Icon(
+                                                    Icons
+                                                        .settings_backup_restore_sharp,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                },
+                                              ))
+                                        ]),
+                                    child: Container(
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ));
+                    }
+                  } else {
+                    return Text('获取信息失败....');
+                  }
+                }
+              } else if (snapshot.connectionState == ConnectionState.none ||
+                  snapshot.connectionState == ConnectionState.waiting ||
+                  snapshot.connectionState == ConnectionState.active) {
+                return Text('正在请求中....');
+              } else {
+                return Text('未知错误....');
+              }
+            },
+          ),
+        ));
+
+    /* GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 5.0,
@@ -145,6 +289,6 @@ class _ResourcePageState extends State<ResourcePage> {
             itemCount: list.toList().length,
             itemBuilder: (BuildContext context, int index) {
               return list.toList()[index];
-            }));
+            }));*/
   }
 }

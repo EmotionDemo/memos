@@ -125,12 +125,12 @@ class _MorePageState extends State<MorePage>
                       children: [
                         Text(
                           memosNum.toString(),
-                          style: TextStyle(fontSize: 18),
+                          style:const TextStyle(fontSize: 18),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text('Memos',
+                        const Text('Memos',
                             style:
                             TextStyle(fontSize: 18, color: Colors.black26))
                       ],
@@ -139,12 +139,12 @@ class _MorePageState extends State<MorePage>
                       children: [
                         Text(
                           tasNum.toString(),
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text('Tags',
+                        const Text('Tags',
                             style:
                             TextStyle(fontSize: 18, color: Colors.black26))
                       ],
@@ -153,12 +153,12 @@ class _MorePageState extends State<MorePage>
                       children: [
                         Text(
                           daysDiff.toString(),
-                          style: TextStyle(fontSize: 18),
+                          style:const TextStyle(fontSize: 18),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text('Days',
+                        const Text('Days',
                             style:
                             TextStyle(fontSize: 18, color: Colors.black26))
                       ],
